@@ -12,9 +12,10 @@ use App\Http\Requests\Auth\ForgotPasswordRequest;
 class ForgotPasswordController extends Controller
 {
     /**
+     * @param ForgotPasswordRequest $request
      * @throws ValidationException
+     * @return JsonResponse
      */
-    
     public function __invoke(ForgotPasswordRequest $request): JsonResponse
     {
         $status = Password::sendResetLink(
