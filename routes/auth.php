@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\Api\Auth\EmailVerificationController;
+use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\Auth\ResentEmailVerificationController;
 use Illuminate\Support\Facades\Route;
@@ -18,3 +19,7 @@ Route::post('/logout', LogoutController::class)
 Route::post('/email/verification/resend', ResentEmailVerificationController::class)
     ->middleware(['auth:sanctum', 'throttle:6,1'])
     ->name('verification.send');
+
+Route::post('/forgot-password', ForgotPasswordController::class)
+    ->middleware('guest')
+    ->name('password.email');
