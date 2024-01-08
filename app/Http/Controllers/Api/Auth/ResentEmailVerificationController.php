@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 class ResentEmailVerificationController extends Controller
 {
     /**
+     * @param Request $request
      * @return JsonResponse
      * @return RedirectResponse
      */
