@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\EmailVerificationRequest;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class EmailVerificationController extends Controller
 {
