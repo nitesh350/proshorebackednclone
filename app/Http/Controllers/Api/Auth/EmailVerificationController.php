@@ -13,7 +13,6 @@ class EmailVerificationController extends Controller
      * @param EmailVerificationRequest $request
      * @return RedirectResponse
      */
-
     public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {
         $request->fulfill();
