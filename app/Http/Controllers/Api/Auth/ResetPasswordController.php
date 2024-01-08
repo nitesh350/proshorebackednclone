@@ -17,7 +17,7 @@ class ResetPasswordController extends Controller
     /**
      * @param ResetPasswordRequest $request
      * @throws ValidationException
-     * @return 
+     * @return JsonResponse
      */
     public function __invoke(ResetPasswordRequest $request): JsonResponse
     {
