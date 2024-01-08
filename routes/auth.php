@@ -1,10 +1,10 @@
 <?php
 
-
 use App\Http\Controllers\Api\Auth\EmailVerificationController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\Auth\ResentEmailVerificationController;
+use App\Http\Controllers\Api\Auth\RegisterUserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -15,6 +15,10 @@ Route::get('/verify-email/{id}/{hash}', EmailVerificationController::class)
 Route::post('/logout', LogoutController::class)
     ->middleware('auth:sanctum')
     ->name('logout');
+
+Route::post('/register',RegisterUserController::class)
+                ->middleware('guest')
+                ->name('register');
 
 Route::post('/email/verification/resend', ResentEmailVerificationController::class)
     ->middleware(['auth:sanctum', 'throttle:6,1'])
