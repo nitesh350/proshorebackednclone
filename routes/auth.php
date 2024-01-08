@@ -2,23 +2,24 @@
 
 use App\Http\Controllers\Api\Auth\EmailVerificationController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
+use App\Http\Controllers\Api\Auth\LoginUserController;
 use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\Auth\ResentEmailVerificationController;
 use App\Http\Controllers\Api\Auth\RegisterUserController;
 use Illuminate\Support\Facades\Route;
 
 
+Route::post('/register', RegisterUserController::class)
+    ->middleware('guest')
+    ->name('register');
+
+Route::post('/login', LoginUserController::class)
+    ->middleware('guest')
+    ->name('login');
+
 Route::get('/verify-email/{id}/{hash}', EmailVerificationController::class)
     ->middleware(['signed', 'throttle:6,1'])
     ->name('verification.verify');
-
-Route::post('/logout', LogoutController::class)
-    ->middleware('auth:sanctum')
-    ->name('logout');
-
-Route::post('/register',RegisterUserController::class)
-                ->middleware('guest')
-                ->name('register');
 
 Route::post('/email/verification/resend', ResentEmailVerificationController::class)
     ->middleware(['auth:sanctum', 'throttle:6,1'])
@@ -27,3 +28,10 @@ Route::post('/email/verification/resend', ResentEmailVerificationController::cla
 Route::post('/forgot-password', ForgotPasswordController::class)
     ->middleware('guest')
     ->name('password.email');
+
+Route::post('/logout', LogoutController::class)
+    ->middleware('auth:sanctum')
+    ->name('logout');
+
+
+
