@@ -7,17 +7,26 @@ use App\Http\Requests\ProfileStoreRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Resources\ProfileResource;
 use App\Models\Profile;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProfileController extends Controller
 {
-    public function store(ProfileStoreRequest $request)
+    /**
+     * @param ProfileStoreRequest $request
+     * @return JsonResource
+     */
+    public function store(ProfileStoreRequest $request): JsonResource
     {
         $data = $request->validated();
         $profile = Profile::create($data);
         return new ProfileResource($profile);
     }
 
-    public function update(Profile $profile, ProfileUpdateRequest $request)
+    /**
+     * @param ProfileUpdateRequest $request
+     * @return JsonResource
+     */
+    public function update(Profile $profile, ProfileUpdateRequest $request): JsonResource
     {
         $data = $request->validated();
         $profile->update($data);

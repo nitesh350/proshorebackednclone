@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('education');
+            $table->longText('education');
             $table->json('skills');
-            $table->string('experience');
+            $table->longText('experience');
+            $table->longText('career');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

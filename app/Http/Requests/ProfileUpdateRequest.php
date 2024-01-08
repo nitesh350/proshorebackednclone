@@ -24,8 +24,9 @@ class ProfileUpdateRequest extends FormRequest
         return [
             "user_id" => "required|integer|exists:users,id",
             "skills" => "required|array",
-            'experience' => "required|string|max:255",
-            'education' => "required|string|max:255"
+            'education' => 'required|string|max:5000',
+            'experience' => 'required|string|max:5000',
+            'career' => 'required|string|max:5000'
         ];
     }
 }

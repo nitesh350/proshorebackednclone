@@ -18,6 +18,7 @@ class ProfileResource extends JsonResource
             "skills" => $this->skills,
             "education" => $this->education,
             "experience" => $this->experience,
+            "career" => $this->career
         ];
     }
 }
