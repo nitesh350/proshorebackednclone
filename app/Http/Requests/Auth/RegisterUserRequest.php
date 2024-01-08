@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use App\Models\User;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterUserRequest extends FormRequest
@@ -22,14 +23,17 @@ class RegisterUserRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'confirmed', 'regex:/^.*(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).*$/',],
+            'password' => ['required', 'confirmed', Password::defaults()],
         ];
     }
 
-    public function messages():array
+    public function attributes(): array
     {
         return [
-            'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
+            'name' => 'Username',
+            'email' => 'User Email',
         ];
     }
+
+
 }
