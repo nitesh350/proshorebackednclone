@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\EmailVerificationController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\Auth\LoginUserController;
@@ -34,4 +36,6 @@ Route::post('/logout', LogoutController::class)
     ->name('logout');
 
 
-
+Route::post('/reset-password', ResetPasswordController::class)
+                ->middleware('guest')
+                ->name('password.store');
