@@ -8,7 +8,6 @@ use App\Http\Controllers\Api\Auth\LoginUserController;
 use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\Auth\ResentEmailVerificationController;
 use App\Http\Controllers\Api\Auth\RegisterUserController;
-use Illuminate\Support\Facades\Route;
 
 
 Route::post('/register', RegisterUserController::class)
@@ -34,7 +33,6 @@ Route::post('/forgot-password', ForgotPasswordController::class)
 Route::post('/logout', LogoutController::class)
     ->middleware('auth:sanctum')
     ->name('logout');
-
 
 Route::post('/reset-password', ResetPasswordController::class)
                 ->middleware('guest')

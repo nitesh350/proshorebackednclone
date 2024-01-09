@@ -23,6 +23,7 @@ class ProfileController extends Controller
     }
 
     /**
+     * @param Profile $profile
      * @param ProfileUpdateRequest $request
      * @return JsonResource
      */
