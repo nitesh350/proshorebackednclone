@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\ProfileController;
+use App\Http\Controllers\Api\Admin\QuizController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,8 @@ use App\Http\Controllers\Api\Auth\ProfileController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/auth.php';
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
@@ -23,4 +25,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::apiResource('/profile', ProfileController::class)->only(['store', 'update']);
+
+    Route::apiResource('/quizzes', QuizController::class);
 });
