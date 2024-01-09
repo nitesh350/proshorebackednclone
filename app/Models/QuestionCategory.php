@@ -10,6 +10,14 @@ class QuestionCategory extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /**
+     * @var string
+     */
+    protected $table = "question_categories";
+
+    /**
+     * @var string[]
+     */
     protected $fillable=[
         'title',
         'slug'
