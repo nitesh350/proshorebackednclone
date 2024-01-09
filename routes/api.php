@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\ProfileController;
+use App\Http\Controllers\Api\Admin\QuizCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::apiResource('/profile', ProfileController::class)->only(['store', 'update']);
+});
+
+Route::group(['prefix'=>'admin','middleware'=>'auth:sanctum'],function()
+{
+    Route::apiResource('/quiz-categories',QuizCategoryController::class);
 });
