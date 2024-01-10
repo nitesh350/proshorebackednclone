@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class QuizCategory extends Model
+class QuestionCategory extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -16,7 +15,7 @@ class QuizCategory extends Model
      *
      * @var string
      */
-    protected $table = "quiz_categories";
+    protected $table = "question_categories";
 
     /**
      * The attributes that are mass assignable.
@@ -26,12 +25,4 @@ class QuizCategory extends Model
     protected $fillable = [
         'title', 'slug'
     ];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function quizzes(): HasMany
-    {
-        return $this->hasMany(Quiz::class, 'category_id');
-    }
 }

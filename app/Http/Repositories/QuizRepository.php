@@ -16,15 +16,11 @@ class QuizRepository
     {
         $thumbnail = $data['thumbnail'];
 
-        $extension = $thumbnail->extension();
-        $name = date('ymd') . time() . '.' . $extension;
-
-        $data['thumbnail'] = $name;
+        $name = date('ymd') . time() . '.' . $thumbnail->extension();
 
         $thumbnail->storeAs('public/images/quizzes', $name);
-        $quiz = Quiz::create($data);
 
-        return $quiz;
+        return Quiz::create(array_merge($data, ['thumbnail' => $name]));
     }
 
     /**
@@ -32,20 +28,21 @@ class QuizRepository
      * @param  array  $data
      * @return \App\Models\Quiz
      */
-    public function update($quiz, $data)
+    public function update(Quiz $quiz, array $data): Quiz
     {
-        Storage::delete('public/images/quizzes/' . $quiz->thumbnail);
+        if (isset($data['thumbnail'])) {
+            Storage::delete('public/images/quizzes/' . $quiz->thumbnail);
 
-        $thumbnail = $data['thumbnail'];
+            $thumbnail = $data['thumbnail'];
 
-        $extension = $thumbnail->extension();
-        $name = date('ymd') . time() . '.' . $extension;
+            $name = date('ymd') . time() . '.' . $thumbnail->extension();
 
-        $data['thumbnail'] = $name;
+            $thumbnail->storeAs('public/images/quizzes', $name);
 
-        $thumbnail->storeAs('public/images/quizzes', $name);
+            $data['thumbnail'] = $name;
+        }
 
-        $quiz = $quiz->update($data);
+        $quiz->update($data);
 
         return $quiz;
     }
