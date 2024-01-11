@@ -20,7 +20,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix'=>'admin','middleware'=>'auth:sanctum'],function()
-{
+// Admin Routes
+
+Route::group(['prefix'=>'admin','middleware'=>'auth:sanctum'],function(){
     Route::apiResource('question-categories',QuestionCategoryController::class);
 });

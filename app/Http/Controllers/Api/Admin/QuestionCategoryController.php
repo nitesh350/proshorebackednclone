@@ -8,6 +8,7 @@ use App\Http\Resources\QuestionCategoryResource;
 use App\Http\Requests\Auth\StoreQuestionCategoryRequest;
 use App\Http\Requests\Auth\UpdateQuestionCategoryRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 
 class QuestionCategoryController extends Controller
 {
@@ -51,15 +52,15 @@ class QuestionCategoryController extends Controller
     public function update(UpdateQuestionCategoryRequest $request, QuestionCategory $questionCategory): QuestionCategoryResource
     {
         $data = $request->validated();
-        
+
         $questionCategory->update($data);
-        
+
         return new QuestionCategoryResource($questionCategory);
     }
-    
+
     /**
      * @param QuestionCategory $questionCategory
-     * @return void
+     * @return Response
      */
     public function destroy(QuestionCategory $questionCategory)
     {
