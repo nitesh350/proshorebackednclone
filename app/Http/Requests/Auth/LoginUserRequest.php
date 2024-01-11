@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use Illuminate\Validation\Rules;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,8 +29,8 @@ class LoginUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', Rules\Password::defaults()],
         ];
     }
 
