@@ -2,10 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Auth\ProfileController;
-use App\Http\Controllers\Api\Admin\QuestionCategoryController;
-use App\Http\Controllers\Api\Admin\QuizCategoryController;
 use App\Http\Controllers\Api\Admin\QuizController;
+use App\Http\Controllers\Api\Auth\ProfileController;
+use App\Http\Controllers\Api\Admin\QuizCategoryController;
+use App\Http\Controllers\Api\Admin\QuestionCategoryController;
+use App\Http\Controllers\Api\Admin\QuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,5 +37,6 @@ Route::group(['prefix'=>'admin','middleware'=>'auth:sanctum'],function(){
     Route::apiResource('/question-categories',QuestionCategoryController::class);
     Route::apiResource('/quiz-categories',QuizCategoryController::class);
     Route::apiResource('/quizzes', QuizController::class);
+    Route::apiResource('questions', QuestionController::class);
 
 });
