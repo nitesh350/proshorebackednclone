@@ -8,6 +8,7 @@ use App\Http\Resources\QuizCategoryResource;
 use App\Http\Requests\QuizCategoryStoreRequest;
 use App\Http\Requests\QuizCategoryUpdateRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 
 class QuizCategoryController extends Controller
 {
@@ -54,9 +55,9 @@ class QuizCategoryController extends Controller
 
     /**
      * @param QuizCategory $quizCategory
-     * @return void
+     * @return Response
      */
-    public function destroy(QuizCategory $quizCategory): QuizCategoryResource
+    public function destroy(QuizCategory $quizCategory): Response
     {
         $quizCategory->delete();
         return response()->noContent();
