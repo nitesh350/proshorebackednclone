@@ -24,7 +24,7 @@ class QuizController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function index(): AnonymousResourceCollection
     {
@@ -65,7 +65,7 @@ class QuizController extends Controller
 
     /**
      * @param  Quiz  $quiz
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Quiz $quiz): Response
     {

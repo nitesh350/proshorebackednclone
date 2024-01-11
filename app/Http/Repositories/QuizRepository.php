@@ -2,6 +2,8 @@
 
 namespace App\Http\Repositories;
 
+use App\Http\Requests\QuizStoreRequest;
+use App\Http\Requests\QuizUpdateRequest;
 use App\Models\Quiz;
 use Illuminate\Support\Facades\Storage;
 
@@ -9,37 +11,27 @@ class QuizRepository
 {
 
     /**
-     * @param  array  $data
-     * @return \App\Models\Quiz
+     * @param array $data
+     * @return Quiz
      */
-    public function store($data)
+    public function store(array $data): Quiz
     {
-        $thumbnail = $data['thumbnail'];
-
-        $name = date('ymd') . time() . '.' . $thumbnail->extension();
-
-        $thumbnail->storeAs('public/images/quizzes', $name);
-
-        return Quiz::create(array_merge($data, ['thumbnail' => $name]));
+        $name = date('ymd') . time() . '.' . $data['thumbnail']->extension();
+        $data['thumbnail'] =  $data['thumbnail']->storeAs('images/quizzes', $name);
+        return Quiz::create(array_merge($data));
     }
 
     /**
-     * @param  \App\Models\Quiz  $quiz
-     * @param  array  $data
-     * @return \App\Models\Quiz
+     * @param Quiz $quiz
+     * @param array $data
+     * @return Quiz
      */
     public function update(Quiz $quiz, array $data): Quiz
     {
         if (isset($data['thumbnail'])) {
             Storage::delete('public/images/quizzes/' . $quiz->thumbnail);
-
-            $thumbnail = $data['thumbnail'];
-
-            $name = date('ymd') . time() . '.' . $thumbnail->extension();
-
-            $thumbnail->storeAs('public/images/quizzes', $name);
-
-            $data['thumbnail'] = $name;
+            $name = date('ymd') . time() . '.' . $data['thumbnail']->extension();
+            $data['thumbnail'] =  $data['thumbnail']->storeAs('images/quizzes', $name);
         }
 
         $quiz->update($data);

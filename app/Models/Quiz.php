@@ -28,9 +28,17 @@ class Quiz extends Model
         'title', 'slug', 'category_id', 'thumbnail', 'description', 'time', 'retry_after', 'status'
     ];
 
+    public $appends = [
+        'thumbnail_url'
+    ];
+
+    public function getThumbnailUrlAttribute(): string
+    {
+        return asset($this->thumbnail);
+    }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function category(): BelongsTo
     {
@@ -38,7 +46,7 @@ class Quiz extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function questionCategories(): BelongsToMany
     {

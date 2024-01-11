@@ -26,5 +26,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('/profile', ProfileController::class)->only(['store', 'update']);
 
-    Route::apiResource('/quizzes', QuizController::class);
+});
+Route::apiResource('/quizzes', QuizController::class);
+
+
+Route::group(['prefix'=>'admin','middleware'=>'auth:sanctum'],function(){
+
 });

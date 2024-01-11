@@ -17,7 +17,7 @@ class QuizResource extends JsonResource
         return [
             'title' => $this->title,
             'slug' => $this->slug,
-            'thumbnail' => asset('storage/images/quizzes') . "/" . $this->thumbnail,
+            'thumbnail' => $this->thumbnail_url,
             'description' => $this->description,
             'time' => $this->time . " " . "Minutes",
             'retry_after' => $this->retry_after . " " . "Days",
