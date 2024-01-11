@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\ProfileController;
 use App\Http\Controllers\Api\Admin\QuestionCategoryController;
 use App\Http\Controllers\Api\Admin\QuizCategoryController;
+use App\Http\Controllers\Api\Admin\QuizController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,8 @@ use App\Http\Controllers\Api\Admin\QuizCategoryController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/auth.php';
 
 Route::middleware(['auth:sanctum'])->group(function (){
 
@@ -25,6 +27,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
     });
 
     Route::apiResource('/profile', ProfileController::class)->only(['store', 'update']);
+
 });
 
 // Admin Routes
@@ -32,4 +35,6 @@ Route::group(['prefix'=>'admin','middleware'=>'auth:sanctum'],function(){
 
     Route::apiResource('/question-categories',QuestionCategoryController::class);
     Route::apiResource('/quiz-categories',QuizCategoryController::class);
+    Route::apiResource('/quizzes', QuizController::class);
+
 });
