@@ -29,7 +29,9 @@ class QuizUpdateRequest extends FormRequest
             'description' => 'required|string|max:1000',
             'time' => 'required|integer',
             'retry_after' => 'required|integer',
-            'status' => 'boolean'
+            'status' => 'boolean',
+            'question_categories' => 'required|array',
+            'question_categories.*'=> 'required|exists:question_categories,id'
         ];
     }
 }
