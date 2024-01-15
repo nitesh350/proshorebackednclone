@@ -18,7 +18,9 @@ class QuizRepository
     {
         $name = date('ymd') . time() . '.' . $data['thumbnail']->extension();
         $data['thumbnail'] =  $data['thumbnail']->storeAs('images/quizzes', $name);
-        return Quiz::create(array_merge($data));
+        $quiz = Quiz::create($data);
+        $quiz->questionCategories()->sync($data['question_categories']);
+        return $quiz;
     }
 
     /**
@@ -33,9 +35,18 @@ class QuizRepository
             $name = date('ymd') . time() . '.' . $data['thumbnail']->extension();
             $data['thumbnail'] =  $data['thumbnail']->storeAs('images/quizzes', $name);
         }
-
+        $quiz->questionCategories()->sync($data['question_categories']);
         $quiz->update($data);
 
         return $quiz;
+    }
+    /**
+     * @param Quiz $quiz
+     * @return void
+     */
+    public function destroy(Quiz $quiz): void
+    {
+        $quiz->questionCategories()->detach();
+        $quiz->delete();
     }
 }

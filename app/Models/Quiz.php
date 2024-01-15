@@ -50,6 +50,7 @@ class Quiz extends Model
      */
     public function questionCategories(): BelongsToMany
     {
-        return $this->belongsToMany(QuestionCategory::class);
+        return $this->belongsToMany(QuestionCategory::class,"question_category_quiz",'quiz_id','question_category_id')
+            ->withTimestamps();
     }
 }

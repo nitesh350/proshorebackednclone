@@ -37,7 +37,8 @@ class QuizController extends Controller
      */
     public function store(QuizStoreRequest $request): QuizResource
     {
-        $quiz = $this->quizRepository->store($request->validated());
+        $data = $request->validated();
+        $quiz = $this->quizRepository->store($data);
         return new QuizResource($quiz);
     }
 
@@ -59,7 +60,8 @@ class QuizController extends Controller
      */
     public function update(Quiz $quiz, QuizUpdateRequest $request): QuizResource
     {
-        $quiz = $this->quizRepository->update($quiz, $request->validated());
+        $data = $request->validated();
+        $quiz = $this->quizRepository->update($quiz,$data);
         return new QuizResource($quiz);
     }
 
@@ -69,7 +71,7 @@ class QuizController extends Controller
      */
     public function destroy(Quiz $quiz): Response
     {
-        $quiz->delete();
+        $this->quizRepository->destroy($quiz);
         return response()->noContent();
     }
 }
