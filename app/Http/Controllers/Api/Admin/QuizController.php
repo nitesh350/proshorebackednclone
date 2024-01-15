@@ -71,7 +71,7 @@ class QuizController extends Controller
      */
     public function destroy(Quiz $quiz): Response
     {
-        $quiz->delete();
+        $this->quizRepository->destroy($quiz);
         return response()->noContent();
     }
 }

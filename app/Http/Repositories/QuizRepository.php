@@ -40,4 +40,13 @@ class QuizRepository
 
         return $quiz;
     }
+    /**
+     * @param Quiz $quiz
+     * @return void
+     */
+    public function destroy(Quiz $quiz): void
+    {
+        $quiz->questionCategories()->detach();
+        $quiz->delete();
+    }
 }

@@ -25,8 +25,4 @@ class QuestionCategory extends Model
         'title',
         'slug'
     ];
-
-    public function quizzes():BelongsToMany{
-     return $this->belongsToMany(Quiz::class,"question_category_quiz");
-    }
 }
