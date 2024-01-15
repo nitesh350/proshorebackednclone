@@ -37,6 +37,6 @@ Route::group(['prefix'=>'admin','middleware'=>'auth:sanctum'],function(){
     Route::apiResource('/question-categories',QuestionCategoryController::class);
     Route::apiResource('/quiz-categories',QuizCategoryController::class);
     Route::apiResource('/quizzes', QuizController::class);
-    Route::apiResource('questions', QuestionController::class);
+    Route::apiResource('/questions', QuestionController::class);
 
 });

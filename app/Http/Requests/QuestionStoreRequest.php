@@ -27,8 +27,8 @@ class QuestionStoreRequest extends FormRequest
             'slug' => "string|required|max:255|unique:questions",
             'description' => "string|nullable|max:5000",
             'options' => "array|required",
-            'answer' => "string|required|max:255|in_array:options.*",
-            "weightage" => "required|integer|min:10",
+            'answer' => "string|required|in_array:options.*",
+            "weightage" => "required|integer|in:5,10,15",
             "status" => "boolean|nullable"
         ];
     }
