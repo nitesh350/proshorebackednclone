@@ -20,7 +20,7 @@ class Question extends Model
      * @var string[]
      */
     protected $casts = [
-        'options' => "json"
+        'options' => "json "
     ];
 
     /**
