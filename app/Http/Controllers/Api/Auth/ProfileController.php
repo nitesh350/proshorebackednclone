@@ -18,7 +18,7 @@ class ProfileController extends Controller
     public function store(ProfileStoreRequest $request): JsonResource
     {
         $data = $request->validated();
-        $profile = Profile::create($data);
+        $profile = $request->user()->profile()->create($data);
         return new ProfileResource($profile);
     }
 
