@@ -17,10 +17,10 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('question_categories');
             $table->string("title");
             $table->string("slug")->unique();
-            $table->text("description")->nullable();
+            $table->text("description");
             $table->json("options");
-            $table->string("answer");
-            $table->enum("weightage",[10,15,20])->default(10);
+            $table->text("answer");
+            $table->enum("weightage",[5,10,15])->default(5);
             $table->boolean('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
