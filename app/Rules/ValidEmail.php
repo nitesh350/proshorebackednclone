@@ -16,8 +16,14 @@ class ValidEmail implements ValidationRule
     {
 
         $pattern = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
-        if (strtoupper(!preg_match($pattern, $value))) {
+
+        if (!preg_match($pattern, $value)) 
+        {
             $fail('The :attribute must be an valid email.');
+        }
+        else
+        {
+            $value = strtolower($value);
         }
     }
 }
