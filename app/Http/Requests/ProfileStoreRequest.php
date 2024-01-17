@@ -12,12 +12,20 @@ class ProfileStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (auth()->id() !== $this->user_id) {
-            return false;
-        }
-        
         return true;
     }
+
+
+    /**
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'user_id' => auth()->id(),
+        ]);
+    }
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -44,7 +52,6 @@ class ProfileStoreRequest extends FormRequest
     {
         return [
             'user_id.unique' => 'User already has a profile',
-            'user_id.exists' => 'Unauthorized'
         ];
     }
 }

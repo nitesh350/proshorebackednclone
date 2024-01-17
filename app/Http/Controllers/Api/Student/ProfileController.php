@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Auth;
+namespace App\Http\Controllers\Api\Student;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileStoreRequest;
@@ -18,7 +18,7 @@ class ProfileController extends Controller
     public function store(ProfileStoreRequest $request): JsonResource
     {
         $data = $request->validated();
-        $profile = $request->user()->profile()->create($data);
+        $profile = Profile::create($data);
         return new ProfileResource($profile);
     }
 
