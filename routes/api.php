@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\Api\Student\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Admin\QuizController;
-use App\Http\Controllers\Api\Auth\ProfileController;
 use App\Http\Controllers\Api\Admin\QuizCategoryController;
 use App\Http\Controllers\Api\Admin\QuestionCategoryController;
 use App\Http\Controllers\Api\Admin\QuestionController;
+
 
 /*
 |--------------------------------------------------------------------------

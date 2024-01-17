@@ -15,6 +15,18 @@ class ProfileStoreRequest extends FormRequest
         return true;
     }
 
+
+    /**
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'user_id' => auth()->id(),
+        ]);
+    }
+
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -28,6 +40,18 @@ class ProfileStoreRequest extends FormRequest
             'education' => 'required|string|max:5000',
             'experience' => 'required|string|max:5000',
             'career' => 'required|string|max:5000'
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'user_id.unique' => 'User already has a profile',
         ];
     }
 }

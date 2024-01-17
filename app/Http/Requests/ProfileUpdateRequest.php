@@ -12,7 +12,7 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->profile->user_id === auth()->id();
     }
 
     /**
@@ -23,7 +23,6 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "user_id" => "required|integer|exists:users,id",
             "skills" => "required|array",
             'education' => 'required|string|max:5000',
             'experience' => 'required|string|max:5000',
