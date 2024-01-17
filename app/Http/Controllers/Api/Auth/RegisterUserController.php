@@ -18,7 +18,7 @@ class RegisterUserController extends Controller
     {
 
         $data = $request->validated();
-        dd($data);
+        
         $user = User::create($data);
 
         event(new Registered($user));
