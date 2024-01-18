@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use Illuminate\Http\Response;
+use App\Helpers\ResponseHelper;
 use App\Models\QuestionCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\QuestionCategoryResource;
-use App\Http\Requests\Auth\StoreQuestionCategoryRequest;
-use App\Http\Requests\Auth\UpdateQuestionCategoryRequest;
+use App\Http\Requests\StoreQuestionCategoryRequest;
+use App\Http\Requests\UpdateQuestionCategoryRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
 
 class QuestionCategoryController extends Controller
 {
@@ -55,7 +56,8 @@ class QuestionCategoryController extends Controller
 
         $questionCategory->update($data);
 
-        return new QuestionCategoryResource($questionCategory);
+        return (new QuestionCategoryResource($questionCategory))->additional(ResponseHelper::updated($questionCategory));
+        
     }
 
     /**
