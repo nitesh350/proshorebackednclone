@@ -25,7 +25,6 @@ require __DIR__ . '/auth.php';
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/user', UserDataController::class);
-    Route::apiResource('/profile', ProfileController::class)->only(['store', 'update']);
 });
 
 // Admin Routes
@@ -35,4 +34,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () 
     Route::apiResource('/quiz-categories', QuizCategoryController::class);
     Route::apiResource('/quizzes', QuizController::class);
     Route::apiResource('/questions', QuestionController::class);
+});
+
+// Student Routes
+Route::group(['prefix' => 'student', 'middleware' => 'auth:sanctum'], function () {
+
+    Route::apiResource('/profile', ProfileController::class)->only(['store', 'update']);
 });

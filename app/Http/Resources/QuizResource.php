@@ -15,12 +15,13 @@ class QuizResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
             'thumbnail' => $this->thumbnail_url,
             'description' => $this->description,
-            'time' => $this->time . " " . "Minutes",
-            'retry_after' => $this->retry_after . " " . "Days",
+            'time' => $this->time . " Minutes",
+            'retry_after' => $this->retry_after . " Days",
             'status' => $this->status == 1 ? "Active" : "Inactive"
         ];
     }
