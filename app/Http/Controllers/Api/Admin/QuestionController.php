@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use App\Helpers\ResponseHelper;
 use App\Models\Question;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
@@ -30,7 +31,7 @@ class QuestionController extends Controller
     {
         $data = $request->validated();
         $question = Question::create($data)->fresh();
-        return new QuestionResource($question);
+        return (new QuestionResource($question))->additional(ResponseHelper::stored());
     }
 
 
@@ -53,7 +54,7 @@ class QuestionController extends Controller
     {
         $data = $request->validated();
         $question->update($data);
-        return new QuestionResource($question);
+        return (new QuestionResource($question))->additional(ResponseHelper::updated($question));
     }
 
 
