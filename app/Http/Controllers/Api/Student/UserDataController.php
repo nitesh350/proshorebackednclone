@@ -14,7 +14,7 @@ class UserDataController extends Controller
      */
     public function __invoke(Request $request): UserResource
     {
-        $data = $request->user()->load('profile');
+        $data =  auth()->user()->load('profile');
         return new UserResource($data);
     }
 }

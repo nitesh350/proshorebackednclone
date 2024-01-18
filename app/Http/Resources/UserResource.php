@@ -19,7 +19,7 @@ class UserResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "email" => $this->email,
-            "profile" => new ProfileResource($this->whenLoaded('profile'))
+            "profile" => new ProfileResource($this->whenLoaded('profile')),
         ];
     }
 }
