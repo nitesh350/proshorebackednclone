@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\Admin\QuizController;
 use App\Http\Controllers\Api\Admin\QuizCategoryController;
 use App\Http\Controllers\Api\Admin\QuestionCategoryController;
 use App\Http\Controllers\Api\Admin\QuestionController;
-
+use App\Http\Controllers\Api\Student\UserDataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,21 +22,17 @@ use App\Http\Controllers\Api\Admin\QuestionController;
 
 require __DIR__ . '/auth.php';
 
-Route::middleware(['auth:sanctum'])->group(function (){
+Route::middleware(['auth:sanctum'])->group(function () {
 
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-
+    Route::get('/user', UserDataController::class);
     Route::apiResource('/profile', ProfileController::class)->only(['store', 'update']);
-
 });
 
 // Admin Routes
-Route::group(['prefix'=>'admin','middleware'=>'auth:sanctum'],function(){
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () {
 
-    Route::apiResource('/question-categories',QuestionCategoryController::class);
-    Route::apiResource('/quiz-categories',QuizCategoryController::class);
+    Route::apiResource('/question-categories', QuestionCategoryController::class);
+    Route::apiResource('/quiz-categories', QuizCategoryController::class);
     Route::apiResource('/quizzes', QuizController::class);
     Route::apiResource('/questions', QuestionController::class);
 });
