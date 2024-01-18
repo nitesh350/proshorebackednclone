@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Models\QuizCategory;
 use App\Http\Resources\QuizCategoryResource;
@@ -29,7 +30,7 @@ class QuizCategoryController extends Controller
     {
         $data = $request->validated();
         $quizCategory = QuizCategory::create($data);
-        return new QuizCategoryResource($quizCategory);
+        return (new QuizCategoryResource($quizCategory))->additional(ResponseHelper::stored());
     }
 
     /**
@@ -49,8 +50,11 @@ class QuizCategoryController extends Controller
     public function update(QuizCategoryUpdateRequest $request, QuizCategory $quizCategory): QuizCategoryResource
     {
         $data = $request->validated();
+
         $quizCategory->update($data);
-        return new QuizCategoryResource($quizCategory);
+
+        return (new QuizCategoryResource($quizCategory))->additional(ResponseHelper::updated($quizCategory));
+
     }
 
     /**
