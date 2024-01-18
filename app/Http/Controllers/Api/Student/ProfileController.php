@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Student;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileStoreRequest;
 use App\Http\Requests\ProfileUpdateRequest;
@@ -19,7 +20,7 @@ class ProfileController extends Controller
     {
         $data = $request->validated();
         $profile = Profile::create($data);
-        return new ProfileResource($profile);
+        return (new ProfileResource($profile))->additional(ResponseHelper::stored());
     }
 
     /**
@@ -31,6 +32,6 @@ class ProfileController extends Controller
     {
         $data = $request->validated();
         $profile->update($data);
-        return new ProfileResource($profile);
+        return (new ProfileResource($profile))->additional(ResponseHelper::updated($profile));
     }
 }
