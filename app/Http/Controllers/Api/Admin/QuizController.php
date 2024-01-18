@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Quiz;
 use App\Http\Requests\QuizStoreRequest;
@@ -39,7 +40,7 @@ class QuizController extends Controller
     {
         $data = $request->validated();
         $quiz = $this->quizRepository->store($data);
-        return new QuizResource($quiz);
+        return (new QuizResource($quiz))->additional(ResponseHelper::stored());
     }
 
 
@@ -62,7 +63,7 @@ class QuizController extends Controller
     {
         $data = $request->validated();
         $quiz = $this->quizRepository->update($quiz,$data);
-        return new QuizResource($quiz);
+        return (new QuizResource($quiz))->additional(ResponseHelper::updated($quiz));
     }
 
     /**
