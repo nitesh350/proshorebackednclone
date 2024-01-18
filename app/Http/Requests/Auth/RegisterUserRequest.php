@@ -29,19 +29,10 @@ class RegisterUserRequest extends FormRequest
         ];
     }
 
-    public function prepareForValidation()
+    public function prepareForValidation(): void
     {
         $this->merge([
             'email' => strtolower($this->input('email')),
         ]);
     }
-    
-    public function attributes(): array
-    {
-        return [
-            'name' => 'Username',
-            'email' => 'User Email',
-        ];
-    }
-
 }
