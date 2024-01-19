@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 class UserDataController extends Controller
 {
     /**
-     * @param  \Illuminate\Http\Request  $request
-     * @return \App\Http\Resources\UserDataResource
+     * @param Request $request
+     * @return UserResource
      */
     public function __invoke(Request $request): UserResource
     {
