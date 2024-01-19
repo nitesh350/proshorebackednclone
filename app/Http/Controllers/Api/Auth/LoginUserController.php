@@ -6,9 +6,20 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginUserRequest;
 use Illuminate\Validation\ValidationException;
+use App\Http\Repositories\Auth\LoginRepository;
 
 class LoginUserController extends Controller
 {
+    private LoginRepository $loginRepository;
+
+    /**
+     * @param LoginRepository $loginRepository
+     */
+    public function __construct(LoginRepository $loginRepository)
+    {
+        $this->loginRepository = $loginRepository;
+    }
+
     /**
      * @param LoginUserRequest $request
      * @return JsonResponse
@@ -18,7 +29,7 @@ class LoginUserController extends Controller
     {
         $request->authenticate();
 
-        $token = auth()->user()->createToken('user_token')->plainTextToken;
+        $token = $this->loginRepository->generateAuthToken();
 
         return response()->json([
             'message' => "Successfully logged in",

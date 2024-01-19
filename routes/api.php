@@ -27,8 +27,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', UserDataController::class);
 });
 
+$adminAbilities = ['manage-quiz-categories', 'manage-quiz', 'manage-questions', 'manage-question-categories', 'view-results'];
+$studentAbilities = ['view-quizzes', 'can-attempt-quiz', 'view-quiz-results', 'manage-profile'];
+
 // Admin Routes
-Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'abilities:' . implode(',', $adminAbilities)]], function () {
 
     Route::apiResource('/question-categories', QuestionCategoryController::class);
     Route::apiResource('/quiz-categories', QuizCategoryController::class);
@@ -37,7 +40,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () 
 });
 
 // Student Routes
-Route::group(['prefix' => 'student', 'middleware' => 'auth:sanctum'], function () {
+Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum', 'abilities:' . implode(',', $studentAbilities)]], function () {
 
     Route::apiResource('/profile', ProfileController::class)->only(['store', 'update']);
 });
