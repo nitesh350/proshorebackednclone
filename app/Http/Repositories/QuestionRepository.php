@@ -17,7 +17,7 @@ class QuestionRepository
         $intermediateQuestions =  $this->getQuestionByWeightage($categories,"10",2);
         $advanceQuestions =  $this->getQuestionByWeightage($categories,"15",2);
         $questionIds = $basicQuestions->merge($intermediateQuestions)->merge($advanceQuestions);
-        $questions = Question::select("id","options","weightage","description","status")
+        $questions = Question::select("id","title","options","weightage","description","status")
                         ->whereIn("id",$questionIds)
                         ->orderBy("weightage")
                         ->get();
