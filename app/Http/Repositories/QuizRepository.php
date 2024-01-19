@@ -2,8 +2,6 @@
 
 namespace App\Http\Repositories;
 
-use App\Http\Requests\QuizStoreRequest;
-use App\Http\Requests\QuizUpdateRequest;
 use App\Models\Quiz;
 use Illuminate\Support\Facades\Storage;
 
