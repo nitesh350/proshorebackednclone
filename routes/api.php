@@ -27,20 +27,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', UserDataController::class);
 });
 
-$adminAbilities = ['manage-quiz-categories', 'manage-quiz', 'manage-questions', 'manage-question-categories', 'view-results'];
-$studentAbilities = ['view-quizzes', 'can-attempt-quiz', 'view-quiz-results', 'manage-profile'];
-
 // Admin Routes
-Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'abilities:' . implode(',', $adminAbilities)]], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () {
 
-    Route::apiResource('/question-categories', QuestionCategoryController::class);
-    Route::apiResource('/quiz-categories', QuizCategoryController::class);
-    Route::apiResource('/quizzes', QuizController::class);
-    Route::apiResource('/questions', QuestionController::class);
+    Route::apiResource('/question-categories', QuestionCategoryController::class)->middleware('ability:manage-question-categories');
+    Route::apiResource('/quiz-categories', QuizCategoryController::class)->middleware('ability:manage-quiz-categories');
+    Route::apiResource('/quizzes', QuizController::class)->middleware('ability:manage-quizzes');
+    Route::apiResource('/questions', QuestionController::class)->middleware('ability:manage-questions');
 });
 
 // Student Routes
-Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum', 'abilities:' . implode(',', $studentAbilities)]], function () {
+Route::group(['prefix' => 'student', 'middleware' => 'auth:sanctum'], function () {
 
-    Route::apiResource('/profile', ProfileController::class)->only(['store', 'update']);
+    Route::apiResource('/profile', ProfileController::class)->only(['store', 'update'])->middleware('ability:manage-profile');
 });

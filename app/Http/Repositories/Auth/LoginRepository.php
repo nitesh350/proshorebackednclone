@@ -2,6 +2,8 @@
 
 namespace App\Http\Repositories\Auth;
 
+use Illuminate\Support\Facades\Config;
+
 class LoginRepository
 {
     /**
@@ -12,10 +14,9 @@ class LoginRepository
     public function generateAuthToken(): string
     {
         $user = auth()->user();
+        $userType = $user->user_type;
 
-        $abilities = ($user->user_type == "admin")
-            ? ['manage-quiz-categories', 'manage-quiz', 'manage-questions', 'manage-question-categories', 'view-results']
-            : ['view-quizzes', 'can-attempt-quiz', 'view-quiz-results', 'manage-profile'];
+        $abilities = Config::get("abilities.$userType");
 
         $token = $user->createToken('user_token', $abilities)->plainTextToken;
 
