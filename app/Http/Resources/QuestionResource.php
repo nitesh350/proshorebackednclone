@@ -17,7 +17,7 @@ class QuestionResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'slug' => $this->slug,
+            'slug' => $this->whenHas($this->slug),
             'description' => $this->description,
             'options' => $this->options,
             'weightage' => $this->weightage,

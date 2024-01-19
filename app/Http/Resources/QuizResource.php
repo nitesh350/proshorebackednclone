@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class QuizResource extends JsonResource
 {
+
     /**
      * Transform the resource into an array.
      *
@@ -19,8 +20,8 @@ class QuizResource extends JsonResource
             'slug' => $this->slug,
             'thumbnail' => $this->thumbnail_url,
             'description' => $this->description,
-            'time' => $this->time . " " . "Minutes",
-            'retry_after' => $this->retry_after . " " . "Days",
+            'time' => $this->time,
+            'retry_after' => $this->retry_after,
             'status' => $this->status == 1 ? "Active" : "Inactive"
         ];
     }
