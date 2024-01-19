@@ -39,6 +39,7 @@ class QuestionRepository
         return Question::select('id', 'category_id', 'title', 'description', 'options', 'weightage', 'status')
             ->whereIn('category_id', $categories)
             ->active()
+            ->inRandomOrder()
             ->where("weightage",$weightage)->limit($limit)->pluck("id");
     }
 }
