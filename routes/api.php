@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Student\StartQuizController;
 use App\Http\Controllers\Api\Student\ProfileController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Admin\QuizController;
 use App\Http\Controllers\Api\Admin\QuizCategoryController;
@@ -36,8 +36,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () 
     Route::apiResource('/questions', QuestionController::class);
 });
 
-// Student Routes
 Route::group(['prefix' => 'student', 'middleware' => 'auth:sanctum'], function () {
 
     Route::apiResource('/profile', ProfileController::class)->only(['store', 'update']);
+    Route::get('/quizzes/{quiz}/start', StartQuizController::class);
 });

@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\QuestionCategory;
+use App\Models\Scopes\QuestionActiveScope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -37,5 +38,10 @@ class Question extends Model
     public function category() : BelongsTo
     {
         return $this->belongsTo(QuestionCategory::class,'category_id');
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status',1);
     }
 }
