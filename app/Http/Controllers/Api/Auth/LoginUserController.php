@@ -18,7 +18,9 @@ class LoginUserController extends Controller
     {
         $request->authenticate();
 
-        $token = auth()->user()->createToken('user_token')->plainTextToken;
+        $user = auth()->user();
+
+        $token = $user->createToken('user_token', config("abilities." . $user->user_type))->plainTextToken;
 
         return response()->json([
             'message' => "Successfully logged in",
