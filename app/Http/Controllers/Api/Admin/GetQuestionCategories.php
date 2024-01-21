@@ -7,14 +7,14 @@ use App\Models\QuestionCategory;
 use App\Http\Resources\QuestionCategoryResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class QuestionCategoryForQuestionCreationController extends Controller
+class GetQuestionCategories extends Controller
 {
     /**
      * @return AnonymousResourceCollection
      */
     public function __invoke(): AnonymousResourceCollection
     {
-        $questionCategories = QuestionCategory::all(['id', 'title']);
+        $questionCategories = QuestionCategory::select(['id', 'title'])->get();
         return QuestionCategoryResource::collection($questionCategories);
     }
 }
