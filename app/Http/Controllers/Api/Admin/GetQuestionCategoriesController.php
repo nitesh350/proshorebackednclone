@@ -7,10 +7,10 @@ use App\Models\QuestionCategory;
 use App\Http\Resources\QuestionCategoryResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class GetQuestionCategories extends Controller
+class GetQuestionCategoriesController extends Controller
 {
     /**
-     * @return AnonymousResourceCollection
+     * @return QuestionCategoryResource
      */
     public function __invoke(): AnonymousResourceCollection
     {
