@@ -8,45 +8,30 @@ use App\Models\Result;
 
 class ResultRepository
 {
-    /**
-     * @param  int  $userId
-     * @param  Quiz  $quiz
-     * @param  array  $submittedAnswers
-     * @param  int  $totalTime
-     * @return Result
-     */
-    public function store($userId, $quiz, $submittedAnswers, $totalTime):Result
+    public function calculateAndCreateResult(Quiz $quiz, $userId, array $answers, array $data): Result
     {
-        $totalAnswered = count($submittedAnswers);
-        $totalRightAnswer = 0;
+        $total_answered = count($answers);
+        $total_right_answered = 0;
+        $total_weightage = 0;
 
-        foreach ($submittedAnswers as $questionId => $submittedAnswer) {
-
-            if ($this->isCorrectAnswer($questionId, $submittedAnswer)) {
-                $totalRightAnswer++;
+        foreach ($answers as $answer) {
+            $question = Question::find($answer['question_id']);
+            if ($question->answer === $answer['answer']) {
+                $total_weightage += $question->weightage;
+                $total_right_answered++;
             }
         }
 
-        return Result::create([
-            'user_id' => $userId,
-            'quiz_id' => $quiz->id,
-            'passed' => $totalRightAnswer >= (count($submittedAnswers) / 2),
-            'total_question' => count($submittedAnswers),
-            'total_answered' => $totalAnswered,
-            'total_right_answer' => $totalRightAnswer,
-            'total_time' => $totalTime,
-        ]);
-    }
-    private function isCorrectAnswer($questionId, $submittedAnswer)
-    {
-        $question = Question::find($questionId);
+        $resultData = [
+            "quiz_id" => $quiz->id,
+            "user_id" => $userId,
+            "passed" => $total_weightage >= $quiz->pass_percentage,
+            "total_answered" => $total_answered,
+            "total_right_answer" => $total_right_answered,
+            "total_time" => $data['total_time'],
+            "total_question" => $data['total_question']
+        ];
 
-        if ($question) {
-            $correctAnswer = $question->answer;
-
-            return $submittedAnswer === $correctAnswer;
-        }
-
-        return false;
+        return Result::create($resultData);
     }
 }

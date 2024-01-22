@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ResultStoreRequest extends FormRequest
+class SubmitQuizStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,9 @@ class ResultStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'answers' => 'required|array',
-            'total_time' => 'required|integer'
+            'answers'=>'required|array',
+            'total_question'=>'required|integer',
+            'total_time'=>'required|integer'
         ];
     }
 }

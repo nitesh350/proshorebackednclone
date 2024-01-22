@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Student\ProfileController;
 use App\Http\Controllers\Api\Student\ResultController;
+use App\Http\Controllers\Api\Student\SubmitQuizController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Admin\QuizController;
@@ -41,5 +42,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () 
 Route::group(['prefix' => 'student', 'middleware' => 'auth:sanctum'], function () {
 
     Route::apiResource('/profile', ProfileController::class)->only(['store', 'update']);
-    Route::apiResource('/result', ResultController::class)->only(['store']);
+    Route::post('/quizzes/{quiz}/submit', SubmitQuizController::class);
 });
