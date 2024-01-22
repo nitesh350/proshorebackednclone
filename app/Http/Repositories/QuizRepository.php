@@ -39,7 +39,7 @@ class QuizRepository
         return $quiz;
     }
 
-    
+
     /**
      * @param Quiz $quiz
      * @return void

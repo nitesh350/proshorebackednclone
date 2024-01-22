@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\GetQuizCategories;
+use App\Http\Controllers\Api\Admin\GetQuestionCategoriesController;
 use App\Http\Controllers\Api\Student\StartQuizController;
 use App\Http\Controllers\Api\Student\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 // Admin Routes
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () {
 
+    Route::get('/question-categories/all', GetQuestionCategoriesController::class)->middleware('ability:manage-question-categories,manage-questions');
     Route::apiResource('/question-categories', QuestionCategoryController::class)->middleware('ability:manage-question-categories');
     Route::get('/quiz-categories/all', GetQuizCategories::class)->middleware('ability:manage-quizzes,manage-quiz-categories');
     Route::apiResource('/quiz-categories', QuizCategoryController::class)->middleware('ability:manage-quiz-categories');
