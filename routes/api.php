@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\GetQuizCategories;
 use App\Http\Controllers\Api\Student\StartQuizController;
 use App\Http\Controllers\Api\Student\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () {
 
     Route::apiResource('/question-categories', QuestionCategoryController::class)->middleware('ability:manage-question-categories');
+    Route::get('/quiz-categories/all', GetQuizCategories::class)->middleware('ability:manage-quizzes,manage-quiz-categories');
     Route::apiResource('/quiz-categories', QuizCategoryController::class)->middleware('ability:manage-quiz-categories');
     Route::apiResource('/quizzes', QuizController::class)->middleware('ability:manage-quizzes');
     Route::apiResource('/questions', QuestionController::class)->middleware('ability:manage-questions');
@@ -38,6 +40,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () 
 
 Route::group(['prefix' => 'student', 'middleware' => 'auth:sanctum'], function () {
 
-    Route::get('/quizzes/{quiz}/start', StartQuizController::class);
+    Route::get('/quizzes/{quiz}/start', StartQuizController::class)->middleware('ability:can-attempt-quiz');
     Route::apiResource('/profile', ProfileController::class)->only(['store', 'update'])->middleware('ability:manage-profile');
 });
