@@ -15,8 +15,9 @@ class QuestionCategoryResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'title' => $this->title,
-            'slug' => $this->slug
+            'slug' => $this->whenHas('slug', $this->slug),
         ];
     }
 }
