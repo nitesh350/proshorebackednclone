@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\QuizCategoryResource;
 use App\Models\QuizCategory;
-use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class GetQuizCategories extends Controller
 {
     /**
-     * Handle the incoming request.
+     * @return AnonymousResourceCollection
      */
-    public function __invoke()
+    public function __invoke(): AnonymousResourceCollection
     {
         $quizCategories = QuizCategory::select(['id', 'title'])->get();
         return QuizCategoryResource::collection($quizCategories);
