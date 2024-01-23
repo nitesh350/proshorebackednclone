@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidSlug;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class QuizCategoryUpdateRequest extends FormRequest
@@ -23,7 +25,13 @@ class QuizCategoryUpdateRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/|unique:quiz_categories,slug,'.$this->quiz_category->id
+            'slug' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('quiz_categories', 'slug')->ignore($this->quiz_category->id),
+                new ValidSlug,
+            ],
         ];
     }
 }

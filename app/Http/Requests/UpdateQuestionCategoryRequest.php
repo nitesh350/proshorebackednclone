@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Rules\ValidSlug;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\ValidationRule;
 
 class UpdateQuestionCategoryRequest extends FormRequest
 {
@@ -31,7 +32,7 @@ class UpdateQuestionCategoryRequest extends FormRequest
             'required',
             'string',
             'max:255',
-            'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+            new ValidSlug,
             Rule::unique('question_categories', 'slug')->ignore($questionCategoryId),
         ],
     ];

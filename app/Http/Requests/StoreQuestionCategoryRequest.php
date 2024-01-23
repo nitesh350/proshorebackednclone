@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Rules\ValidSlug;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\ValidationRule;
 
 class StoreQuestionCategoryRequest extends FormRequest
 {
@@ -29,7 +30,7 @@ class StoreQuestionCategoryRequest extends FormRequest
                 'string',
                 'max:255',
                 'unique:question_categories,slug',
-                'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+                new ValidSlug,
             ],
         ];
     }

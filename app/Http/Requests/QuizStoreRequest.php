@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidSlug;
 use Illuminate\Foundation\Http\FormRequest;
 
 class QuizStoreRequest extends FormRequest
@@ -28,7 +29,7 @@ class QuizStoreRequest extends FormRequest
                 'string',
                 'max:255',
                 'unique:quizzes,slug',
-                'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+                new ValidSlug,
             ],
             'category_id' => 'required|exists:quiz_categories,id,deleted_at,NULL',
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg|max:2048',

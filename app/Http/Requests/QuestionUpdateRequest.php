@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidSlug;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -32,7 +33,7 @@ class QuestionUpdateRequest extends FormRequest
                 'string',
                 'max:255',
                 Rule::unique('questions', 'slug')->ignore($questionId),
-                'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'
+                new ValidSlug,
             ],
             'description' => "string|nullable|max:5000",
             'options' => "array|required",
