@@ -24,11 +24,7 @@ class SubmitQuizController extends Controller
     public function __invoke(Quiz $quiz, SubmitQuizStoreRequest $request):Response
     {
         $data = $request->validated();
-        $userId = auth()->user()->id;
-        $answers = $data['answers'];
-
-        $result = $this->resultRepository->calculateAndCreateResult($quiz, $userId, $answers, $data);
-
+        $this->resultRepository->calculateAndCreateResult($quiz,$data);
         return response()->noContent();
     }
 }
