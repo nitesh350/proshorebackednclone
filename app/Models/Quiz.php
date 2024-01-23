@@ -25,7 +25,7 @@ class Quiz extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'category_id', 'thumbnail', 'description', 'time', 'retry_after', 'status'
+        'title', 'slug', 'category_id', 'thumbnail', 'description', 'time', 'retry_after', 'status','pass_percentage'
     ];
 
     public $appends = [

@@ -18,7 +18,7 @@ class QuestionController extends Controller
      */
     public function index() : AnonymousResourceCollection
     {
-        $questions = Question::paginate(10);
+        $questions = Question::with('category:id,title')->paginate(10);
         return QuestionResource::collection($questions);
     }
 

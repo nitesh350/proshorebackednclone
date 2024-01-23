@@ -29,7 +29,7 @@ class QuizController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return QuizResource::collection(Quiz::paginate(8));
+        return QuizResource::collection(Quiz::with('category:id,title')->paginate(8));
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\ValidSlug;
 use Illuminate\Validation\Rule;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class QuizUpdateRequest extends FormRequest
@@ -19,7 +20,7 @@ class QuizUpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -37,6 +38,7 @@ class QuizUpdateRequest extends FormRequest
             'description' => 'required|string|max:1000',
             'time' => 'required|integer',
             'retry_after' => 'required|integer',
+            'pass_percentage'=>'required|integer|min:1|max:100',
             'status' => 'boolean',
             'question_categories' => 'required|array',
             'question_categories.*' => 'required|exists:question_categories,id'
