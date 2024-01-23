@@ -23,7 +23,7 @@ class QuizResource extends JsonResource
             'description' => $this->description,
             'time' => $this->time,
             'retry_after' => $this->retry_after,
-            'status' => $this->status == 1 ? "Active" : "Inactive",
+            'status' => $this->status,
             'category'=>new QuizCategoryResource($this->whenLoaded('category'))
         ];
     }

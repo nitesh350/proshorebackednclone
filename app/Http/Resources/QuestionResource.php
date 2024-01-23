@@ -21,7 +21,7 @@ class QuestionResource extends JsonResource
             'description' => $this->description,
             'options' => $this->options,
             'weightage' => $this->weightage,
-            'status' => $this->status ? "Active" : "Inactive",
+            'status' => $this->status,
             'category'=> new QuestionCategoryResource($this->whenLoaded('category'))
         ];
     }
