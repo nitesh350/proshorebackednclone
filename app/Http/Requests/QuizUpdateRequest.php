@@ -5,8 +5,6 @@ namespace App\Http\Requests;
 use App\Rules\ValidSlug;
 use Illuminate\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidationRule;
-use App\Rules\ValidSlug;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class QuizUpdateRequest extends FormRequest
