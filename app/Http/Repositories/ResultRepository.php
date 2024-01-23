@@ -21,11 +21,12 @@ class ResultRepository
                 $total_right_answered++;
             }
         }
+        $total_weightage_percentage = ($total_weightage/100)*100;
 
         $resultData = [
             "quiz_id" => $quiz->id,
             "user_id" => $userId,
-            "passed" => $total_weightage >= $quiz->pass_percentage,
+            "passed" => $total_weightage_percentage >= $quiz->pass_percentage,
             "total_answered" => $total_answered,
             "total_right_answer" => $total_right_answered,
             "total_time" => $data['total_time'],

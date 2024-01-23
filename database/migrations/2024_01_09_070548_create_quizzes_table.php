@@ -21,7 +21,6 @@ return new class extends Migration
             $table->longText('description');
             $table->integer('time');
             $table->integer('retry_after');
-            $table->integer('pass_percentage');
             $table->boolean('status')->default(1);
             $table->softDeletes();
             $table->timestamps();

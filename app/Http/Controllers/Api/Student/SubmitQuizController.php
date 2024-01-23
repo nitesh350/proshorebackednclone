@@ -5,11 +5,8 @@ namespace App\Http\Controllers\Api\Student;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\ResultRepository;
 use App\Http\Requests\SubmitQuizStoreRequest;
-use App\Http\Resources\ResultResource;
-use App\Models\Question;
 use App\Models\Quiz;
-use App\Models\Result;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class SubmitQuizController extends Controller
 {
@@ -22,9 +19,9 @@ class SubmitQuizController extends Controller
     /**
      * @param Quiz $quiz
      * @param SubmitQuizStoreRequest $request
-     * @return ResultResource
+     * @return Response
      */
-    public function __invoke(Quiz $quiz, SubmitQuizStoreRequest $request):ResultResource
+    public function __invoke(Quiz $quiz, SubmitQuizStoreRequest $request):Response
     {
         $data = $request->validated();
         $userId = auth()->user()->id;
@@ -32,6 +29,6 @@ class SubmitQuizController extends Controller
 
         $result = $this->resultRepository->calculateAndCreateResult($quiz, $userId, $answers, $data);
 
-        return new ResultResource($result);
+        return response()->noContent();
     }
 }

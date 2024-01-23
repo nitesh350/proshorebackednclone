@@ -29,7 +29,7 @@ class QuizUpdateRequest extends FormRequest
             'description' => 'required|string|max:1000',
             'time' => 'required|integer',
             'retry_after' => 'required|integer',
-            'pass_percentage'=>'required|integer',
+            'pass_percentage'=>'required|integer|max:100',
             'status' => 'boolean',
             'question_categories' => 'required|array',
             'question_categories.*'=> 'required|exists:question_categories,id'
