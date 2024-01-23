@@ -33,11 +33,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () {
 
     Route::get('/question-categories/all', GetQuestionCategoriesController::class)->middleware('ability:manage-question-categories,manage-questions');
-    Route::apiResource('/question-categories', QuestionCategoryController::class)->middleware('ability:manage-question-categories');
+    Route::apiResource('/question-categories', QuestionCategoryController::class);
     Route::get('/quiz-categories/all', GetQuizCategories::class)->middleware('ability:manage-quizzes,manage-quiz-categories');
     Route::apiResource('/quiz-categories', QuizCategoryController::class)->middleware('ability:manage-quiz-categories');
-    Route::apiResource('/quizzes', QuizController::class)->middleware('ability:manage-quizzes');
-    Route::apiResource('/questions', QuestionController::class)->middleware('ability:manage-questions');
+    Route::apiResource('/quizzes', QuizController::class);
+    Route::apiResource('/questions', QuestionController::class);
 });
 
 Route::group(['prefix' => 'student', 'middleware' => 'auth:sanctum'], function () {
