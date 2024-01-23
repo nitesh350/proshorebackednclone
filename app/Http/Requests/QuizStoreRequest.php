@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidSlug;
 use Illuminate\Foundation\Http\FormRequest;
 
 class QuizStoreRequest extends FormRequest
@@ -23,7 +24,13 @@ class QuizStoreRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|unique:quizzes|max:255',
+            'slug' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:quizzes,slug',
+                new ValidSlug,
+            ],
             'category_id' => 'required|exists:quiz_categories,id,deleted_at,NULL',
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg|max:2048',
             'description' => 'required|string|max:5000',
@@ -32,7 +39,7 @@ class QuizStoreRequest extends FormRequest
             'retry_after' => 'required|integer',
             'status' => 'boolean',
             'question_categories' => 'required|array',
-            'question_categories.*'=> 'required|exists:question_categories,id'
+            'question_categories.*' => 'required|exists:question_categories,id'
         ];
     }
 }

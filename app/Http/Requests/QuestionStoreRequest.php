@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidSlug;
 use Illuminate\Foundation\Http\FormRequest;
 
 class QuestionStoreRequest extends FormRequest
@@ -24,7 +25,13 @@ class QuestionStoreRequest extends FormRequest
         return [
             'title' => "string|required|max:255",
             'category_id' => "required|exists:question_categories,id",
-            'slug' => "string|required|max:255|unique:questions",
+            'slug' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:questions,slug',
+                new ValidSlug,
+            ],
             'description' => "string|nullable|max:5000",
             'options' => "array|required",
             'answer' => "string|required|in_array:options.*",
