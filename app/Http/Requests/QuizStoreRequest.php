@@ -28,6 +28,7 @@ class QuizStoreRequest extends FormRequest
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg|max:2048',
             'description' => 'required|string|max:5000',
             'time' => 'required|integer',
+            'pass_percentage'=>'required|integer|max:100',
             'retry_after' => 'required|integer',
             'status' => 'boolean',
             'question_categories' => 'required|array',
