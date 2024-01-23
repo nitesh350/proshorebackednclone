@@ -32,6 +32,7 @@ class QuestionUpdateRequest extends FormRequest
                 'string',
                 'max:255',
                 Rule::unique('questions', 'slug')->ignore($questionId),
+                'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'
             ],
             'description' => "string|nullable|max:5000",
             'options' => "array|required",

@@ -23,8 +23,14 @@ class StoreQuestionCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'title' => 'required|string|max:255',
-           'slug' => 'required|string|max:255|unique:question_categories,slug'
+            'title' => 'required|string|max:255',
+            'slug' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:question_categories,slug',
+                'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+            ],
         ];
     }
 }

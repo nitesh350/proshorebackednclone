@@ -23,7 +23,7 @@ class QuizCategoryUpdateRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:quiz_categories,slug,'.$this->quiz_category->id
+            'slug' => 'required|string|max:255|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/|unique:quiz_categories,slug,'.$this->quiz_category->id
         ];
     }
 }

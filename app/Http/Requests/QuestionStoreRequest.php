@@ -24,7 +24,13 @@ class QuestionStoreRequest extends FormRequest
         return [
             'title' => "string|required|max:255",
             'category_id' => "required|exists:question_categories,id",
-            'slug' => "string|required|max:255|unique:questions",
+            'slug' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:questions,slug',
+                'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+            ],
             'description' => "string|nullable|max:5000",
             'options' => "array|required",
             'answer' => "string|required|in_array:options.*",

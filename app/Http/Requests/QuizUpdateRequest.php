@@ -23,7 +23,7 @@ class QuizUpdateRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'slug' => "required|string|max:255|unique:quizzes,slug,{$this->quiz->id}",
+            'slug' => "required|string|max:255|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/|unique:quizzes,slug,{$this->quiz->id}",
             'category_id' => 'nullable|exists:quiz_categories,id,deleted_at,NULL',
             'thumbnail' => 'image|mimes:jpg,png,jpeg|max:2048',
             'description' => 'required|string|max:1000',

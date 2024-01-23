@@ -23,7 +23,13 @@ class QuizCategoryStoreRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:quiz_categories'
+            'slug' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:quiz_categories,slug',
+                'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+            ],
         ];
     }
 }

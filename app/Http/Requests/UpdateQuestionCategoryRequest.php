@@ -31,6 +31,7 @@ class UpdateQuestionCategoryRequest extends FormRequest
             'required',
             'string',
             'max:255',
+            'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
             Rule::unique('question_categories', 'slug')->ignore($questionCategoryId),
         ],
     ];
