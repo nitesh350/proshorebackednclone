@@ -17,7 +17,7 @@ class QuizRepository
         $data['thumbnail'] = $data['thumbnail']->storeAs('images/quizzes', $name);
         $quiz = Quiz::create($data);
         $quiz->questionCategories()->sync($data['question_categories']);
-        return $quiz;
+        return $quiz->fresh();
     }
 
 
