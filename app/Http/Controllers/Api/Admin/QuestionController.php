@@ -13,12 +13,13 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class QuestionController extends Controller
 {
-      /**
+    /**
      * @return AnonymousResourceCollection
      */
-    public function index() : AnonymousResourceCollection
+    public function index(): AnonymousResourceCollection
     {
-        $questions = Question::with('category:id,title')->paginate(10);
+        $questions = Question::select(['id', 'title', 'slug', 'description', 'options', 'weightage', 'status'])->with('category:id,title')
+            ->paginate(10);
         return QuestionResource::collection($questions);
     }
 
@@ -27,7 +28,7 @@ class QuestionController extends Controller
      * @param QuestionStoreRequest $request
      * @return QuestionResource
      */
-    public function store(QuestionStoreRequest $request) : QuestionResource
+    public function store(QuestionStoreRequest $request): QuestionResource
     {
         $data = $request->validated();
         $question = Question::create($data)->fresh();
@@ -39,7 +40,7 @@ class QuestionController extends Controller
      * @param Question $question
      * @return QuestionResource
      */
-    public function show(Question $question) : QuestionResource
+    public function show(Question $question): QuestionResource
     {
         return new QuestionResource($question);
     }
@@ -50,7 +51,7 @@ class QuestionController extends Controller
      * @param Question $question
      * @return QuestionResource
      */
-    public function update(QuestionUpdateRequest $request, Question $question) : QuestionResource
+    public function update(QuestionUpdateRequest $request, Question $question): QuestionResource
     {
         $data = $request->validated();
         $question->update($data);
@@ -62,7 +63,7 @@ class QuestionController extends Controller
      * @param Question $question
      * @return Response
      */
-    public function destroy(Question $question) : Response
+    public function destroy(Question $question): Response
     {
         $question->delete();
         return response()->noContent();
