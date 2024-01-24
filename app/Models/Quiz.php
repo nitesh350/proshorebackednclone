@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Quiz extends Model
@@ -29,10 +30,16 @@ class Quiz extends Model
         'title', 'slug', 'category_id', 'thumbnail', 'description', 'time', 'retry_after', 'status','pass_percentage'
     ];
 
+    /**
+     * @var string[]
+     */
     public $appends = [
         'thumbnail_url'
     ];
 
+    /**
+     * @return string
+     */
     public function getThumbnailUrlAttribute(): string
     {
         return asset($this->thumbnail);
@@ -55,8 +62,19 @@ class Quiz extends Model
             ->withTimestamps();
     }
 
+    /**
+     * @return HasMany
+     */
     public function results(): HasMany
     {
         return $this->hasMany(Result::class, "quiz_id");
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function result(): HasOne
+    {
+        return $this->hasOne(Result::class,"quiz_id")->where("user_id",auth()->id());
     }
 }

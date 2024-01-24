@@ -24,8 +24,8 @@ class QuizResource extends JsonResource
             'time' => $this->time,
             'retry_after' => $this->retry_after,
             'status' => $this->status == 1 ? "Active" : "Inactive",
-            'category'=>new QuizCategoryResource($this->whenLoaded('category')),
-            'result'=> ResultResource::collection($this->whenLoaded('results')),
+            'category'=> new QuizCategoryResource($this->whenLoaded('category')),
+            'result'=> new ResultResource($this->whenLoaded('result')),
         ];
     }
 }
