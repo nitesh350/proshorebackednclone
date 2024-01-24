@@ -24,8 +24,8 @@ class SubmitQuizStoreRequest extends FormRequest
     {
         return [
             'answers'=>'required|array',
-            'total_question'=>'required|integer',
-            'total_time'=>'required|integer'
+            'total_question'=>'required|integer|min:1',
+            'total_time'=>'required|integer|min:1'
         ];
     }
 }
