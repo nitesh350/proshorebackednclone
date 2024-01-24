@@ -20,7 +20,7 @@ class QuestionResource extends JsonResource
             'slug' => $this->whenHas("slug"),
             'description' => $this->description,
             'options' => $this->options,
-            'answer' => $this->whenHas('answer', $this->answer),
+            'answer' => $this->whenHas('answer'),
             'weightage' => $this->weightage,
             'status' => $this->status,
             'category' => new QuestionCategoryResource($this->whenLoaded('category'))
