@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Student;
 
+use App\Http\Repositories\QuizRepository;
 use App\Http\Requests\GetQuizzesFilterRequest;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
@@ -12,6 +13,13 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class GetQuizzesController extends Controller
 {
+    protected $quizRepository;
+
+    public function __construct(QuizRepository $quizRepository)
+    {
+        $this->quizRepository = $quizRepository;
+    }
+    
     /**
      * @param Request $request
      * @return AnonymousResourceCollection
@@ -20,17 +28,8 @@ class GetQuizzesController extends Controller
     {
         $data = $request->validated();
 
-        $query = Quiz::with('category:id,title')
-            ->with('result');
+        $quizzes=$this->quizRepository->getFilteredQuizzes($data);
 
-        if (!empty($data['title'])) {
-            $query = $query->where('title', 'like', '%' . $data['title'] . '%');
-        }
-
-        if (!empty($data['category_id'])) {
-            $query->where('category_id', $data['category_id']);
-        }
-
-        return QuizResource::collection($query->paginate(10));
+        return QuizResource::collection($quizzes);
     }
 }
