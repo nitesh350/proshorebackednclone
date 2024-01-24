@@ -25,7 +25,7 @@ class GetQuizzesController extends Controller
     public function __invoke(GetQuizzesFilterRequest $request): AnonymousResourceCollection
     {
         $data = $request->validated();
-        $quizzes=$this->quizRepository->getFilteredQuizzes($data);
+        $quizzes=$this->quizRepository->getFilteredQuizzesForStudents($data);
 
         return QuizResource::collection($quizzes);
     }
