@@ -23,9 +23,9 @@ class QuestionFilterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'nullable|string|max:255',
-            'question_categories' => 'nullable|integer|exists:question_categories,id',
-            'status' => 'nullable|integer|in:0,1',
+            'title' => 'string|max:255',
+            'question_categories' => 'integer|exists:question_categories,id',
+            'status' => 'boolean',
         ];
     }
 }
