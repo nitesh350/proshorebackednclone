@@ -8,6 +8,26 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class QuizRepository
 {
+
+    /**
+     * @param array $data
+     * @return LengthAwarePaginator
+     */
+    public function getFilteredQuizzes(array $data): LengthAwarePaginator
+    {
+        $query = Quiz::with('category:id,title')
+            ->with('result');
+
+        if (!empty($data['title'])) {
+            $query = $query->where('title', 'like', '%' . $data['title'] . '%');
+        }
+
+        if (!empty($data['category_id'])) {
+            $query->where('category_id', $data['category_id']);
+        }
+        return $query->paginate(10);
+    }
+
     /**
      * @param array $data
      * @return Quiz
@@ -49,24 +69,5 @@ class QuizRepository
     {
         $quiz->questionCategories()->detach();
         $quiz->delete();
-    }
-
-    /**
-     * @param $data
-     * @return LengthAwarePaginator
-     */
-    public function getFilteredQuizzes($data): LengthAwarePaginator
-    {
-        $query = Quiz::with('category:id,title')
-            ->with('result');
-
-        if (!empty($data['title'])) {
-            $query = $query->where('title', 'like', '%' . $data['title'] . '%');
-        }
-
-        if (!empty($data['category_id'])) {
-            $query->where('category_id', $data['category_id']);
-        }
-        return $query->paginate(10);
     }
 }
