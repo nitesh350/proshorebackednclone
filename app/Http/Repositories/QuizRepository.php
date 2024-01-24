@@ -14,7 +14,7 @@ class QuizRepository
      * @param array $data
      * @return $query
      */
-    public function getALLQuizzes($data)
+    public function getFilteredQuizzes($data)
     {
         $query = Quiz::with('category:id,title');
 

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Models\Quiz;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
@@ -11,7 +10,7 @@ use App\Http\Resources\QuizResource;
 use App\Http\Requests\QuizStoreRequest;
 use App\Http\Requests\QuizUpdateRequest;
 use App\Http\Repositories\QuizRepository;
-use App\Http\Requests\CheckQueryParamRequest;
+use App\Http\Requests\QuizFilterRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class QuizController extends Controller
@@ -29,10 +28,10 @@ class QuizController extends Controller
     /**
      * @return AnonymousResourceCollection
      */
-    public function index(CheckQueryParamRequest $request): AnonymousResourceCollection
+    public function index(QuizFilterRequest $request): AnonymousResourceCollection
     {
         $data = $request->validated();
-        $quizzes = $this->quizRepository->getALLQuizzes($data);
+        $quizzes = $this->quizRepository->getFilteredQuizzes($data);
         return QuizResource::collection($quizzes);
     }
 

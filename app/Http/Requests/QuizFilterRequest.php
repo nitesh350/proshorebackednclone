@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CheckQueryParamRequest extends FormRequest
+class QuizFilterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,10 @@ class CheckQueryParamRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'title' => 'string|nullable|max:255',
-           'description' => 'nullable|string|max:255',
-           'status' => 'nullable|boolean',
-           'category_id' => 'nullable|exists:quiz_categories,id',
+           'title' => 'string|max:255',
+           'description' => 'string|max:255',
+           'status' => 'boolean',
+           'category_id' => 'exists:quiz_categories,id',
         ];
     }
 }
