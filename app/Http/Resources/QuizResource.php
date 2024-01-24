@@ -24,7 +24,8 @@ class QuizResource extends JsonResource
             'time' => $this->time,
             'retry_after' => $this->retry_after,
             'status' => $this->status,
-            'category'=>new QuizCategoryResource($this->whenLoaded('category'))
+            'category'=> new QuizCategoryResource($this->whenLoaded('category')),
+            'result'=> new ResultResource($this->whenLoaded('result')),
         ];
     }
 }

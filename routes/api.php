@@ -1,16 +1,17 @@
 <?php
 
-use App\Http\Controllers\Api\Admin\GetQuestionCategoriesController;
-use App\Http\Controllers\Api\Admin\GetQuizCategories;
-use App\Http\Controllers\Api\Admin\QuestionCategoryController;
-use App\Http\Controllers\Api\Admin\QuestionController;
-use App\Http\Controllers\Api\Admin\QuizCategoryController;
-use App\Http\Controllers\Api\Admin\QuizController;
-use App\Http\Controllers\Api\Student\ProfileController;
-use App\Http\Controllers\Api\Student\StartQuizController;
-use App\Http\Controllers\Api\Student\SubmitQuizController;
-use App\Http\Controllers\Api\Student\UserDataController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Admin\GetQuestionCategoriesController;
+use App\Http\Controllers\Api\Admin\QuizController;
+use App\Http\Controllers\Api\Admin\GetQuizCategories;
+use App\Http\Controllers\Api\Admin\QuestionController;
+use App\Http\Controllers\Api\Student\ProfileController;
+use App\Http\Controllers\Api\Student\UserDataController;
+use App\Http\Controllers\Api\Student\StartQuizController;
+use App\Http\Controllers\Api\Admin\QuizCategoryController;
+use App\Http\Controllers\Api\Student\SubmitQuizController;
+use App\Http\Controllers\Api\Admin\QuestionCategoryController;
+use App\Http\Controllers\Api\Student\GetQuizzesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,4 +46,5 @@ Route::group(['prefix' => 'student', 'middleware' => 'auth:sanctum'], function (
     Route::get('/quizzes/{quiz}/start', StartQuizController::class)->middleware('ability:can-attempt-quiz');
     Route::apiResource('/profile', ProfileController::class)->only(['store', 'update'])->middleware('ability:manage-profile');
     Route::post('/quizzes/{quiz}/submit', SubmitQuizController::class)->middleware('ability:can-attempt-quiz');
+    Route::get('/quizzes/all', GetQuizzesController::class)->middleware('abilities:can-attempt-quiz');
 });
