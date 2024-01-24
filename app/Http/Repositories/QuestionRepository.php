@@ -11,16 +11,16 @@ class QuestionRepository
      * @param $categories
      * @return array
      */
-    public function getQuizQuestions($categories) : array
+    public function getQuizQuestions($categories): array
     {
-        $basicQuestions =   $this->getQuestionByWeightage($categories,"5",10);
-        $intermediateQuestions =  $this->getQuestionByWeightage($categories,"10",2);
-        $advanceQuestions =  $this->getQuestionByWeightage($categories,"15",2);
+        $basicQuestions =   $this->getQuestionByWeightage($categories, "5", 10);
+        $intermediateQuestions =  $this->getQuestionByWeightage($categories, "10", 2);
+        $advanceQuestions =  $this->getQuestionByWeightage($categories, "15", 2);
         $questionIds = $basicQuestions->merge($intermediateQuestions)->merge($advanceQuestions);
-        $questions = Question::select("id","title","options","weightage","description","status")
-                        ->whereIn("id",$questionIds)
-                        ->orderBy("weightage")
-                        ->get();
+        $questions = Question::select("id", "title", "options", "weightage", "description", "status")
+            ->whereIn("id", $questionIds)
+            ->orderBy("weightage")
+            ->get();
         return [
             'data' => [
                 'questions' => QuestionResource::collection($questions)
@@ -40,6 +40,27 @@ class QuestionRepository
             ->whereIn('category_id', $categories)
             ->active()
             ->inRandomOrder()
-            ->where("weightage",$weightage)->limit($limit)->pluck("id");
+            ->where("weightage", $weightage)->limit($limit)->pluck("id");
+    }
+
+    public function getFilteredQuestions($params)
+    {
+        $query = Question::query();
+
+        if (!empty($params['title'])) {
+            $query->where('title', 'LIKE', "%{$params['title']}%");
+        };
+
+        if (!empty($params['question_categories'])) {
+            $query->where('category_id', $params['question_categories']);
+        }
+
+        if (!empty($params['status'])) {
+            $query->where('status', $params['status']);
+        };
+
+        $questions = $query->paginate(10);
+
+        return $questions;
     }
 }
