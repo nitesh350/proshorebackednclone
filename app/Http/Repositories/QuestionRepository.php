@@ -43,6 +43,11 @@ class QuestionRepository
             ->where("weightage", $weightage)->limit($limit)->pluck("id");
     }
 
+
+    /**
+     * @param $params
+     * @return array
+     */
     public function getFilteredQuestions($params)
     {
         $query = Question::query();
