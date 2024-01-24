@@ -14,7 +14,7 @@ class QuizRepository
      * @param array $data
      * @return LengthAwarePaginator
      */
-    public function getFilteredQuizzes(array $data): LengthAwarePaginator
+    public function getFilteredQuizzesForStudents(array $data): LengthAwarePaginator
     {
         $query = Quiz::with('category:id,title')
             ->with('result');
