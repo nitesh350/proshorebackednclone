@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Admin\QuestionCategoryController;
 use App\Http\Controllers\Api\Admin\QuestionController;
 use App\Http\Controllers\Api\Admin\QuizCategoryController;
 use App\Http\Controllers\Api\Admin\QuizController;
+use App\Http\Controllers\Api\Admin\ViewResultController;
 use App\Http\Controllers\Api\Student\ProfileController;
 use App\Http\Controllers\Api\Student\StartQuizController;
 use App\Http\Controllers\Api\Student\SubmitQuizController;
@@ -39,6 +40,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () 
     Route::apiResource('/quiz-categories', QuizCategoryController::class)->middleware('ability:manage-quiz-categories');
     Route::apiResource('/quizzes', QuizController::class)->middleware('ability:manage-quizzes');
     Route::apiResource('/questions', QuestionController::class)->middleware('ability:manage-questions');
+    Route::get('/results', ViewResultController::class);
 });
 
 Route::group(['prefix' => 'student', 'middleware' => 'auth:sanctum'], function () {
