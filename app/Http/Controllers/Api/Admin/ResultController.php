@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Models\Result;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ResultResource;
 use App\Http\Requests\ResultFilterRequest;
 use App\Http\Repositories\ResultRepository;
 
-class ViewResultController extends Controller
+class ResultController extends Controller
 {
     private ResultRepository $resultRepository;
 
@@ -21,12 +20,12 @@ class ViewResultController extends Controller
         $this->resultRepository = $resultRepository;
     }
 
-    public function __invoke(ResultFilterRequest $request)
+    public function index()
     {
-        $data = $request->validated();
-
-        $results = $this->resultRepository->getFilteredResult($data);
+        $results = $this->resultRepository->getResult($data);
 
         return ResultResource::collection($results);
     }
+
+    public function show($)
 }

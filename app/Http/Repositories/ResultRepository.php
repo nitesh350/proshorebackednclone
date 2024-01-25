@@ -43,26 +43,10 @@ class ResultRepository
      * @param array $data
      * @return $query
      */
-    public function getFilteredResult($data)
+    public function getResult($data)
     {
-        $query = Result::with('user', 'quiz');
+        $query = Result::with(['user', 'quiz'])->paginate(10);
 
-        if (isset($data['user_id'])) {
-            $query->where('user_id', $data['user_id']);
-        }
-
-        if (isset($data['quiz_id'])) {
-            $query->where('quiz_id', $data['quiz_id']);
-        }
-
-        if (isset($data['passed_status'])) {
-            $query->where('passed', $data['passed_status']);
-        }
-
-        if (isset($data['date'])) {
-            $query->where('created_at', 'like', '%' . $data['date'] . '%');
-        }
-
-        return $query->paginate(10);
+        return $query;
     }
 }
