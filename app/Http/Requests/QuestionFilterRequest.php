@@ -24,7 +24,7 @@ class QuestionFilterRequest extends FormRequest
     {
         return [
             'title' => 'string|max:255',
-            'question_categories' => 'integer|exists:question_categories,id',
+            'category_id' => 'integer|exists:question_categories,id',
             'status' => 'boolean',
         ];
     }
