@@ -51,17 +51,17 @@ class QuestionRepository
      */
     public function getFilteredQuestions($params): LengthAwarePaginator
     {
-        $query = Question::query();
+        $query = Question::with('category:id,title');
 
-        if (!empty($params['title'])) {
-            $query->where('title', 'LIKE', "%{$params['title']}%");
+        if (isset($params['title'])) {
+            $query->where('title', 'like', '%' . $params['title'] . '%');
         }
 
-        if (!empty($params['question_categories'])) {
-            $query->where('category_id', $params['question_categories']);
+        if (isset($params['category_id'])) {
+            $query->where('category_id', $params['category_id']);
         }
 
-        if (!empty($params['status'])) {
+        if (isset($params['status'])) {
             $query->where('status', $params['status']);
         }
 
