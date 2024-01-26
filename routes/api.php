@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Admin\GetQuestionCategoriesController;
 use App\Http\Controllers\Api\Admin\QuizController;
 use App\Http\Controllers\Api\Admin\ResultController;
 use App\Http\Controllers\Api\Admin\GetQuizCategories;
@@ -10,9 +9,11 @@ use App\Http\Controllers\Api\Student\ProfileController;
 use App\Http\Controllers\Api\Student\UserDataController;
 use App\Http\Controllers\Api\Student\StartQuizController;
 use App\Http\Controllers\Api\Admin\QuizCategoryController;
+use App\Http\Controllers\Api\Student\GetQuizzesController;
 use App\Http\Controllers\Api\Student\SubmitQuizController;
 use App\Http\Controllers\Api\Admin\QuestionCategoryController;
-use App\Http\Controllers\Api\Student\GetQuizzesController;
+use App\Http\Controllers\Api\Admin\GetRegisteredStudentController;
+use App\Http\Controllers\Api\Admin\GetQuestionCategoriesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () 
     Route::apiResource('/quizzes', QuizController::class)->middleware('ability:manage-quizzes');
     Route::apiResource('/questions', QuestionController::class)->middleware('ability:manage-questions');
     Route::apiResource('/results', ResultController::class)->only(['index'])->middleware('ability:manage-results');
+    Route::get('/students/all',GetRegisteredStudentController::class)->middleware('ability:view-registered-students');
 });
 
 Route::group(['prefix' => 'student', 'middleware' => 'auth:sanctum'], function () {
