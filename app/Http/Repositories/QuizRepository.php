@@ -33,9 +33,9 @@ class QuizRepository
      * Undocumented function
      *
      * @param array $data
-     * @return $query
+     * @return LengthAwarePaginator $query
      */
-    public function getFilteredQuizzes($data)
+    public function getFilteredQuizzes(array $data): LengthAwarePaginator
     {
         $query = Quiz::with('category:id,title');
 
@@ -56,6 +56,15 @@ class QuizRepository
         }
 
         return $query->paginate(8);
+    }
+
+    /**
+     * @param Quiz $quiz
+     * @return Quiz
+     */
+    public function show(Quiz $quiz): Quiz
+    {
+        return $quiz->load(['category:id,title','questionCategories:id,title']);
     }
 
     /**
@@ -99,20 +108,5 @@ class QuizRepository
     {
         $quiz->questionCategories()->detach();
         $quiz->delete();
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param Quiz $quiz
-     * @return Quiz
-     */
-    public function show(Quiz $quiz)
-    {
-        $quiz = Quiz::with('category:id,title')
-        ->with('questionCategories:id,title')
-        ->findOrFail($quiz->id);
-
-        return $quiz;
     }
 }
