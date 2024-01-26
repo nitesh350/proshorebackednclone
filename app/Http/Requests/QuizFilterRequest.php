@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class QuestionFilterRequest extends FormRequest
+class QuizFilterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,6 @@ class QuestionFilterRequest extends FormRequest
         return true;
     }
 
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,9 +22,10 @@ class QuestionFilterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'string|max:255',
-            'category_id' => 'integer|exists:question_categories,id',
-            'status' => 'boolean',
+           'title' => 'string|max:255',
+           'description' => 'string|max:255',
+           'status' => 'boolean',
+           'category_id' => 'exists:quiz_categories,id',
         ];
     }
 }

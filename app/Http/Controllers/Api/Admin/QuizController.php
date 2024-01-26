@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use App\Models\Quiz;
+use Illuminate\Http\Response;
 use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Quiz;
+use App\Http\Resources\QuizResource;
 use App\Http\Requests\QuizStoreRequest;
 use App\Http\Requests\QuizUpdateRequest;
-use App\Http\Resources\QuizResource;
 use App\Http\Repositories\QuizRepository;
+use App\Http\Requests\QuizFilterRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
 
 class QuizController extends Controller
 {
@@ -27,10 +28,13 @@ class QuizController extends Controller
     /**
      * @return AnonymousResourceCollection
      */
-    public function index(): AnonymousResourceCollection
+    public function index(QuizFilterRequest $request): AnonymousResourceCollection
     {
-        return QuizResource::collection(Quiz::with('category:id,title')->paginate(8));
+        $data = $request->validated();
+        $quizzes = $this->quizRepository->getFilteredQuizzes($data);
+        return QuizResource::collection($quizzes);
     }
+
 
     /**
      * @param  QuizStoreRequest  $request
@@ -62,7 +66,7 @@ class QuizController extends Controller
     public function update(Quiz $quiz, QuizUpdateRequest $request): QuizResource
     {
         $data = $request->validated();
-        $quiz = $this->quizRepository->update($quiz,$data);
+        $quiz = $this->quizRepository->update($quiz, $data);
         return (new QuizResource($quiz))->additional(ResponseHelper::updated($quiz));
     }
 

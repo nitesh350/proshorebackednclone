@@ -3,6 +3,7 @@
 namespace App\Http\Repositories;
 
 use App\Models\Quiz;
+use App\Http\Resources\QuizResource;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -13,7 +14,7 @@ class QuizRepository
      * @param array $data
      * @return LengthAwarePaginator
      */
-    public function getFilteredQuizzes(array $data): LengthAwarePaginator
+    public function getFilteredQuizzesForStudents(array $data): LengthAwarePaginator
     {
         $query = Quiz::with('category:id,title')
             ->with('result');
@@ -26,6 +27,35 @@ class QuizRepository
             $query->where('category_id', $data['category_id']);
         }
         return $query->paginate(10);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $data
+     * @return $query
+     */
+    public function getFilteredQuizzes($data)
+    {
+        $query = Quiz::with('category:id,title');
+
+        if (isset($data['title'])) {
+            $query->where('title', 'like', '%' . $data['title'] . '%');
+        }
+
+        if (isset($data['status'])) {
+            $query->where('status', $data['status']);
+        }
+
+        if (isset($data['description'])) {
+            $query->where('description', 'like', '%' . $data['description'] . '%');
+        }
+
+        if (isset($data['category_id'])) {
+            $query->where('category_id', $data['category_id']);
+        }
+
+        return $query->paginate(8);
     }
 
     /**
