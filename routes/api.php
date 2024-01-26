@@ -41,8 +41,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () 
     Route::apiResource('/questions', QuestionController::class)->middleware('ability:manage-questions');
 });
 
-Route::group(['prefix' => 'student', 'middleware' => 'auth:sanctum'], function () {
-    Route::get('/quizzes/{quiz}/start', StartQuizController::class)->middleware('ability:can-attempt-quiz');
-    Route::apiResource('/profile', ProfileController::class)->only(['store', 'update'])->middleware('ability:manage-profile');
-    Route::post('/quizzes/{quiz}/submit', SubmitQuizController::class)->middleware('ability:can-attempt-quiz');
+Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum', 'verified']], function () {
+    Route::get('/quizzes/{quiz}/start', StartQuizController::class)->middleware(['ability:can-attempt-quiz']);
+    Route::apiResource('/profile', ProfileController::class)->only(['store', 'update'])->middleware(['ability:manage-profile']);
+    Route::post('/quizzes/{quiz}/submit', SubmitQuizController::class)->middleware(['ability:can-attempt-quiz']);
 });
