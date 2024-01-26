@@ -54,6 +54,7 @@ class QuizController extends Controller
      */
     public function show(Quiz $quiz): QuizResource
     {
+        $quiz = $this->quizRepository->show($quiz);
         return new QuizResource($quiz);
     }
 

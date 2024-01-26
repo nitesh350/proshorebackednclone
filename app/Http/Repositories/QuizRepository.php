@@ -100,4 +100,19 @@ class QuizRepository
         $quiz->questionCategories()->detach();
         $quiz->delete();
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param Quiz $quiz
+     * @return Quiz
+     */
+    public function show(Quiz $quiz)
+    {
+        $quiz = Quiz::with('category:id,title')
+        ->with('questionCategories:id,title')
+        ->findOrFail($quiz->id);
+
+        return $quiz;
+    }
 }
