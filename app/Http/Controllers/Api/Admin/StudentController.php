@@ -8,14 +8,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class GetRegisteredStudentController extends Controller
+class StudentController extends Controller
 {
     /**
-     * @return UserResource
+     * @return AnonymousResourceCollection
      */
-    public function __invoke(Request $request) : AnonymousResourceCollection
+    public function index(): AnonymousResourceCollection
     {
         $students = User::where('user_type', 'student')->paginate(10);
         return UserResource::collection($students);
     }
+
 }

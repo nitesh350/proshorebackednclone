@@ -8,7 +8,7 @@ return [
         'manage-question-categories',
         'view-results',
         'manage-results',
-        'view-registered-students'
+        'manage-students'
     ],
     'student' => [
         'view-quizzes',
