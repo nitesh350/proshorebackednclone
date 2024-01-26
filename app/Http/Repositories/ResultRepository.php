@@ -13,9 +13,24 @@ class ResultRepository
     /**
      * @return LengthAwarePaginator $query
      */
-    public function getResult(): LengthAwarePaginator
+    public function getFilteredResult($data): LengthAwarePaginator
     {
-        return Result::with(['user', 'quiz'])->paginate(10);
+        $query = Result::with(['user','quiz']);
+        if (isset($data['quiz'])) {
+            $query->whereHas('quiz', function ($quizQuery) use ($data) {
+                $quizQuery->where('title', 'like', '%' . $data['quiz'] . '%');
+            });
+        }
+        if (isset($data['user'])) {
+            $query->whereHas('user', function ($userQuery) use ($data) {
+                $userQuery->where('name', 'like', '%' . $data['user'] . '%');
+            });
+        }
+
+        if (isset($data['passed'])) {
+            $query->where('passed', $data['passed']);
+        }
+        return $query->paginate(5);
     }
 
     public function calculateAndCreateResult(Quiz $quiz, array $data): Result
