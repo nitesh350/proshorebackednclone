@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Quiz extends Model
 {
@@ -75,6 +76,6 @@ class Quiz extends Model
      */
     public function result(): HasOne
     {
-        return $this->hasOne(Result::class,"quiz_id")->where("user_id",auth()->id());
+        return $this->hasOne(Result::class, "quiz_id")->where("user_id", auth()->id());
     }
 }

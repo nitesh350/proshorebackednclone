@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\QuizResource;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ResultResource extends JsonResource
@@ -16,8 +18,8 @@ class ResultResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
-            'quiz_id' => $this->quiz_id,
+            'user_id' => new UserResource($this->user),
+            'quiz_id' => new QuizResource($this->quiz),
             'passed' => $this->passed,
             'total_question' => $this->total_question,
             'total_answered' => $this->total_answered,

@@ -5,9 +5,19 @@ namespace App\Http\Repositories;
 use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\Result;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ResultRepository
 {
+
+    /**
+     * @return LengthAwarePaginator $query
+     */
+    public function getResult(): LengthAwarePaginator
+    {
+        return Result::with(['user', 'quiz'])->paginate(10);
+    }
+
     public function calculateAndCreateResult(Quiz $quiz, array $data): Result
     {
 
