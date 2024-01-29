@@ -11,6 +11,6 @@ class StudentRepository
      */
     public function show(User $student): mixed
     {
-        return User::with('profile', 'results')->find($student->id);
+        return User::with('profile', 'results.quiz.questionCategories')->find($student->id);
     }
 }
