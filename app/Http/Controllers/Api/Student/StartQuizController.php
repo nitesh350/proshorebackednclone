@@ -22,11 +22,16 @@ class StartQuizController extends Controller
       */
     public function __invoke(Quiz $quiz): QuizResource
     {
+        $quiz->load('category');
         $question_categories = $quiz->questionCategories()->select("question_category_id")->pluck("question_category_id");
         $questionResource = $this->questionRepository->getQuizQuestions($question_categories);
         return (new QuizResource($quiz))->additional([
             'data' => [
-                "questions" => $questionResource
+                "quiz_category" => [
+                    'id' => $quiz->category->id,
+                    'title' => $quiz->category->title,
+                ],
+                "questions" => $questionResource,
             ]
         ]);
     }
