@@ -18,7 +18,7 @@ class ResultResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => new UserResource($this->user),
+            'user_id' => new UserResource($this->whenLoaded('user')),
             'quiz_id' => new QuizResource($this->quiz),
             'passed' => $this->passed,
             'total_question' => $this->total_question,
