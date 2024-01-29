@@ -37,7 +37,7 @@ class StudentController extends Controller
      * @param User $student
      * @return UserResource
      */
-    public function show(User $student)
+    public function show(User $student): UserResource
     {
         $student = $this->studentRepository->show($student);
         return new UserResource($student);

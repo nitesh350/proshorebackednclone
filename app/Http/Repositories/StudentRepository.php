@@ -7,10 +7,10 @@ class StudentRepository
 {
     /**
      * @param User $student
-     * @return mixed
+     * @return User
      */
-    public function show(User $student): mixed
+    public function show(User $student): User
     {
-        return User::with('profile', 'results.quiz.questionCategories')->find($student->id);
+        return $student->load(["profile","results.quiz.questionCategories"]);
     }
 }
