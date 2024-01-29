@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\Student;
 
-use App\Http\Controllers\Controller;
-use App\Http\Repositories\QuestionRepository;
-use App\Http\Resources\QuizResource;
 use App\Models\Quiz;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\QuizResource;
+use App\Http\Repositories\QuestionRepository;
 
 class StartQuizController extends Controller
 {
@@ -27,10 +27,6 @@ class StartQuizController extends Controller
         $questionResource = $this->questionRepository->getQuizQuestions($question_categories);
         return (new QuizResource($quiz))->additional([
             'data' => [
-                "quiz_category" => [
-                    'id' => $quiz->category->id,
-                    'title' => $quiz->category->title,
-                ],
                 "questions" => $questionResource,
             ]
         ]);
