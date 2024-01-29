@@ -18,6 +18,21 @@ Route::post('/login', LoginUserController::class)
     ->middleware('guest')
     ->name('login');
 
+Route::group(['middleware' => ['verified']], function () {
+
+    Route::post('/logout', LogoutController::class)
+        ->middleware('auth:sanctum')
+        ->name('logout');
+
+    Route::post('/reset-password', ResetPasswordController::class)
+        ->middleware('guest')
+        ->name('password.store');
+});
+
+Route::post('/forgot-password', ForgotPasswordController::class)
+    ->middleware('guest')
+    ->name('password.email');
+
 Route::get('/verify-email/{id}/{hash}', EmailVerificationController::class)
     ->middleware(['signed', 'throttle:6,1'])
     ->name('verification.verify');
@@ -25,15 +40,3 @@ Route::get('/verify-email/{id}/{hash}', EmailVerificationController::class)
 Route::post('/email/verification/resend', ResentEmailVerificationController::class)
     ->middleware(['auth:sanctum', 'throttle:6,1'])
     ->name('verification.send');
-
-Route::post('/forgot-password', ForgotPasswordController::class)
-    ->middleware('guest')
-    ->name('password.email');
-
-Route::post('/logout', LogoutController::class)
-    ->middleware('auth:sanctum')
-    ->name('logout');
-
-Route::post('/reset-password', ResetPasswordController::class)
-                ->middleware('guest')
-                ->name('password.store');

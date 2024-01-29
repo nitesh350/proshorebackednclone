@@ -28,7 +28,7 @@ use App\Http\Controllers\Api\Admin\StudentController;
 
 require __DIR__ . '/auth.php';
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum','verified'])->group(function () {
 
     Route::get('/user', UserDataController::class);
 });
