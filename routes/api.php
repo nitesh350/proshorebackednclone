@@ -12,7 +12,6 @@ use App\Http\Controllers\Api\Admin\QuizCategoryController;
 use App\Http\Controllers\Api\Student\GetQuizzesController;
 use App\Http\Controllers\Api\Student\SubmitQuizController;
 use App\Http\Controllers\Api\Admin\QuestionCategoryController;
-use App\Http\Controllers\Api\Admin\GetRegisteredStudentController;
 use App\Http\Controllers\Api\Admin\GetQuestionCategoriesController;
 use App\Http\Controllers\Api\Admin\StudentController;
 
