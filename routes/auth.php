@@ -14,11 +14,11 @@ Route::post('/register', RegisterUserController::class)
     ->middleware('guest')
     ->name('register');
 
-Route::group(['middleware' => ['verified']], function () {
+Route::post('/login', LoginUserController::class)
+    ->middleware('guest')
+    ->name('login');
 
-    Route::post('/login', LoginUserController::class)
-        ->middleware('guest')
-        ->name('login');
+Route::group(['middleware' => ['verified']], function () {
 
     Route::post('/logout', LogoutController::class)
         ->middleware('auth:sanctum')
