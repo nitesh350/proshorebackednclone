@@ -26,7 +26,7 @@ class GetQuizCategories extends Controller
      */
     public function __invoke(QuizCategoryFilterRequest $request): AnonymousResourceCollection
     {
-        $data = $request -> validated();
+        $data = $request->validated();
         $quizCategories = $this->quizCategoryRepository->getFilteredQuizCategories($data);
 
         return QuizCategoryResource::collection($quizCategories);
