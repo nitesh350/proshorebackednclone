@@ -3,18 +3,32 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\QuestionCategory;
+use App\Http\Requests\QuestionCategoryFilterRequest;
 use App\Http\Resources\QuestionCategoryResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Http\Repositories\QuestionCategoryRepository;
 
 class GetQuestionCategoriesController extends Controller
 {
+    private QuestionCategoryRepository $questionCategoryRepository;
+
     /**
-     * @return QuestionCategoryResource
+     * @param  QuestionCategoryRepository  $questionCategoryRepository
      */
-    public function __invoke(): AnonymousResourceCollection
+    public function __construct(QuestionCategoryRepository $questionCategoryRepository)
     {
-        $questionCategories = QuestionCategory::select(['id', 'title'])->get();
+        $this->questionCategoryRepository = $questionCategoryRepository;
+    }
+
+    /**
+     * @param QuestionCategoryFilterRequest $request
+     * @return AnonymousResourceCollection
+     */
+    public function __invoke(QuestionCategoryFilterRequest $request): AnonymousResourceCollection
+    {
+        $data = $request->validated();
+        $questionCategories = $this->questionCategoryRepository->getFilteredQuestionCategories($data);
+        
         return QuestionCategoryResource::collection($questionCategories);
     }
 }
