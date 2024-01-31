@@ -56,6 +56,7 @@ class QuestionController extends Controller
      */
     public function show(Question $question): QuestionResource
     {
+        $question->load('category:id,title');
         return new QuestionResource($question);
     }
 
