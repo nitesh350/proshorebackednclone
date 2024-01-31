@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\StatisticsController;
 use App\Http\Controllers\Api\Student\GetQuizCategoriesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Admin\QuizController;
@@ -45,8 +46,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () 
     Route::apiResource('/questions', QuestionController::class)->middleware('ability:manage-questions');
     Route::apiResource('/results', ResultController::class)->only(['index'])->middleware('ability:manage-results');
     Route::apiResource('/students', StudentController::class)->only(['index', 'show'])->middleware('ability:manage-students');
+    Route::apiResource('/statistics', StatisticsController::class)->only(['index']);
 });
-
 Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','verified']], function () {
     Route::get('/quizzes/{quiz}/start', StartQuizController::class)->middleware('ability:can-attempt-quiz');
     Route::apiResource('/profile', ProfileController::class)->only(['store', 'update'])->middleware('ability:manage-profile');
