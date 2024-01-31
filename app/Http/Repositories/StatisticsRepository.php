@@ -11,24 +11,16 @@ class StatisticsRepository
     /**
      * @return array
      */
-    public function index()
+    public function getStatistics()
     {
-        $totalStudents = User::where('user_type', 'student')->count();
-        $totalVerifiedStudents = User::where('email_verified_at', '!=', null)->count();
-        $totalQuizzes = Quiz::count();
-        $activeQuizzes = Quiz::where('status', true)->count();
-        $totalQuestions = Question::count();
-        $activeQuestions = Question::where('status', true)->count();
-        $totalPassedStudents = Result::where('passed', true)->count();
-
         return [
-            'total_students' => $totalStudents,
-            'total_verified_students' => $totalVerifiedStudents,
-            'total_quizzes' => $totalQuizzes,
-            'active_quizzes' => $activeQuizzes,
-            'total_questions' => $totalQuestions,
-            'active_questions' => $activeQuestions,
-            'total_passed_students' => $totalPassedStudents,
+            'total_students' => User::where('user_type', 'student')->count(),
+            'total_verified_students' => User::where('email_verified_at', '!=', null)->count(),
+            'total_quizzes' => Quiz::count(),
+            'active_quizzes' => Quiz::where('status', true)->count(),
+            'total_questions' => Question::count(),
+            'active_questions' => Question::where('status', true)->count(),
+            'total_passed_students' => Result::where('passed', true)->count(),
         ];
     }
 }

@@ -25,7 +25,7 @@ class StatisticsController extends Controller
         $this->statisticsRepository = $statisticsRepository;
     }
     public function index(){
-        $statistics = $this->statisticsRepository->index();
+        $statistics = $this->statisticsRepository->getStatistics();
 
         return new StatisticsResource($statistics);
     }
