@@ -19,7 +19,5 @@ class QuizCategoryRepository
         }
 
         return $query->get();
-    }  
-
-
     }
+}

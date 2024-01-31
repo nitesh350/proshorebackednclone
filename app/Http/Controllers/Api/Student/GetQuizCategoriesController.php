@@ -17,7 +17,9 @@ class GetQuizCategoriesController extends Controller
     {
         $this->quizCategoryRepository = $quizCategoryRepository;
     }
+
     /**
+     * @param QuizCategoryFilterRequest $request
      * @return AnonymousResourceCollection
      */
     public function __invoke(QuizCategoryFilterRequest $request): AnonymousResourceCollection
