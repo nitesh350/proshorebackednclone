@@ -14,12 +14,27 @@ class Profile extends Model
     protected $table = "profiles";
 
     protected $fillable = [
-        'user_id', 'education', 'skills', 'experience', 'career'
+        'user_id', 'education', 'skills', 'experience', 'career', 'avatar'
     ];
 
     protected $casts = [
         'skills' => 'json'
     ];
+
+    /**
+     * @var string[]
+     */
+    public $appends = [
+        'avatar_url'
+    ];
+
+    /**
+     * @return string
+     */
+    public function getAvatarUrlAttribute(): string
+    {
+        return asset($this->avatar);
+    }
 
     public function user(): BelongsTo
     {
