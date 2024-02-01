@@ -9,9 +9,20 @@ use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Resources\ProfileResource;
 use App\Models\Profile;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Repositories\ProfileRepository;
 
 class ProfileController extends Controller
 {
+    private ProfileRepository $profileRepository;
+
+    /**
+     * @param  ProfileRepository $profileRepository
+     */
+    public function __construct(ProfileRepository $profileRepository)
+    {
+        $this->profileRepository = $profileRepository;
+    }
+
     /**
      * @param ProfileStoreRequest $request
      * @return JsonResource
@@ -19,7 +30,7 @@ class ProfileController extends Controller
     public function store(ProfileStoreRequest $request): JsonResource
     {
         $data = $request->validated();
-        $profile = Profile::create($data);
+        $profile = $this->profileRepository->store($data);
         return (new ProfileResource($profile))->additional(ResponseHelper::stored());
     }
 
@@ -31,7 +42,7 @@ class ProfileController extends Controller
     public function update(Profile $profile, ProfileUpdateRequest $request): JsonResource
     {
         $data = $request->validated();
-        $profile->update($data);
+        $profile = $this->profileRepository->update($profile, $data);
         return (new ProfileResource($profile))->additional(ResponseHelper::updated($profile));
     }
 }
