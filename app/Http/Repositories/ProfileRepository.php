@@ -11,20 +11,19 @@ class ProfileRepository
      * @param array $data
      * @return Profile
      */
-    public function store($data): Profile
+    public function store(array $data): Profile
     {
         $name = date('ymd') . time() . '.' . $data['avatar']->extension();
         $data['avatar'] = $data['avatar']->storeAs('images/profiles', $name);
-        $profile = Profile::create($data);
-        return $profile;
-    }   
-    
+        return Profile::create($data);
+    }
+
     /**
      * @param Profile $profile
      * @param array $data
      * @return Profile
      */
-    public function update(Profile $profile, $data)
+    public function update(Profile $profile,array $data): Profile
     {
         if (isset($data['avatar'])) {
             Storage::delete('public/images/profiles/' . $profile->avatar);

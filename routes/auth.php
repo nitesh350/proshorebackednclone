@@ -18,16 +18,13 @@ Route::post('/login', LoginUserController::class)
     ->middleware('guest')
     ->name('login');
 
-Route::group(['middleware' => ['verified']], function () {
+Route::post('/logout', LogoutController::class)
+    ->middleware('auth:sanctum')
+    ->name('logout');
 
-    Route::post('/logout', LogoutController::class)
-        ->middleware('auth:sanctum')
-        ->name('logout');
-
-    Route::post('/reset-password', ResetPasswordController::class)
-        ->middleware('guest')
-        ->name('password.store');
-});
+Route::post('/reset-password', ResetPasswordController::class)
+    ->middleware('guest')
+    ->name('password.store');
 
 Route::post('/forgot-password', ForgotPasswordController::class)
     ->middleware('guest')
