@@ -14,7 +14,9 @@ class ProfileRepository
     public function store(array $data): Profile
     {
         $name = date('ymd') . time() . '.' . $data['avatar']->extension();
-        $data['avatar'] = $data['avatar']->storeAs('images/profiles', $name);
+        if(isset($data['avatar'])){
+            $data['avatar'] = $data['avatar']->storeAs('images/profiles', $name);
+        }
         return Profile::create($data);
     }
 

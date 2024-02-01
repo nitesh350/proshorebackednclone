@@ -40,7 +40,7 @@ class ProfileStoreRequest extends FormRequest
             'education' => 'required|string|max:5000',
             'experience' => 'required|string|max:5000',
             'career' => 'required|string|max:5000',
-            'avatar' => 'required|image|mimes:jpg,png,jpeg|max:2048',
+            'avatar' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ];
     }
 
