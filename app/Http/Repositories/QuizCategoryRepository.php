@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Repositories;
+
 use App\Models\QuizCategory;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -19,5 +20,20 @@ class QuizCategoryRepository
         }
 
         return $query->get();
+    }
+
+    /**
+     * @param $quizCategory
+     * @return mixed
+     */
+    public function destroy($quizCategory): mixed
+    {
+        if ($quizCategory->quizzes()->exists()) {
+
+            return response()->json(['error' => 'Could not delete the category.']);
+        }
+
+        $quizCategory->delete();
+        return response()->noContent();
     }
 }

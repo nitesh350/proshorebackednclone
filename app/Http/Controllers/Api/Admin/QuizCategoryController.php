@@ -9,10 +9,20 @@ use App\Http\Resources\QuizCategoryResource;
 use App\Http\Requests\QuizCategoryStoreRequest;
 use App\Http\Requests\QuizCategoryUpdateRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
+use App\Http\Repositories\QuizCategoryRepository;
 
 class QuizCategoryController extends Controller
 {
+    private QuizCategoryRepository $quizCategoryRepository;
+
+    /**
+     * @param  QuizCategoryRepository  $quizCategoryRepository
+     */
+    public function __construct(QuizCategoryRepository $quizCategoryRepository)
+    {
+        $this->quizCategoryRepository = $quizCategoryRepository;
+    }
+
     /**
      * @return AnonymousResourceCollection
      */
@@ -59,11 +69,10 @@ class QuizCategoryController extends Controller
 
     /**
      * @param QuizCategory $quizCategory
-     * @return Response
+     * @return mixed
      */
-    public function destroy(QuizCategory $quizCategory): Response
+    public function destroy(QuizCategory $quizCategory): mixed
     {
-        $quizCategory->delete();
-        return response()->noContent();
+        return $this->quizCategoryRepository->destroy($quizCategory);
     }
 }
