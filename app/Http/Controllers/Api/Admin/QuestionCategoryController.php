@@ -28,7 +28,7 @@ class QuestionCategoryController extends Controller
     /**
      * @return AnonymousResourceCollection
      */
-    public function index(): AnonymousResourceCollectionQuestionCategory
+    public function index(): AnonymousResourceCollection
     {
         $questionCategories = QuestionCategory::paginate(10);
 
@@ -62,7 +62,7 @@ class QuestionCategoryController extends Controller
      * @param QuestionCategory $questionCategory
      * @return QuestionCategoryResource
      */
-    public function update(UpdateQuestionCategoryRequest $request,  $questionCategory): QuestionCategoryResource
+    public function update(UpdateQuestionCategoryRequest $request, QuestionCategory $questionCategory): QuestionCategoryResource
     {
         $data = $request->validated();
 

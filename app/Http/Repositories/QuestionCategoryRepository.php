@@ -21,7 +21,11 @@ class QuestionCategoryRepository
         return $query->get();
     }
 
-    public function destroy($questionCategory)
+    /**
+     * @param $questionCategory
+     * @return response
+    */
+    public function destroy($questionCategory) : JsonResponse
     {
         if ($questionCategory->questions()->exists()) {
             return response()->json(['error' => 'Could not delete the Question category.']);
