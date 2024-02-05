@@ -18,13 +18,11 @@ class QuizStoreRequest extends FormRequest
     /**
      * @return void
      */
-    protected function prepareForValidation():void
+    protected function prepareForValidation(): void
     {
-        $questionCategories = $this->input('question_categories');
-
-        if ($questionCategories !== null) {
+        if ($this->question_categories !== null) {
             $this->merge([
-                'question_categories' => $this->transformQuestionCategories($questionCategories),
+                'question_categories' => $this->transformQuestionCategories($this->question_categories),
             ]);
         }
     }
@@ -58,7 +56,7 @@ class QuizStoreRequest extends FormRequest
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg|max:2048',
             'description' => 'required|string|max:5000',
             'time' => 'required|integer',
-            'pass_percentage'=>'required|integer|min:1|max:100',
+            'pass_percentage' => 'required|integer|min:1|max:100',
             'retry_after' => 'required|integer',
             'status' => 'boolean',
             'question_categories' => 'required|array',

@@ -17,16 +17,14 @@ class QuizUpdateRequest extends FormRequest
         return true;
     }
 
-     /**
+    /**
      * @return void
      */
-    protected function prepareForValidation():void
+    protected function prepareForValidation(): void
     {
-        $questionCategories = $this->input('question_categories');
-
-        if ($questionCategories !== null) {
+        if ($this->question_categories !== null) {
             $this->merge([
-                'question_categories' => $this->transformQuestionCategories($questionCategories),
+                'question_categories' => $this->transformQuestionCategories($this->question_categories),
             ]);
         }
     }
@@ -60,7 +58,7 @@ class QuizUpdateRequest extends FormRequest
             'description' => 'required|string|max:1000',
             'time' => 'required|integer',
             'retry_after' => 'required|integer',
-            'pass_percentage'=>'required|integer|min:1|max:100',
+            'pass_percentage' => 'required|integer|min:1|max:100',
             'status' => 'boolean',
             'question_categories' => 'required|array',
             'question_categories.*' => 'required|exists:question_categories,id'
