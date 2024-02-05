@@ -106,7 +106,7 @@ class QuizRepository
      */
     public function destroy(Quiz $quiz): JsonResponse
     {
-        if ($quiz->results()->exists()) {
+        if ($quiz->results()->exists() || $quiz->questionCategories()->exists()) {
             return response()->json(['error' => 'Could not delete the Quiz.']);
         }
     
