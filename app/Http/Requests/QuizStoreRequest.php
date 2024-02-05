@@ -20,9 +20,13 @@ class QuizStoreRequest extends FormRequest
      */
     protected function prepareForValidation():void
     {
-        $this->merge([
-            'question_categories' => $this->transformQuestionCategories($this->input('question_categories')),
-        ]);
+        $questionCategories = $this->input('question_categories');
+
+        if ($questionCategories !== null) {
+            $this->merge([
+                'question_categories' => $this->transformQuestionCategories($questionCategories),
+            ]);
+        }
     }
 
     /**
