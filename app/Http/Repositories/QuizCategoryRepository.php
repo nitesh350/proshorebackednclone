@@ -25,7 +25,7 @@ class QuizCategoryRepository
 
     /**
      * @param $quizCategory
-     * @return mixed
+     * @return JsonResponse
      */
     public function destroy($quizCategory): JsonResponse
     {

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Models\Quiz;
-use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\QuizResource;
@@ -73,11 +73,10 @@ class QuizController extends Controller
 
     /**
      * @param  Quiz  $quiz
-     * @return Response
+     * @return JsonResponse
      */
-    public function destroy(Quiz $quiz): Response
+    public function destroy(Quiz $quiz): JsonResponse
     {
-        $this->quizRepository->destroy($quiz);
-        return response()->noContent();
+         return $this->quizRepository->destroy($quiz);
     }
 }
