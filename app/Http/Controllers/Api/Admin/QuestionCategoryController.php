@@ -10,13 +10,25 @@ use App\Http\Resources\QuestionCategoryResource;
 use App\Http\Requests\StoreQuestionCategoryRequest;
 use App\Http\Requests\UpdateQuestionCategoryRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Http\Resources\QuizCategoryResource;
+use App\Http\Repositories\QuestionCategoryRepository;
+use App\Models\Question;
 
 class QuestionCategoryController extends Controller
 {
+    private QuestionCategoryRepository $questionCategoryRepository;
+    /**
+     * @param  QuestionCategoryRepository  $questionCategoryRepository
+     */
+    public function __construct(QuestionCategoryRepository $questionCategoryRepository)
+    {
+        $this->questionCategoryRepository = $questionCategoryRepository;
+    }
+
     /**
      * @return AnonymousResourceCollection
      */
-    public function index(): AnonymousResourceCollection
+    public function index(): AnonymousResourceCollectionQuestionCategory
     {
         $questionCategories = QuestionCategory::paginate(10);
 
@@ -50,24 +62,21 @@ class QuestionCategoryController extends Controller
      * @param QuestionCategory $questionCategory
      * @return QuestionCategoryResource
      */
-    public function update(UpdateQuestionCategoryRequest $request, QuestionCategory $questionCategory): QuestionCategoryResource
+    public function update(UpdateQuestionCategoryRequest $request,  $questionCategory): QuestionCategoryResource
     {
         $data = $request->validated();
 
         $questionCategory->update($data);
 
         return (new QuestionCategoryResource($questionCategory))->additional(ResponseHelper::updated($questionCategory));
-        
     }
 
     /**
-     * @param QuestionCategory $questionCategory
-     * @return Response
+     * @param  QuestionCategory $questionCategory
+     * @return JsonResponse
      */
-    public function destroy(QuestionCategory $questionCategory): Response
+    public function destroy(QuestionCategory $questionCategory)
     {
-        $questionCategory->delete();
-
-        return response()->noContent();
+        return $this->questionCategoryRepository->destroy($questionCategory);
     }
 }
