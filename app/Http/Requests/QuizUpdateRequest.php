@@ -17,6 +17,24 @@ class QuizUpdateRequest extends FormRequest
         return true;
     }
 
+     /**
+     * @return void
+     */
+    protected function prepareForValidation():void
+    {
+        $this->merge([
+            'question_categories' => $this->transformQuestionCategories($this->input('question_categories')),
+        ]);
+    }
+
+    /**
+     * @param mixed $question_categories
+     * @return array
+     */
+    private function transformQuestionCategories($question_categories): array
+    {
+        return is_array($question_categories) ? $question_categories : explode(',', $question_categories);
+    }
     /**
      * Get the validation rules that apply to the request.
      *
