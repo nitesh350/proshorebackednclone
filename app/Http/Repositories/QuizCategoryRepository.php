@@ -4,6 +4,7 @@ namespace App\Http\Repositories;
 
 use App\Models\QuizCategory;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 
 class QuizCategoryRepository
 {
@@ -26,10 +27,9 @@ class QuizCategoryRepository
      * @param $quizCategory
      * @return mixed
      */
-    public function destroy($quizCategory): mixed
+    public function destroy($quizCategory): JsonResponse
     {
         if ($quizCategory->quizzes()->exists()) {
-
             return response()->json(['error' => 'Could not delete the category.']);
         }
 
