@@ -16,6 +16,27 @@ class QuizStoreRequest extends FormRequest
     }
 
     /**
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->question_categories !== null) {
+            $this->merge([
+                'question_categories' => $this->transformQuestionCategories($this->question_categories),
+            ]);
+        }
+    }
+
+    /**
+     * @param mixed $question_categories
+     * @return array
+     */
+    private function transformQuestionCategories($question_categories): array
+    {
+        return is_array($question_categories) ? $question_categories : explode(',', $question_categories);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
@@ -35,7 +56,7 @@ class QuizStoreRequest extends FormRequest
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg|max:2048',
             'description' => 'required|string|max:5000',
             'time' => 'required|integer',
-            'pass_percentage'=>'required|integer|min:1|max:100',
+            'pass_percentage' => 'required|integer|min:1|max:100',
             'retry_after' => 'required|integer',
             'status' => 'boolean',
             'question_categories' => 'required|array',

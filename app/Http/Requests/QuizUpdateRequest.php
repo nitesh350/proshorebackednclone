@@ -18,6 +18,26 @@ class QuizUpdateRequest extends FormRequest
     }
 
     /**
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->question_categories !== null) {
+            $this->merge([
+                'question_categories' => $this->transformQuestionCategories($this->question_categories),
+            ]);
+        }
+    }
+
+    /**
+     * @param mixed $question_categories
+     * @return array
+     */
+    private function transformQuestionCategories($question_categories): array
+    {
+        return is_array($question_categories) ? $question_categories : explode(',', $question_categories);
+    }
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array|string>
@@ -38,7 +58,7 @@ class QuizUpdateRequest extends FormRequest
             'description' => 'required|string|max:1000',
             'time' => 'required|integer',
             'retry_after' => 'required|integer',
-            'pass_percentage'=>'required|integer|min:1|max:100',
+            'pass_percentage' => 'required|integer|min:1|max:100',
             'status' => 'boolean',
             'question_categories' => 'required|array',
             'question_categories.*' => 'required|exists:question_categories,id'
