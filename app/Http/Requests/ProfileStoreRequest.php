@@ -21,9 +21,15 @@ class ProfileStoreRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        $this->merge([
+        $data = [
             'user_id' => auth()->id(),
-        ]);
+        ];
+    
+        if ($this->skills && is_string($this->skills)) {
+            $data['skills'] = explode(',', $this->skills);
+        }
+    
+        $this->merge($data);
     }
 
 
