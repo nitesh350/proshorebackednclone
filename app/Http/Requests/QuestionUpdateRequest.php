@@ -27,7 +27,7 @@ class QuestionUpdateRequest extends FormRequest
         $questionId = $this->route("question");
         return [
             'title' => "string|required|max:255",
-            'category_id' => "required|exists:questions,id",
+            'category_id' => "required|exists:question_categories,id",
             'slug' => [
                 'required',
                 'string',
