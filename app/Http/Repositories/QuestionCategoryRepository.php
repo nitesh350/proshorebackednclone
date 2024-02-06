@@ -29,7 +29,7 @@ class QuestionCategoryRepository
     */
     public function destroy($questionCategory): JsonResponse|Response
     {
-        if ($questionCategory->questions()->exists()) {
+        if ($questionCategory->questions()->exists() || $questionCategory->quizzes()->exists()) {
             return response()->json(['error' => 'Could not delete the Question category.']);
         }
 

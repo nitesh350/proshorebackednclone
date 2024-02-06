@@ -32,4 +32,13 @@ class QuestionCategory extends Model
         return $this->hasMany(Question::class, 'category_id');
     }
 
+    /**
+     * @return BelongsToMany
+     */
+    public function quizzes(): BelongsToMany
+    {
+        return $this->belongsToMany(Quiz::class,"question_category_quiz",'question_category_id','quiz_id')
+            ->withTimestamps();
+    }
+
 }
