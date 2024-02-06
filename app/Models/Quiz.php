@@ -25,14 +25,14 @@ class Quiz extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int,string>
      */
     protected $fillable = [
         'title', 'slug', 'category_id', 'thumbnail', 'description', 'time', 'retry_after', 'status','pass_percentage'
     ];
 
     /**
-     * @var string[]
+     * @var array<int,string>
      */
     public $appends = [
         'thumbnail_url'
