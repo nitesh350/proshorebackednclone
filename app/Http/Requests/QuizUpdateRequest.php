@@ -22,21 +22,13 @@ class QuizUpdateRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        if ($this->question_categories !== null) {
+        if ($this->question_categories && is_string($this->question_categories)) {
             $this->merge([
-                'question_categories' => $this->transformQuestionCategories($this->question_categories),
+                'question_categories' => explode(',', $this->question_categories),
             ]);
         }
     }
 
-    /**
-     * @param mixed $question_categories
-     * @return array
-     */
-    private function transformQuestionCategories($question_categories): array
-    {
-        return is_array($question_categories) ? $question_categories : explode(',', $question_categories);
-    }
     /**
      * Get the validation rules that apply to the request.
      *
