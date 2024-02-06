@@ -1,4 +1,4 @@
-name: SkillShore
+name: SkillShore Feature Tests
 
 on:
   pull_request:
