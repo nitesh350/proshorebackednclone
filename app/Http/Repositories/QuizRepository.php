@@ -4,6 +4,7 @@ namespace App\Http\Repositories;
 
 use App\Models\Quiz;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -102,14 +103,14 @@ class QuizRepository
 
     /**
      * @param Quiz $quiz
-     * @return JsonResponse
+     * @return JsonResponse|Response
      */
-    public function destroy(Quiz $quiz): JsonResponse
+    public function destroy(Quiz $quiz): Response|JsonResponse
     {
         if ($quiz->results()->exists() || $quiz->questionCategories()->exists()) {
             return response()->json(['error' => 'Could not delete the Quiz.']);
         }
-    
+
         $quiz->questionCategories()->detach();
         $quiz->delete();
         return response()->noContent();
