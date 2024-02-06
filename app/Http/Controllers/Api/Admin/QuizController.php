@@ -12,6 +12,7 @@ use App\Http\Requests\QuizUpdateRequest;
 use App\Http\Repositories\QuizRepository;
 use App\Http\Requests\QuizFilterRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 
 class QuizController extends Controller
 {
@@ -73,9 +74,9 @@ class QuizController extends Controller
 
     /**
      * @param  Quiz  $quiz
-     * @return JsonResponse
+     * @return JsonResponse|Response
      */
-    public function destroy(Quiz $quiz): JsonResponse
+    public function destroy(Quiz $quiz): JsonResponse|Response
     {
          return $this->quizRepository->destroy($quiz);
     }
