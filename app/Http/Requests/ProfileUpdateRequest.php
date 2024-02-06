@@ -15,6 +15,9 @@ class ProfileUpdateRequest extends FormRequest
         return $this->profile->user_id === auth()->id();
     }
 
+    /**
+     * @return void
+     */
     protected function prepareForValidation(): void
     {
         if ($this->skills && is_string($this->skills)) {
