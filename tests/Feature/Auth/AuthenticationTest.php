@@ -3,6 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -16,7 +17,7 @@ class AuthenticationTest extends TestCase
             'email' => $user->email,
             'password' => 'password',
         ]);
-        
+
         $this->assertAuthenticated();
         $response->assertStatus(200);
     }
@@ -36,8 +37,10 @@ class AuthenticationTest extends TestCase
     public function test_users_can_logout(): void
     {
         $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->post(route("logout"));
+        Sanctum::actingAs(
+            $user
+        );
+        $response = $this->json('POST', route('logout'), []);
 
         $response->assertStatus(200);
     }
