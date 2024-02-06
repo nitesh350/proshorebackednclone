@@ -3,6 +3,8 @@
 namespace App\Http\Repositories;
 use App\Models\QuestionCategory;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 /**
  * @param $data
@@ -23,9 +25,9 @@ class QuestionCategoryRepository
 
     /**
      * @param $questionCategory
-     * @return response
+     * @return JsonResponse|Response
     */
-    public function destroy($questionCategory) : JsonResponse
+    public function destroy($questionCategory): JsonResponse|Response
     {
         if ($questionCategory->questions()->exists()) {
             return response()->json(['error' => 'Could not delete the Question category.']);

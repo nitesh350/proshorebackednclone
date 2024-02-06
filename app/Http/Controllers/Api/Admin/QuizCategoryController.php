@@ -11,6 +11,7 @@ use App\Http\Requests\QuizCategoryUpdateRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Repositories\QuizCategoryRepository;
+use Illuminate\Http\Response;
 
 class QuizCategoryController extends Controller
 {
@@ -70,9 +71,9 @@ class QuizCategoryController extends Controller
 
     /**
      * @param QuizCategory $quizCategory
-     * @return JsonResponse
+     * @return JsonResponse|Response
      */
-    public function destroy(QuizCategory $quizCategory): JsonResponse
+    public function destroy(QuizCategory $quizCategory): JsonResponse|Response
     {
         return $this->quizCategoryRepository->destroy($quizCategory);
     }
