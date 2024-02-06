@@ -16,6 +16,18 @@ class ProfileUpdateRequest extends FormRequest
     }
 
     /**
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->skills && is_string($this->skills)) {
+            $this->merge([
+                'skills' => explode(',', $this->skills),
+            ]);
+        }
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array|string>
