@@ -19,7 +19,7 @@ class Question extends Model
     protected $table = "questions";
 
     /**
-     * @var string[]
+     * @var array<string,string>
      */
     protected $casts = [
         'options' => "json",

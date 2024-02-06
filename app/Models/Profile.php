@@ -22,7 +22,7 @@ class Profile extends Model
     ];
 
     /**
-     * @var string[]
+     * @var array<int,string>
      */
     public $appends = [
         'avatar_url'
