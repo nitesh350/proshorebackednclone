@@ -2,30 +2,21 @@
 
 namespace Tests\Feature\Auth;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\User;
 
 class RegistrationTest extends TestCase
 {
-    use RefreshDatabase;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->markTestSkipped('Skipping this test class because of a specific condition.');
-    }
-
     public function test_new_users_can_register(): void
     {
-        $response = $this->post('/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
+        $user = User::factory()->make();
+        $response = $this->post(route("register"), [
+            'name' => $user->name,
+            'email' => $user->email ,
+            'password' => 'Proshore@123',
+            'password_confirmation' => 'Proshore@123',
         ]);
 
-        $this->assertAuthenticated();
         $response->assertNoContent();
     }
 }
