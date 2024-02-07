@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Repositories;
+
 use App\Models\User;
 
 class StudentRepository
@@ -9,8 +10,9 @@ class StudentRepository
      * @param User $student
      * @return User
      */
-    public function show(User $student): User
+    public function show(int $id): User
     {
-        return $student->load(["profile","results.quiz.questionCategories"]);
+        $student =  User::where('user_type', 'student')->findOrFail($id);
+        return $student->load(["profile", "results.quiz.questionCategories"]);
     }
 }
