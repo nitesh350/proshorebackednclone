@@ -23,7 +23,7 @@ jobs:
       - name: Create Quizzes dir
         run: |
           mkdir -p storage/app/images/quizzes
-          mkdir -p storages/app/images/profiles
+          mkdir -p storage/app/images/profiles
 
       - name: Create Database
         run: |
