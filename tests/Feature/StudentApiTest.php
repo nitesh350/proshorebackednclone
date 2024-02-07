@@ -114,11 +114,11 @@ class StudentApiTest extends TestCase
     {
         $this->createAdminUser();
 
-        $response = $this->actingAs($this->user)->getJson(route('students.show', 1));
+        $response = $this->actingAs($this->user)->getJson(route('students.show', 2));
 
         $response->assertStatus(404)
             ->assertJson(
-                fn (AssertableJson $json) => $json->where('message', 'No query results for model [App\\Models\\User] 1')
+                fn (AssertableJson $json) => $json->where('message', 'No query results for model [App\\Models\\User] 2')
                     ->etc()
             );
     }
