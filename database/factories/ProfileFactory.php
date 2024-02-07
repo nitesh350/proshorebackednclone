@@ -21,6 +21,7 @@ class ProfileFactory extends Factory
             'skills' => json_encode(['PHP', 'Laravel', 'JavaScript']),
             'experience' => $this->faker->sentence,
             'career' => $this->faker->word,
+            'avatar' => str_replace(storage_path('app'), '', fake()->image(storage_path('/app/images/profiles'), 1440, 640, 'human', true)),
         ];
     }
 }
