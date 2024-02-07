@@ -21,9 +21,9 @@ jobs:
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
       - name: Create Quizzes dir
-        run: |
-          mkdir -p storage/app/images/quizzes
-          mkdir -p storage/app/images/profiles
+        run: mkdir -p storage/app/images/quizzes
+      - name: Create Profiles dir
+        run: mkdir -p storage/app/images/profiles
 
       - name: Create Database
         run: |
