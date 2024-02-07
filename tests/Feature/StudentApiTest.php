@@ -60,13 +60,13 @@ class StudentApiTest extends TestCase
             ->assertJson(
                 fn (AssertableJson $json) => $json->has('data')
                     ->first(
-                        fn (AssertableJson $json) => $json->where('id', 3)
+                        fn (AssertableJson $json) => $json->where('id', $user->id)
                             ->where('name', $user->name)
                             ->where('email', $user->email)
                             ->where('role', 'student')
                             ->has(
                                 'profile',
-                                fn (AssertableJson $json) => $json->where('id', 1)
+                                fn (AssertableJson $json) => $json->where('id', $profile->id)
                                     ->where('skills', "[\"PHP\",\"Laravel\",\"JavaScript\"]")
                                     ->where('education', $profile->education)
                                     ->where('experience', $profile->experience)
@@ -75,7 +75,7 @@ class StudentApiTest extends TestCase
                             )
                             ->has(
                                 'results.0',
-                                fn (AssertableJson $json) => $json->where('id', 1)
+                                fn (AssertableJson $json) => $json->where('id', $result->id)
                                     ->where('passed', $result->passed == 0 ? 0 : 1)
                                     ->where('total_question', $result->total_question)
                                     ->where('total_answered', $result->total_answered)
@@ -83,7 +83,7 @@ class StudentApiTest extends TestCase
                                     ->where('total_time', $result->total_time)
                                     ->has(
                                         'quiz_id',
-                                        fn (AssertableJson $json) => $json->where('id', 1)
+                                        fn (AssertableJson $json) => $json->where('id', $quiz->id)
                                             ->where('title', $quiz->title)
                                             ->where('slug', $quiz->slug)
                                             ->where('thumbnail', $quiz->getThumbnailUrlAttribute())
@@ -94,7 +94,7 @@ class StudentApiTest extends TestCase
                                             ->where('pass_percentage', $quiz->pass_percentage)
                                             ->has(
                                                 'question_categories.0',
-                                                fn (AssertableJson $json) => $json->where('id', 1)
+                                                fn (AssertableJson $json) => $json->where('id', $questionCategory->id)
                                                     ->where('title', $questionCategory->title)
                                                     ->where('slug', $questionCategory->slug)
                                             )
