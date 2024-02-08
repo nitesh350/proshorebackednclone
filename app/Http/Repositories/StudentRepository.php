@@ -7,7 +7,7 @@ use App\Models\User;
 class StudentRepository
 {
     /**
-     * @param User $student
+     * @param int $id
      * @return User
      */
     public function show(int $id): User

@@ -42,7 +42,7 @@ class ResultRepository
 
         foreach ($data['answers'] as $qaData) {
             $question = Question::find($qaData['question_id']);
-            if ($question->answer === $qaData['answer']) {
+            if ($question && $question->answer === $qaData['answer']) {
                 $total_weightage += $question->weightage;
                 $total_right_answered++;
             }

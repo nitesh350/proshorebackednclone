@@ -27,7 +27,7 @@ class Question extends Model
     ];
 
     /**
-     * @var string[]
+     * @var array<int,string>
      */
     protected $fillable = [
         "title","category_id","slug","description","options","answer","status","weightage"
@@ -41,6 +41,10 @@ class Question extends Model
         return $this->belongsTo(QuestionCategory::class,'category_id');
     }
 
+    /**
+     * @param Builder $query
+     * @return Builder
+     */
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('status',1);
