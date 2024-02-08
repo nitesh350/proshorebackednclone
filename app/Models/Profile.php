@@ -11,12 +11,21 @@ class Profile extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /**
+     * @var string
+     */
     protected $table = "profiles";
 
+    /**
+     * @var array<int,string>
+     */
     protected $fillable = [
         'user_id', 'education', 'skills', 'experience', 'career', 'avatar'
     ];
 
+    /**
+     * @var array<string,string>
+     */
     protected $casts = [
         'skills' => 'json'
     ];
@@ -36,6 +45,9 @@ class Profile extends Model
         return asset($this->avatar);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

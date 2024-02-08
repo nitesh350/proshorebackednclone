@@ -33,7 +33,7 @@ class StudentController extends Controller
     }
 
     /**
-     * @param User $student
+     * @param int $id
      * @return UserResource
      */
     public function show(int $id): UserResource
