@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Repositories\StudentRepository;
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -37,10 +36,9 @@ class StudentController extends Controller
      * @param User $student
      * @return UserResource
      */
-    public function show(User $student): UserResource
+    public function show(int $id): UserResource
     {
-        $student = $this->studentRepository->show($student);
+        $student = $this->studentRepository->show($id);
         return new UserResource($student);
     }
-
 }
