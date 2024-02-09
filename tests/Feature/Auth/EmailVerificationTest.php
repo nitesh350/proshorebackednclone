@@ -14,7 +14,6 @@ use App\Providers\RouteServiceProvider;
 class EmailVerificationTest extends TestCase
 {
     use RefreshDatabase;
-
     public function test_email_can_be_verified(): void
     {
         $user = User::factory()->create([

@@ -9,6 +9,7 @@ class AdminResultTest extends TestCase
 {
 
     use RefreshDatabase;
+
     /**
      * Test to verify that admin can view list of result
      */
