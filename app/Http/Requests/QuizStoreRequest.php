@@ -47,9 +47,9 @@ class QuizStoreRequest extends FormRequest
             'category_id' => 'required|exists:quiz_categories,id,deleted_at,NULL',
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg|max:2048',
             'description' => 'required|string|max:5000',
-            'time' => 'required|integer',
+            'time' => 'required|integer|min:1',
             'pass_percentage' => 'required|integer|min:1|max:100',
-            'retry_after' => 'required|integer',
+            'retry_after' => 'required|integer|min:1',
             'status' => 'boolean',
             'question_categories' => 'required|array',
             'question_categories.*' => 'required|exists:question_categories,id'
