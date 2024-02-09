@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Rules\ValidSlug;
-use Illuminate\Validation\Rule;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateQuestionCategoryRequest extends FormRequest
 {
@@ -23,19 +22,18 @@ class UpdateQuestionCategoryRequest extends FormRequest
      * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
-{
-    $questionCategoryId = $this->route('question_category');
-
-    return [
-        'title' => 'required|string|max:255',
-        'slug' => [
-            'required',
-            'string',
-            'max:255',
-            new ValidSlug,
-            Rule::unique('question_categories', 'slug')->ignore($questionCategoryId),
-        ],
-    ];
-}
+    {
+        $questionCategoryId = $this->route()->originalParameter('question_category');
+        return [
+            'title' => 'required|string|max:255',
+            'slug' => [
+                'required',
+                'string',
+                'max:255',
+                new ValidSlug,
+                "unique:question_categories,slug,{$questionCategoryId},id,deleted_at,NULL"
+            ],
+        ];
+    }
 
 }

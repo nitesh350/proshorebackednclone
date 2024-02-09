@@ -28,7 +28,7 @@ class QuizCategoryStoreRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                'unique:quiz_categories,slug',
+                "unique:quiz_categories,slug,NULL,id,deleted_at,NULL",
                 new ValidSlug,
             ],
         ];

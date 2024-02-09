@@ -17,7 +17,8 @@ class UserSeeder extends Seeder
             'name' => 'Cesar Morales',
             'email' => 'admin@skillshore.com',
             'password' => Hash::make('Sk!||P@r8:8000'),
-            'user_type' => 'admin'
+            'user_type' => 'admin',
+            'email_verified_at' => now()
         ]);
     }
 }

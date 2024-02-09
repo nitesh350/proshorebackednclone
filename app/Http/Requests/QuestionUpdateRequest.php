@@ -24,7 +24,7 @@ class QuestionUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $questionId = $this->route("question");
+        $questionId = $this->route()->originalParameter('question');
         return [
             'title' => "string|required|max:255",
             'category_id' => "required|exists:question_categories,id",
@@ -32,7 +32,7 @@ class QuestionUpdateRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('questions', 'slug')->ignore($questionId),
+                "unique:questions,slug,{$questionId},id,deleted_at,NULL",
                 new ValidSlug,
             ],
             'description' => "string|nullable|max:5000",

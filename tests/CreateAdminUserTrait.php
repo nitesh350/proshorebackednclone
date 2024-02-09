@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Hash;
 
 trait CreateAdminUserTrait
 {
-    public $user;
+    public User $user;
 
-    public function createAdminUser()
+    public function createAdminUser(): void
     {
         $this->user = User::factory()->create([
             'name' => 'Cesar Morales',

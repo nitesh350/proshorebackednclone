@@ -3,11 +3,12 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AdminResultTest extends TestCase
 {
+
+    use RefreshDatabase;
     /**
      * Test to verify that admin can view list of result
      */

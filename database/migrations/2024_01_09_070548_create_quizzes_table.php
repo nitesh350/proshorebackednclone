@@ -16,14 +16,16 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('quiz_categories');
             $table->string('title');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->string('thumbnail');
             $table->longText('description');
             $table->integer('time');
             $table->integer('retry_after');
+            $table->integer('pass_percentage');
             $table->boolean('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
+            $table->unique(['slug','deleted_at']);
         });
     }
 

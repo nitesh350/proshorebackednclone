@@ -29,7 +29,7 @@ class QuestionStoreRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                'unique:questions,slug',
+                "unique:questions,slug,NULL,id,deleted_at,NULL",
                 new ValidSlug,
             ],
             'description' => "string|nullable|max:5000",

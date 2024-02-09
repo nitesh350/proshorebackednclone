@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Feature;
+
 use App\Models\Quiz;
 use App\Models\QuizCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,7 +18,7 @@ class StudentApiTest extends TestCase
 
     /**
      * Test case to verify that the admin can view the list of students.
-     * 
+     *
      * @return void
      */
     public function test_admin_can_view_list_of_students(): void
@@ -31,7 +33,7 @@ class StudentApiTest extends TestCase
 
     /**
      * Test case to verify that the admin can view student details with a valid student ID.
-     * 
+     *
      * @return void
      */
     public function test_admin_can_view_student_details_with_student_id(): void
@@ -107,7 +109,7 @@ class StudentApiTest extends TestCase
 
     /**
      * Test case to verify that the admin cannot view student details with a non-existing student ID.
-     * 
+     *
      * @return void
      */
     public function test_admin_cannot_view_student_details_with_non_existing_student_id(): void

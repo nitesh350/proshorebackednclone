@@ -41,7 +41,7 @@ class QuizStoreRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                'unique:quizzes,slug',
+                "unique:quizzes,slug,NULL,id,deleted_at,NULL",
                 new ValidSlug,
             ],
             'category_id' => 'required|exists:quiz_categories,id,deleted_at,NULL',
