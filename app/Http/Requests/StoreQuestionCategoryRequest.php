@@ -29,7 +29,7 @@ class StoreQuestionCategoryRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                'unique:question_categories,slug',
+                "unique:question_categories,slug,NULL,id,deleted_at,NULL",
                 new ValidSlug,
             ],
         ];

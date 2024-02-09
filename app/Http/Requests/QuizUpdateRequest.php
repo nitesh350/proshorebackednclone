@@ -36,6 +36,7 @@ class QuizUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $quizId = $this->route()->originalParameter('quiz');
         return [
             'title' => 'required|string|max:255',
             'slug' => [
@@ -43,7 +44,7 @@ class QuizUpdateRequest extends FormRequest
                 'string',
                 'max:255',
                 new ValidSlug,
-                Rule::unique('quizzes', 'slug')->ignore($this->quiz->id),
+                "unique:quizzes,slug,{$quizId},id,deleted_at,NULL",
             ],
             'category_id' => 'nullable|exists:quiz_categories,id,deleted_at,NULL',
             'thumbnail' => 'image|mimes:jpg,png,jpeg|max:2048',

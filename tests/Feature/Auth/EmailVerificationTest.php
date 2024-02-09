@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Support\Facades\URL;
@@ -12,6 +13,7 @@ use App\Providers\RouteServiceProvider;
 
 class EmailVerificationTest extends TestCase
 {
+    use RefreshDatabase;
     public function test_email_can_be_verified(): void
     {
         $user = User::factory()->create([

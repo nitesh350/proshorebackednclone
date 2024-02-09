@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('quiz_categories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->softDeletes();
             $table->timestamps();
+            $table->unique(['slug','deleted_at']);
         });
     }
 

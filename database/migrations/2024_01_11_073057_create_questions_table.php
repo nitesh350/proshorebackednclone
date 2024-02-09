@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('question_categories');
             $table->string("title");
-            $table->string("slug")->unique();
+            $table->string("slug");
             $table->text("description");
             $table->json("options");
             $table->text("answer");
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
+            $table->unique(['slug','deleted_at']);
         });
     }
 

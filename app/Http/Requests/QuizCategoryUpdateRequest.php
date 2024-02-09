@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\ValidSlug;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -19,17 +20,18 @@ class QuizCategoryUpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
+        $quizCategoryId = $this->route()->originalParameter('quiz_category');
         return [
             'title' => 'required|string|max:255',
             'slug' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('quiz_categories', 'slug')->ignore($this->quiz_category->id),
+                "unique:quiz_categories,slug,{$quizCategoryId},id,deleted_at,NULL",
                 new ValidSlug,
             ],
         ];
