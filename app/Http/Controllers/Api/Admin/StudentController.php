@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Http\Repositories\StudentRepository;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
+use App\Exports\RegisteredStudentExport;
+use App\Http\Requests\StudentFilterRequest;
+use App\Http\Repositories\StudentRepository;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class StudentController extends Controller
@@ -24,11 +28,26 @@ class StudentController extends Controller
     }
 
     /**
-     * @return AnonymousResourceCollection
+     * @param StudentFilterRequest  $request T
+     * @return AnonymousResourceCollection|\Maatwebsite\Excel\Excel
      */
-    public function index(): AnonymousResourceCollection
+    public function index(StudentFilterRequest $request)
     {
-        $students = User::where('user_type', 'student')->paginate(10);
+        $params = $request->validated();
+
+        $students = $this->studentRepository->getFilteredStudent($params);
+
+        if ($request->has('export')) 
+        {
+            $exportFileName = 'students.xlsx';
+            $exportFilePath = 'exports/' . $exportFileName;
+
+            Excel::store(new RegisteredStudentExport($students), $exportFilePath);
+
+            $storagePath = asset($exportFilePath);
+            return response()->json(['export_url' => $storagePath]);
+        }
+
         return UserResource::collection($students);
     }
 
