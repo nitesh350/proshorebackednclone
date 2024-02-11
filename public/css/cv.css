@@ -1,0 +1,162 @@
+:root {
+    --primary-color: #000000;
+    --border-color: #cccccc;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    width: 100%;
+    max-width: 1440px;
+    height: 2040px;
+    padding: 168px 168px 141px 168px;
+    margin: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 43px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.bio-data {
+    display: flex;
+}
+
+.introduction {
+    padding: 34px 0px 34px 48px;
+}
+
+.introduction h1 {
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 52px;
+}
+
+.introduction p {
+    font-weight: 300;
+    font-size: 28px;
+    line-height: 36px;
+    margin-top: 16px;
+}
+
+.avatar {
+    width: 224px;
+    height: 224px;
+    object-fit: cover;
+    border-radius: 100%;
+}
+
+.contact {
+    display: flex;
+    align-items: center;
+}
+.icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 24px;
+}
+
+.contact li {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 32px;
+    margin: 16px 0px;
+    list-style: none;
+}
+
+main {
+    margin: 56px 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#career-container {
+    width: 304px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 36px;
+    text-align: left;
+}
+
+.description {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 32px;
+    text-align: left;
+    padding-top: 32px;
+}
+
+.b-border {
+    margin: 48px 0px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.v-border {
+    border-right: 1px solid var(--border-color);
+}
+
+.h-gap {
+    margin-left: 24px;
+}
+
+.v-gap {
+    margin-top: 24px;
+}
+
+#experience {
+    width: 624px;
+    margin-left: 56px;
+    text-align: left;
+}
+
+.experience-card h3 {
+    font-weight: 500;
+}
+
+.experience-card h4 {
+    font-weight: 400;
+    margin-top: 8px;
+}
+
+.skills-meter {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 32px;
+    margin-top: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.skills-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 278px;
+    padding: 4px 0px;
+}
+
+.skill-bar {
+    width: 150px;
+    height: 10px;
+    background-color: #d9d9d9;
+    border-radius: 13px;
+}
+
+.progress {
+    height: 10px;
+    background-color: var(--primary-color);
+    border-radius: 13px;
+}
