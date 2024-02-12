@@ -10,6 +10,7 @@ use App\Http\Requests\QuestionStoreRequest;
 use App\Http\Requests\QuestionUpdateRequest;
 use App\Http\Resources\QuestionResource;
 use App\Models\Question;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
@@ -28,12 +29,18 @@ class QuestionController extends Controller
 
     /**
      * @param QuestionFilterRequest $request
-     * @return AnonymousResourceCollection
+     * @return AnonymousResourceCollection|JsonResponse
      */
-    public function index(QuestionFilterRequest $request): AnonymousResourceCollection
+    public function index(QuestionFilterRequest $request): AnonymousResourceCollection|JsonResponse
     {
         $params = $request->validated();
-        $questions = $this->questionRepository->getFilteredQuestions($params);
+        $export = $request->has("export");
+        $questions = $this->questionRepository->getFilteredQuestions($params,$export);
+
+        if($export){
+            return $this->questionRepository->exportQuestions($questions);
+        }
+
         return QuestionResource::collection($questions);
     }
 
