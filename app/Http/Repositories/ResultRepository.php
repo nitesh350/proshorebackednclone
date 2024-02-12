@@ -2,18 +2,24 @@
 
 namespace App\Http\Repositories;
 
+use App\Exports\ResultExport;
 use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\Result;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ResultRepository
 {
 
     /**
-     * @return LengthAwarePaginator $query
+     * @param $data
+     * @param $export
+     * @return LengthAwarePaginator|Collection
      */
-    public function getFilteredResult($data): LengthAwarePaginator
+    public function getFilteredResult($data, $export): Collection|LengthAwarePaginator
     {
         $query = Result::with(['user','quiz']);
         if (isset($data['quiz'])) {
@@ -30,7 +36,23 @@ class ResultRepository
         if (isset($data['passed'])) {
             $query->where('passed', $data['passed']);
         }
+        if ($export){
+            return $query->with('user')->get();
+        }
         return $query->paginate(5);
+    }
+    public function exportResult($result): JsonResponse
+    {
+        $exportFilePath = 'exports/results.xlsx';
+
+        $status = Excel::store(new ResultExport($result),$exportFilePath);
+        if($status){
+            $storagePath = asset($exportFilePath);
+            return response()->json(['export_url' => $storagePath]);
+        }
+
+        return response()->json(['message' => "Could not generate. Please try again later"],503);
+
     }
 
     public function calculateAndCreateResult(Quiz $quiz, array $data): Result

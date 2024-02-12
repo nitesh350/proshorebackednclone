@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ResultFilterRequest;
 use App\Http\Resources\ResultResource;
 use App\Http\Repositories\ResultRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ResultController extends Controller
@@ -24,13 +25,19 @@ class ResultController extends Controller
     }
 
     /**
-     * @return AnonymousResourceCollection
+     * @param ResultFilterRequest $request
+     * @return AnonymousResourceCollection|JsonResponse
      */
-    public function index(ResultFilterRequest $request): AnonymousResourceCollection
+    public function index(ResultFilterRequest $request): AnonymousResourceCollection|JsonResponse
     {
         $data = $request->validated();
-        $results = $this->resultRepository->getFilteredResult($data);
 
+        $export = $request->has("export");
+        $results = $this->resultRepository->getFilteredResult($data, $export);
+
+        if ($export){
+            return $this->resultRepository->exportResult($results);
+        }
         return ResultResource::collection($results);
     }
 }
