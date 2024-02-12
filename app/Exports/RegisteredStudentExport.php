@@ -37,7 +37,7 @@ class RegisteredStudentExport implements FromCollection,WithHeadings,WithMapping
             "Student-" . $row->id,
             $row->name,
             $row->email,
-            implode(",",$row->profile->skills)
+            implode(",",$row->profile?->skills ?? [])
         ];
     }
 }
