@@ -34,7 +34,7 @@ class RegisteredStudentExport implements FromCollection,WithHeadings,WithMapping
     public function map($row): array
     {
         return [
-            "Student-" . $row->id,
+            $row->id,
             $row->name,
             $row->email,
             implode(",",$row->profile?->skills ?? [])
