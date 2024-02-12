@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Http\Repositories\StudentRepository;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use Illuminate\Http\JsonResponse;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
+use App\Exports\RegisteredStudentExport;
+use App\Http\Requests\StudentFilterRequest;
+use App\Http\Repositories\StudentRepository;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class StudentController extends Controller
@@ -24,11 +29,20 @@ class StudentController extends Controller
     }
 
     /**
-     * @return AnonymousResourceCollection
+     * @param StudentFilterRequest  $request T
+     * @return AnonymousResourceCollection|JsonResponse
      */
-    public function index(): AnonymousResourceCollection
+    public function index(StudentFilterRequest $request)
     {
-        $students = User::where('user_type', 'student')->paginate(10);
+        $params = $request->validated();
+
+        $export = $request->has("export");
+        $students = $this->studentRepository->getFilteredStudent($params,$export);
+
+        if($export){
+            return $this->studentRepository->exportStudents($students);
+        }
+
         return UserResource::collection($students);
     }
 
