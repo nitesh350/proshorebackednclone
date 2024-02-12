@@ -6,14 +6,15 @@ use App\Models\QuizCategory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class QuizCategoryRepository
 {
     /**
      * @param $data
-     * @return Collection
+     * @return LengthAwarePaginator
      */
-    public function getFilteredQuizCategories($data): Collection
+    public function getFilteredQuizCategories($data): LengthAwarePaginator
     {
         $query =QuizCategory::select(['id', 'title']);
 
