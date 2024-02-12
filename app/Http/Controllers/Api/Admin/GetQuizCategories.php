@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\QuizCategoryFilterRequest;
 use App\Http\Resources\QuizCategoryResource;
 use App\Http\Repositories\QuizCategoryRepository;
+use App\Models\QuizCategory;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class GetQuizCategories extends Controller
@@ -24,11 +25,10 @@ class GetQuizCategories extends Controller
      * @param QuizCategoryFilterRequest $request
      * @return AnonymousResourceCollection
      */
-    public function __invoke(QuizCategoryFilterRequest $request): AnonymousResourceCollection
+    public function __invoke(): AnonymousResourceCollection
     {
-        $data = $request->validated();
-        $quizCategories = $this->quizCategoryRepository->getFilteredQuizCategories($data);
-
+        $quizCategories = QuizCategory::select(['id', 'title'])->get();
         return QuizCategoryResource::collection($quizCategories);
+
     }
 }
