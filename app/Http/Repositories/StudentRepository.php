@@ -43,12 +43,15 @@ class StudentRepository
 
     public function exportStudents($students) : JsonResponse
     {
-        $exportFileName = 'students.xlsx';
-        $exportFilePath = 'exports/' . $exportFileName;
+        $exportFilePath = 'exports/students.xlsx' ;
 
-        Excel::store(new RegisteredStudentExport($students), $exportFilePath);
+        $status = Excel::store(new RegisteredStudentExport($students), $exportFilePath);
+        if($status){
+            $storagePath = asset($exportFilePath);
+            return response()->json(['export_url' => $storagePath]);
+        }
 
-        $storagePath = asset($exportFilePath);
-        return response()->json(['export_url' => $storagePath]);
+        return response()->json(['message' => "Could not generate. Please try again later"],503);
+
     }
 }
