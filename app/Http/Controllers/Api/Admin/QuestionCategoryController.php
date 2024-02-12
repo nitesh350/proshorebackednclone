@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use App\Http\Requests\QuestionCategoryFilterRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use App\Helpers\ResponseHelper;
@@ -25,11 +26,13 @@ class QuestionCategoryController extends Controller
     }
 
     /**
+     * @param QuestionCategoryFilterRequest $request
      * @return AnonymousResourceCollection
      */
-    public function index(): AnonymousResourceCollection
+    public function index(QuestionCategoryFilterRequest $request): AnonymousResourceCollection
     {
-        $questionCategories = QuestionCategory::paginate(10);
+        $data = $request->validated();
+        $questionCategories = $this->questionCategoryRepository->getFilteredQuestionCategories($data);
 
         return QuestionCategoryResource::collection($questionCategories);
     }
