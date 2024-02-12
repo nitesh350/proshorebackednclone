@@ -11,18 +11,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class GetQuizCategories extends Controller
 {
-    private QuizCategoryRepository $quizCategoryRepository;
-
     /**
-     * @param  QuizCategoryRepository  $quizCategoryRepository
-     */
-    public function __construct(QuizCategoryRepository $quizCategoryRepository)
-    {
-        $this->quizCategoryRepository = $quizCategoryRepository;
-    }
-
-    /**
-     * @param QuizCategoryFilterRequest $request
      * @return AnonymousResourceCollection
      */
     public function __invoke(): AnonymousResourceCollection

@@ -11,18 +11,7 @@ use App\Http\Repositories\QuestionCategoryRepository;
 
 class GetQuestionCategoriesController extends Controller
 {
-    private QuestionCategoryRepository $questionCategoryRepository;
-
     /**
-     * @param  QuestionCategoryRepository  $questionCategoryRepository
-     */
-    public function __construct(QuestionCategoryRepository $questionCategoryRepository)
-    {
-        $this->questionCategoryRepository = $questionCategoryRepository;
-    }
-
-    /**
-     * @param QuestionCategoryFilterRequest $request
      * @return AnonymousResourceCollection
      */
     public function __invoke(): AnonymousResourceCollection
