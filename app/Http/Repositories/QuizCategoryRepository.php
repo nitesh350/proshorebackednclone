@@ -21,7 +21,7 @@ class QuizCategoryRepository
             $query->where('title', 'like', '%' . $data['title'] . '%');
         }
 
-        return $query->get();
+        return $query->paginate();
     }
 
     /**
