@@ -2,9 +2,13 @@
 
 namespace App\Http\Repositories;
 
+use App\Exports\QuestionsExport;
 use App\Http\Resources\QuestionResource;
 use App\Models\Question;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\JsonResponse;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Database\Eloquent\Collection;
 
 class QuestionRepository
 {
@@ -47,24 +51,46 @@ class QuestionRepository
 
     /**
      * @param $params
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator|Collection
      */
-    public function getFilteredQuestions($params): LengthAwarePaginator
+    public function getFilteredQuestions($params, $export): LengthAwarePaginator|Collection
     {
-        $query = Question::select(['id', 'title', 'slug', 'description', 'options', 'weightage', 'category_id', 'status'])->with('category:id,title');
+        $query = Question::select(['id', 'title', 'slug', 'description', 'options', 'answer', 'weightage', 'category_id', 'status'])->with('category:id,title');
 
         if (isset($params['title'])) {
-            $query->where('title', 'like', '%' . $params['title'] . '%');
+            $query->where('title', 'like', '%' . $params['title'] . '%')->get();
         }
 
         if (isset($params['category_id'])) {
-            $query->where('category_id', $params['category_id']);
+            $query->where('category_id', $params['category_id'])->get();
         }
 
         if (isset($params['status'])) {
-            $query->where('status', $params['status']);
+            $query->where('status', $params['status'])->get();
+        }
+
+        if ($export) {
+            return $query->get();
         }
 
         return $query->paginate(10);
+    }
+
+    /**
+     * @param $questions
+     * @return JsonResponse
+     */
+    public function exportQuestions($questions): JsonResponse
+    {
+        $exportFilePath = 'exports/questions.xlsx';
+
+        $status =Excel::store(new QuestionsExport($questions), $exportFilePath);
+        if ($status) {
+            $storagePath = asset($exportFilePath);
+            return response()->json(['export_url' => $storagePath]);
+        }
+
+        return response()->json(['message' => "Could not generate. Please try again later"], 503);
+
     }
 }
