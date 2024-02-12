@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use Illuminate\Http\JsonResponse;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\RegisteredStudentExport;
@@ -29,23 +30,17 @@ class StudentController extends Controller
 
     /**
      * @param StudentFilterRequest  $request T
-     * @return AnonymousResourceCollection|\Maatwebsite\Excel\Excel
+     * @return AnonymousResourceCollection|JsonResponse
      */
     public function index(StudentFilterRequest $request)
     {
         $params = $request->validated();
 
-        $students = $this->studentRepository->getFilteredStudent($params);
+        $export = $request->has("export");
+        $students = $this->studentRepository->getFilteredStudent($params,$export);
 
-        if ($request->has('export')) 
-        {
-            $exportFileName = 'students.xlsx';
-            $exportFilePath = 'exports/' . $exportFileName;
-
-            Excel::store(new RegisteredStudentExport($students), $exportFilePath);
-
-            $storagePath = asset($exportFilePath);
-            return response()->json(['export_url' => $storagePath]);
+        if($export){
+            return $this->studentRepository->exportStudents($students);
         }
 
         return UserResource::collection($students);

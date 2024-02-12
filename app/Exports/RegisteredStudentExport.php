@@ -2,23 +2,42 @@
 
 namespace App\Exports;
 
+use Illuminate\Database\Eloquent\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class RegisteredStudentExport implements FromCollection
+class RegisteredStudentExport implements FromCollection,WithHeadings,WithMapping
 {
-    protected $data;
+    protected Collection $records;
 
-    public function __construct($data)
+    public function __construct($records)
     {
-        $this->data = $data;
+        $this->records = $records;
     }
-    /**c
+
+    /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    public function collection(): \Illuminate\Support\Collection
     {
-        return collect($this->data)->map(function ($row) {
-            return is_array($row) ? $row : (array) $row;
-        });
+        return $this->records;
+    }
+
+    public function headings(): array
+    {
+       return [
+           'ID','Name',"Email","Skills"
+       ];
+    }
+
+    public function map($row): array
+    {
+        return [
+            "Student-" . $row->id,
+            $row->name,
+            $row->email,
+            implode(",",$row->profile->skills)
+        ];
     }
 }
