@@ -17,6 +17,10 @@ class GenerateCVController extends Controller
     {
         $user = auth()->user()->load('profile');
 
+        if(!$user->profile){
+            return response()->json(['message' => "Please create profile to generate CV"],503);
+        }
+
         $cv_name = str_replace(" ", "_", $user->name) . "_CV.pdf";
 
         $avatar_path = Str::after($user->profile->avatar, '/app');
