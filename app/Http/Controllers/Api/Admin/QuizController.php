@@ -27,12 +27,19 @@ class QuizController extends Controller
     }
 
     /**
+     * @param QuizFilterRequest $request
      * @return AnonymousResourceCollection
      */
-    public function index(QuizFilterRequest $request): AnonymousResourceCollection
+    public function index(QuizFilterRequest $request): AnonymousResourceCollection|Jsonresponse
     {
         $data = $request->validated();
-        $quizzes = $this->quizRepository->getFilteredQuizzes($data);
+        $export = $request->has("export");
+        $quizzes = $this->quizRepository->getFilteredQuizzes($data, $export);
+
+        if ($export) {
+            return $this->quizRepository->exportQuizzes($quizzes);
+        }
+
         return QuizResource::collection($quizzes);
     }
 

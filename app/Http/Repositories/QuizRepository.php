@@ -3,11 +3,13 @@
 namespace App\Http\Repositories;
 
 use App\Models\Quiz;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-
+use App\Exports\QuizzesExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Database\Eloquent\Collection;
 class QuizRepository
 {
 
@@ -31,30 +33,33 @@ class QuizRepository
     }
 
     /**
-     * Undocumented function
      *
-     * @param array $data
-     * @return LengthAwarePaginator $query
+     * @param array $data, $export
+     * @return LengthAwarePaginator|Collection
      */
-    public function getFilteredQuizzes(array $data): LengthAwarePaginator
+    public function getFilteredQuizzes(array $data, $export): LengthAwarePaginator|Collection
     {
         $query = Quiz::with('category:id,title');
 
         if (isset($data['title'])) {
-            $query->where('title', 'like', '%' . $data['title'] . '%');
+            $query->where('title', 'like', '%' . $data['title'] . '%')->get();
         }
 
         if (isset($data['status'])) {
-            $query->where('status', $data['status']);
+            $query->where('status', $data['status'])->get();
         }
 
         if (isset($data['description'])) {
-            $query->where('description', 'like', '%' . $data['description'] . '%');
+            $query->where('description', 'like', '%' . $data['description'] . '%')->get();
         }
 
         if (isset($data['category_id'])) {
             $categoryIds = is_array($data['category_id']) ? $data['category_id'] : explode(',', $data['category_id']);
             $query->whereIn('category_id', $categoryIds);
+        }
+
+        if($export){
+            return $query->get();
         }
 
         return $query->paginate(10);
@@ -115,5 +120,23 @@ class QuizRepository
         $quiz->questionCategories()->detach();
         $quiz->delete();
         return response()->noContent();
+    }
+
+    /**
+     * @param Collection $quizzes
+     * @return JsonResponse
+    */
+    public function exportQuizzes($quizzes): JsonResponse
+    {
+        $exportFilePath = 'exports/quizzes.xlsx';
+
+        $status = Excel::store(new QuizzesExport($quizzes), $exportFilePath);
+
+        if ($status) {
+            $storagePath = asset($exportFilePath);
+            return response()->json(['export_url' => $storagePath]);
+        }
+
+        return response()->json(['message' => "Could not generate export file. Please try again later"], 503);
     }
 }
