@@ -31,7 +31,8 @@
                 <ul>
                     <li class="font-light text-lg flex items-center">
                         <span class="mr-2">
-                            <img src="{{ public_path('images/icons/Mail.png') }}" alt="mail-icon" class="w-6 h-6">
+
+                            <img src="{{ public_path('/icons/Email.png') }}" alt="mail-icon" class="w-6 h-6">
                         </span>
                         {{ $user->email }}
                     </li>
