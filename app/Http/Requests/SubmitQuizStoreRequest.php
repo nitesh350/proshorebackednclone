@@ -23,7 +23,7 @@ class SubmitQuizStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'answers'=>'required|array',
+            'answers'=>'present|array',
             'total_question'=>'required|integer|min:1',
             'total_time'=>'required|integer|min:1'
         ];
