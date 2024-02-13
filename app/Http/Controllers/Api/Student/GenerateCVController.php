@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Api\Student;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelPdf\Facades\Pdf;
+use Spatie\LaravelPdf\Enums\Format;
+use Illuminate\Support\Str;
 
 class GenerateCVController extends Controller
 {
@@ -16,14 +17,9 @@ class GenerateCVController extends Controller
     {
         $user = auth()->user()->load('profile');
 
-        [$firstName, $lastName] = explode(' ', $user->name);
+        $cv_name = str_replace(" ", "_", $user->name) . "_CV.pdf";
 
-        $user['firstName'] = $firstName;
-        $user['lastName'] = $lastName;
-
-        $cv_name = $firstName . "_" . $lastName . "_CV.pdf";
-
-        $user->profile['avatar_path'] = str_replace(storage_path('app'), '', $user->profile->avatar);
+        $avatar_path = Str::after($user->profile->avatar, '/app');
 
         $results = $user->results()
             ->where('passed', 1)
@@ -31,12 +27,10 @@ class GenerateCVController extends Controller
             ->with(['quiz:id,title,pass_percentage'])
             ->get();
 
-        Pdf::view('cv.index', compact(['user', 'results']))
-            ->paperSize(1440, 2040, 'px')
-            ->save(storage_path("app/cv/" . $cv_name));
+        Pdf::view('cv.index', compact('user', 'results', 'avatar_path'))
+            ->format(Format::A4)
+            ->save(storage_path("app/cv/{$cv_name}"));
 
-        return response()->json([
-            'cv' => 'http://127.0.0.1:8000/cv/' . $cv_name,
-        ]);
+        return response()->json(['cv' => asset("cv/{$cv_name}")]);
     }
 }

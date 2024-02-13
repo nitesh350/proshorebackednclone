@@ -55,6 +55,23 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Profile::class, 'user_id');
     }
 
+    public $appends = [
+        'first_name',
+        'last_name'
+    ];
+
+    public function getFirstNameAttribute()
+    {
+        $nameParts = explode(' ', $this->name);
+        return $nameParts[0];
+    }
+
+    public function getLastNameAttribute()
+    {
+        $nameParts = explode(' ', $this->name);
+        return count($nameParts) > 1 ? end($nameParts) : "";
+    }
+
     /**
      * @return HasMany
      */
