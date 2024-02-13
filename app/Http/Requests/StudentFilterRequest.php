@@ -22,8 +22,7 @@ class StudentFilterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|max:255', 
-            'export' => 'boolean'
+            'name' => 'string|max:255',
         ];
     }
 }
