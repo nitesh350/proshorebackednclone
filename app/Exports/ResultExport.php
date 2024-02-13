@@ -39,7 +39,7 @@ class ResultExport implements FromCollection,WithHeadings,WithMapping
             $row->passed ? "Pass" : "Fail",
             $row->total_question,
             $row->total_answered,
-            $row->total_right_answer,
+            $row->total_right_answer ? $row->total_right_answer : "0",
             $row->total_time
         ];
     }
