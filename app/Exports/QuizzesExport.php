@@ -29,7 +29,6 @@ class QuizzesExport implements FromCollection, WithHeadings, WithMapping
             'Title',
             'Slug',
             'Category',
-            'Thumbnail',
             'Description',
             'Time',
             'Retry After',
@@ -40,17 +39,17 @@ class QuizzesExport implements FromCollection, WithHeadings, WithMapping
 
     public function map($row): array
     {
+        $status = $row['status'] ? 'active' : 'inactive';
         return [
-            $row->id,
-            $row->title,
-            $row->slug,
-            $row->category_id,
-            $row->thumbnail,
-            $row->description,
-            $row->time,
-            $row->retry_after,
-            $row->status,
-            $row->pass_percentage
+            $row['id'],
+            $row['title'],
+            $row['slug'],
+            $row['category_id'],
+            $row['description'],
+            $row['time'],
+            $row['retry_after'],
+            $status,
+            $row['pass_percentage']
         ];
     }
 }

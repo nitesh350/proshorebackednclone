@@ -33,7 +33,6 @@ class QuizRepository
     }
 
     /**
-     * Undocumented function
      *
      * @param array $data, $export
      * @return LengthAwarePaginator|Collection
