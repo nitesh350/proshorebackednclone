@@ -14,6 +14,7 @@ return [
         'view-quizzes',
         'can-attempt-quiz',
         'view-quiz-results',
-        'manage-profile'
+        'manage-profile',
+        'generate-cv'
     ],
 ];

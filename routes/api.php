@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Student\SubmitQuizController;
 use App\Http\Controllers\Api\Admin\QuestionCategoryController;
 use App\Http\Controllers\Api\Admin\GetQuestionCategoriesController;
 use App\Http\Controllers\Api\Admin\StudentController;
+use App\Http\Controllers\Api\Student\GenerateCVController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,4 +55,5 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','verified']
     Route::post('/quizzes/{quiz}/submit', SubmitQuizController::class)->middleware('ability:can-attempt-quiz');
     Route::get('/quizzes/all', GetQuizzesController::class)->middleware('abilities:can-attempt-quiz');
     Route::get('/quiz-categories/all', GetQuizCategoriesController::class)->middleware('abilities:can-attempt-quiz');
+    Route::get('/cv', GenerateCVController::class)->middleware('abilities:generate-cv');
 });
