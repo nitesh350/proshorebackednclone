@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
+
 class QuizRepository
 {
 
@@ -120,12 +121,12 @@ class QuizRepository
     /**
      * @return Collection
      */
-    public function getPassedQuizzes():Collection
+    public function getPassedQuizzes(): Collection
     {
-        return Quiz::whereHas('result', function ($query) {
-            $query->where('passed', true)
-                ->where("user_id", auth()->id());
-        })
+        return Quiz::whereHas('result', function ($query){
+                $query->where('passed', true)
+                    ->where("user_id", auth()->id());
+            })
             ->with(['category:id,title', 'result'])
             ->get();
     }

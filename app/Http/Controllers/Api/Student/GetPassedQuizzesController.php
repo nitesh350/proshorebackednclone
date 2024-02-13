@@ -11,6 +11,9 @@ use App\Models\Quiz;
 
 class GetPassedQuizzesController extends Controller
 {
+    /**
+     * @var QuizRepository
+     */
     protected QuizRepository $quizRepository;
 
     public function __construct(QuizRepository $quizRepository)
