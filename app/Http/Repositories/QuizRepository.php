@@ -115,4 +115,16 @@ class QuizRepository
         $quiz->delete();
         return response()->noContent();
     }
+
+    /**
+     * @return LengthAwarePaginator
+     */
+    public function getPassedQuizzes(): LengthAwarePaginator
+    {
+        return Quiz::whereHas('result', function ($query) {
+            $query->where('passed', true);
+        })
+        ->with('category:id,title')
+        ->paginate(10);
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\StatisticsController;
+use App\Http\Controllers\Api\Student\GetPassedQuizzesController;
 use App\Http\Controllers\Api\Student\GetQuizCategoriesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Admin\QuizController;
@@ -53,5 +54,6 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','verified']
     Route::apiResource('/profile', ProfileController::class)->only(['store', 'update'])->middleware('ability:manage-profile');
     Route::post('/quizzes/{quiz}/submit', SubmitQuizController::class)->middleware('ability:can-attempt-quiz');
     Route::get('/quizzes/all', GetQuizzesController::class)->middleware('abilities:can-attempt-quiz');
+    Route::get('/quizzes/passed', GetPassedQuizzesController::class)->middleware('abilities:can-attempt-quiz');
     Route::get('/quiz-categories/all', GetQuizCategoriesController::class)->middleware('abilities:can-attempt-quiz');
 });
