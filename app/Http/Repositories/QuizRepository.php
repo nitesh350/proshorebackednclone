@@ -3,6 +3,7 @@
 namespace App\Http\Repositories;
 
 use App\Models\Quiz;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -65,7 +66,7 @@ class QuizRepository
      */
     public function show(Quiz $quiz): Quiz
     {
-        return $quiz->load(['category:id,title','questionCategories:id,title']);
+        return $quiz->load(['category:id,title', 'questionCategories:id,title']);
     }
 
     /**
@@ -117,14 +118,15 @@ class QuizRepository
     }
 
     /**
-     * @return LengthAwarePaginator
+     * @return Collection
      */
-    public function getPassedQuizzes(): LengthAwarePaginator
+    public function getPassedQuizzes():Collection
     {
         return Quiz::whereHas('result', function ($query) {
-            $query->where('passed', true);
+            $query->where('passed', true)
+                ->where("user_id", auth()->id());
         })
-        ->with('category:id,title')
-        ->paginate(10);
+            ->with(['category:id,title', 'result'])
+            ->get();
     }
 }

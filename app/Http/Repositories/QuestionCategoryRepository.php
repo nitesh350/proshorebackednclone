@@ -22,7 +22,7 @@ class QuestionCategoryRepository
             $query->where('title', 'like', '%' . $data['title'] . '%');
         }
 
-        return $query->paginate();
+        return $query->paginate(10);
     }
 
     /**
