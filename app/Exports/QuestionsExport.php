@@ -55,7 +55,7 @@ class QuestionsExport implements FromCollection, WithHeadings, WithMapping
             $row->description,
             implode(',', $row->options),
             $row->answer,
-            $row->status,
+            $row->status? 'Active':'Inactive',
             $row->weightage,
             $row->category->title
         ];

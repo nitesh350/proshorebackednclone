@@ -3,13 +3,16 @@
 namespace App\Http\Repositories;
 
 use App\Models\Quiz;
-use Illuminate\Http\Response;
+
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Exports\QuizzesExport;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Database\Eloquent\Collection;
+
+
 class QuizRepository
 {
 
@@ -71,7 +74,7 @@ class QuizRepository
      */
     public function show(Quiz $quiz): Quiz
     {
-        return $quiz->load(['category:id,title','questionCategories:id,title']);
+        return $quiz->load(['category:id,title', 'questionCategories:id,title']);
     }
 
     /**
@@ -138,5 +141,18 @@ class QuizRepository
         }
 
         return response()->json(['message' => "Could not generate export file. Please try again later"], 503);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPassedQuizzes(): Collection
+    {
+        return Quiz::whereHas('result', function ($query){
+                $query->where('passed', true)
+                    ->where("user_id", auth()->id());
+            })
+            ->with(['category:id,title', 'result'])
+            ->get();
     }
 }
