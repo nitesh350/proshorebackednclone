@@ -47,7 +47,7 @@ class QuizRepository
         }
 
         if (isset($data['status'])) {
-            $query->where('status', $data['status']->get());
+            $query->where('status', $data['status'])->get();
         }
 
         if (isset($data['description'])) {
@@ -121,7 +121,7 @@ class QuizRepository
         $quiz->delete();
         return response()->noContent();
     }
-    
+
     /**
      * @param Collection $quizzes
      * @return JsonResponse
