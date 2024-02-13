@@ -3,12 +3,13 @@
 namespace App\Http\Repositories;
 
 use App\Models\Quiz;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Exports\QuizzesExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Collection;
-
 class QuizRepository
 {
 
@@ -34,8 +35,8 @@ class QuizRepository
     /**
      * Undocumented function
      *
-     * @param array $data
-     * @return LengthAwarePaginator $query
+     * @param array $data, $export
+     * @return LengthAwarePaginator|Collection
      */
     public function getFilteredQuizzes(array $data, $export): LengthAwarePaginator|Collection
     {
@@ -46,7 +47,7 @@ class QuizRepository
         }
 
         if (isset($data['status'])) {
-            $query->where('status', $data['status'])->get();
+            $query->where('status', $data['status']->get());
         }
 
         if (isset($data['description'])) {
@@ -56,10 +57,10 @@ class QuizRepository
         if (isset($data['category_id'])) {
             $query->where('category_id', $data['category_id'])->get();
         }
+
         if($export){
             return $query->get();
         }
-
 
         return $query->paginate(8);
     }
@@ -120,6 +121,7 @@ class QuizRepository
         $quiz->delete();
         return response()->noContent();
     }
+    
     /**
      * @param Collection $quizzes
      * @return JsonResponse
