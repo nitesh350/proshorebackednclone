@@ -61,7 +61,7 @@ class QuizRepository
             return $query->get();
         }
 
-        return $query->paginate(8);
+        return $query->paginate(10);
     }
 
     /**
