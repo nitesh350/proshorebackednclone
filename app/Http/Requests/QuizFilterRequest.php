@@ -26,6 +26,7 @@ class QuizFilterRequest extends FormRequest
            'description' => 'string|max:255',
            'status' => 'boolean',
            'category_id' => 'exists:quiz_categories,id',
+           'export' => 'boolean'
         ];
     }
 }
