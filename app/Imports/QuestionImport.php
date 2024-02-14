@@ -4,16 +4,17 @@ namespace App\Imports;
 
 
 use App\Models\Question;
-use App\Models\QuestionCategory;
 use Illuminate\Support\Str;
+use App\Models\QuestionCategory;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Validators\Failure;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
-use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Validators\Failure;
 
-class QuestionImport implements ToModel, WithHeadingRow , WithValidation,SkipsEmptyRows,SkipsOnFailure
+class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows
 {
     /**
      * @param  array  $row
@@ -22,10 +23,10 @@ class QuestionImport implements ToModel, WithHeadingRow , WithValidation,SkipsEm
     public function model(array $row): ?Question
     {
         $questionCategory = QuestionCategory::where('title', $row['category'])->first();
-        if($questionCategory){
+        if ($questionCategory) {
             $slug = Str::slug($row['title']);
-            $existingQuestion = Question::where("slug",$slug)->first();
-            if($existingQuestion) return  $existingQuestion;
+            $existingQuestion = Question::where("slug", $slug)->first();
+            if ($existingQuestion) return  $existingQuestion;
             return new Question([
                 'category_id' => $questionCategory->id,
                 'title' => $row['title'],
@@ -64,9 +65,5 @@ class QuestionImport implements ToModel, WithHeadingRow , WithValidation,SkipsEm
             'category_slug.exists' => 'The category slug does not exist in the question_categories table.',
         ];
     }
-
-    public function onFailure(Failure ...$failures)
-    {
-
-    }
+     
 }

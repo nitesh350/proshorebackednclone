@@ -14,6 +14,7 @@ use App\Http\Requests\QuestionStoreRequest;
 use App\Http\Requests\QuestionFilterRequest;
 use App\Http\Requests\QuestionUpdateRequest;
 use App\Http\Repositories\QuestionRepository;
+use App\Http\Requests\ExcelFileRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class QuestionController extends Controller
@@ -41,8 +42,9 @@ class QuestionController extends Controller
     }
 
 
-    public function importQuestion(Request $request): void
+    public function importQuestion(ExcelFileRequest $request): void
     {
+        $request->validated();
         Excel::import(new QuestionImport, $request->file('file'));
     }
 
