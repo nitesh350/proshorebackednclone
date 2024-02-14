@@ -41,6 +41,11 @@ class ResultRepository
         }
         return $query->paginate(5);
     }
+
+    /**
+     * @param $result
+     * @return JsonResponse
+     */
     public function exportResult($result): JsonResponse
     {
         $exportFilePath = 'exports/results.xlsx';
@@ -55,9 +60,32 @@ class ResultRepository
 
     }
 
-    public function calculateAndCreateResult(Quiz $quiz, array $data): Result
+    /**
+     * @param int $quiz_id
+     * @param int $totalQuestions
+     * @return void
+     */
+    public function store(int $quiz_id,int $totalQuestions): void
     {
+        $data = [
+            'quiz_id' => $quiz_id,
+            'total_question' => $totalQuestions,
+            'user_id' => auth()->id(),
+            'total_answered' => 0,
+            "total_right_answer" => 0,
+            "total_time" => 0,
+            "passed" => false
+        ];
+        Result::create($data);
+    }
 
+    /**
+     * @param Quiz $quiz
+     * @param array $data
+     * @return int
+     */
+    public function calculateAndUpdateResult(Quiz $quiz, array $data): int
+    {
         $total_answered = count($data['answers']);
         $total_right_answered = 0;
         $total_weightage = 0;
@@ -71,16 +99,11 @@ class ResultRepository
         }
         $total_weightage_percentage = ($total_weightage / 100) * 100;
 
-        $resultData = [
-            "quiz_id" => $quiz->id,
-            "user_id" => auth()->id(),
+        return Result::where("quiz_id",$quiz->id)->where("user_id",auth()->id())->update([
             "passed" => $total_weightage_percentage >= $quiz->pass_percentage,
             "total_answered" => $total_answered,
             "total_right_answer" => $total_right_answered,
             "total_time" => $data['total_time'],
-            "total_question" => $data['total_question']
-        ];
-
-        return Result::create($resultData);
+        ]);
     }
 }

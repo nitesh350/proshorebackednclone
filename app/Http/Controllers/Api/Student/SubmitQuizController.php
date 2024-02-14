@@ -10,12 +10,19 @@ use Illuminate\Http\Response;
 
 class SubmitQuizController extends Controller
 {
+    /**
+     * @var ResultRepository
+     */
     protected ResultRepository $resultRepository;
 
+    /**
+     * @param ResultRepository $resultRepository
+     */
     public function __construct(ResultRepository $resultRepository)
     {
         $this->resultRepository = $resultRepository;
     }
+
     /**
      * @param Quiz $quiz
      * @param SubmitQuizStoreRequest $request
@@ -24,7 +31,7 @@ class SubmitQuizController extends Controller
     public function __invoke(Quiz $quiz, SubmitQuizStoreRequest $request):Response
     {
         $data = $request->validated();
-        $this->resultRepository->calculateAndCreateResult($quiz,$data);
+        $this->resultRepository->calculateAndUpdateResult($quiz,$data);
         return response()->noContent();
     }
 }
