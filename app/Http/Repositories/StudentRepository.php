@@ -32,7 +32,7 @@ class StudentRepository
         $query = User::query()->select(['id', 'name', 'email','user_type'])->where('user_type','student');
 
         if (isset($params['name'])){
-            $query = $query->where('name', 'like', '%' . $params['name'] . '%')->get();
+            $query = $query->where('name', 'like', '%' . $params['name'] . '%');
         }
 
         if($export){
