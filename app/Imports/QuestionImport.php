@@ -4,66 +4,69 @@ namespace App\Imports;
 
 
 use App\Models\Question;
-use App\Rules\ValidSlug;
 use App\Models\QuestionCategory;
+use Illuminate\Support\Str;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Validators\Failure;
 
-class QuestionImport implements ToModel, WithHeadingRow , WithValidation
+class QuestionImport implements ToModel, WithHeadingRow , WithValidation,SkipsEmptyRows,SkipsOnFailure
 {
     /**
-     * @param  array  $row 
-     * @return \App\Models\Question|null 
+     * @param  array  $row
+     * @return Question|null
      */
-    public function model(array $row)
+    public function model(array $row): ?Question
     {
-        $questionCategory = QuestionCategory::where('slug', $row['category_slug'])->first();
-
-        return new Question([
-            'category_id' => $questionCategory->id,
-            'title' => $row['title'],
-            'slug' => $row['slug'],
-            'description' => $row['description'],
-            'options' => json_encode([$row['options'], $row['options2'], $row['options3']]),
-            'answer' => $row['answer'],
-            'weightage' => (string)$row['weightage'],
-            'status' => $row['status']
-        ]);
+        $questionCategory = QuestionCategory::where('title', $row['category'])->first();
+        if($questionCategory){
+            $slug = Str::slug($row['title']);
+            $existingQuestion = Question::where("slug",$slug)->first();
+            if($existingQuestion) return  $existingQuestion;
+            return new Question([
+                'category_id' => $questionCategory->id,
+                'title' => $row['title'],
+                'slug' => Str::slug($row['title']),
+                'description' => $row['description'],
+                'options' => [
+                    $row['option1'],
+                    $row['option2'],
+                    $row['option3'],
+                    $row['option4'],
+                ],
+                'answer' => $row['answer'],
+                'weightage' => (string) $row['weightage']
+            ]);
+        }
     }
+
     public function rules(): array
     {
         return [
-            'category_slug' => 'required|exists:question_categories,slug',
+            'category' => 'required|exists:question_categories,title',
             'title' => "string|required|max:255",
-            'slug' => [
-                'required',
-                'string',
-                'max:255',
-                "unique:questions,slug,NULL,id,deleted_at,NULL",
-                new ValidSlug,
-            ],
             'description' => "string|nullable|max:5000",
-            'options' => 'required|string',
-            'options2' => 'required|string',
-            'options3' => 'required|string',
+            'option1' => 'required|string',
+            'option2' => 'required|string',
+            'option3' => 'required|string',
+            'option4' => 'required|string',
             'answer' => 'required|string',
             'weightage' => 'required|in:5,10,15',
-            'status' => 'required|boolean',
         ];
     }
 
-    public function customValidationMessages()
+    public function customValidationMessages(): array
     {
         return [
             'category_slug.exists' => 'The category slug does not exist in the question_categories table.',
         ];
     }
 
-
-
-    public function headingRow(): int
+    public function onFailure(Failure ...$failures)
     {
-        return 1;
+
     }
 }

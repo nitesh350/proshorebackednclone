@@ -41,7 +41,8 @@ class QuestionController extends Controller
     }
 
 
-    public function importQuestion(Request $request){
+    public function importQuestion(Request $request): void
+    {
         Excel::import(new QuestionImport, $request->file('file'));
     }
 
