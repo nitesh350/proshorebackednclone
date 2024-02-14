@@ -43,8 +43,8 @@ class QuestionController extends Controller
     }
 
     /**
-     * @param QuestionImportRequest $request 
-     * @return JsonResponse 
+     * @param QuestionImportRequest $request
+     * @return JsonResponse
      */
     public function importQuestion(QuestionImportRequest $request): JsonResponse
     {
@@ -67,7 +67,7 @@ class QuestionController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-    
+
     /**
      * @param QuestionStoreRequest $request
      * @return QuestionResource

@@ -17,7 +17,7 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
     /**
      * @var array
      */
-    protected $failures = [];
+    protected array $failures = [];
 
     /**
      * @param  array  $row
@@ -45,6 +45,7 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
                 'weightage' => (string) $row['weightage']
             ]);
         }
+        return null;
     }
 
     /**
@@ -79,7 +80,7 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
      * @param Failure ...$failures
      * @return void
      */
-    public function onFailure(Failure ...$failures)
+    public function onFailure(Failure ...$failures): void
     {
         foreach ($failures as $failure) {
             $this->failures[] = [
@@ -92,7 +93,7 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
     /**
      * @return array
      */
-    public function getFailures()
+    public function getFailures(): array
     {
         return $this->failures;
     }
