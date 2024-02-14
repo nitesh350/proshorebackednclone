@@ -22,8 +22,12 @@ class QuizRepository
      */
     public function getFilteredQuizzesForStudents(array $data): LengthAwarePaginator
     {
-        $query = Quiz::with('category:id,title')
-            ->with('result');
+
+        $query = Quiz::with(['category:id,title', 'result'])
+        ->whereDoesntHave('result', function ($query) {
+            $query->where('user_id', auth()->id())
+                ->where('passed', true);
+        });
 
         if (!empty($data['title'])) {
             $query = $query->where('title', 'like', '%' . $data['title'] . '%');
@@ -151,23 +155,6 @@ class QuizRepository
         return Quiz::whereHas('result', function ($query){
                 $query->where('passed', true)
                     ->where("user_id", auth()->id());
-            })
-            ->with(['category:id,title', 'result'])
-            ->get();
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getNotPassedQuizzes(): Collection
-    {
-        return Quiz::whereDoesntHave('result', function ($query) {
-                $query->where('user_id', auth()->id())
-                    ->where('passed', true);
-            })
-            ->orWhereHas('result', function ($query) {
-                $query->where('user_id', auth()->id())
-                    ->where('passed', false);
             })
             ->with(['category:id,title', 'result'])
             ->get();
