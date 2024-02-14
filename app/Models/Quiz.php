@@ -32,13 +32,6 @@ class Quiz extends Model
     ];
 
     /**
-     * @var array<string,string>
-     */
-    protected $casts = [
-        'status' => 'boolean',
-    ];
-
-    /**
      * @var array<int,string>
      */
     public $appends = [
