@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Helpers\ResponseHelper;
-use App\Http\Controllers\Controller;
-use App\Http\Repositories\QuestionRepository;
-use App\Http\Requests\QuestionFilterRequest;
-use App\Http\Requests\QuestionStoreRequest;
-use App\Http\Requests\QuestionUpdateRequest;
-use App\Http\Resources\QuestionResource;
 use App\Models\Question;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Helpers\ResponseHelper;
+use App\Imports\QuestionImport;
+use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Resources\QuestionResource;
+use App\Http\Requests\QuestionStoreRequest;
+use App\Http\Requests\QuestionFilterRequest;
+use App\Http\Requests\QuestionUpdateRequest;
+use App\Http\Repositories\QuestionRepository;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class QuestionController extends Controller
 {
@@ -35,6 +38,11 @@ class QuestionController extends Controller
         $params = $request->validated();
         $questions = $this->questionRepository->getFilteredQuestions($params);
         return QuestionResource::collection($questions);
+    }
+
+
+    public function importQuestion(Request $request){
+        Excel::import(new QuestionImport, $request->file('file'));
     }
 
 
