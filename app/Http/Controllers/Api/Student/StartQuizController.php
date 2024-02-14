@@ -28,35 +28,21 @@ class StartQuizController extends Controller
     {
         $user = auth()->user();
 
-        $result = $user->results()->where('quiz_id', $quiz->id)->orderBy('created_at', 'desc')->first();
-
-        if ($result) {
-            if ($result->passed) {
-                return response()->json([
-                    'message' => 'You\'ve already passed this quiz and cannot reattempt it.',
-                ]);
-            } else {
-                $retryDate = $result->created_at->addDays($quiz->retry_after);
-
-                if (now()->gte($retryDate)) {
-                    return $this->getQuizDataWithQuestions($quiz);
-                } else {
-                    return response()->json([
-                        'message' => "You can reattempt this quiz after " . $retryDate->diffForHumans(),
-                    ]);
-                }
-            }
-        } else {
-            return $this->getQuizDataWithQuestions($quiz);
+        $result = $user->results()->where('quiz_id', $quiz->id)->first();
+        if($result && $result->passed){
+            return response()->json([
+                'message' => 'You\'ve already passed this quiz and cannot reattempt it.',
+            ]);
         }
-    }
+        if($result && !$result->passed){
+            $retryDate = $result->created_at->addDays($quiz->retry_after);
+            if(!now()->gte($retryDate)){
+                return response()->json([
+                    'message' => "You can reattempt this quiz after " . $retryDate->diffForHumans(),
+                ]);
+            }
+        }
 
-    /**
-     * @param Quiz $quiz
-     * @return QuizResource
-     */
-    private function getQuizDataWithQuestions(Quiz $quiz): QuizResource
-    {
         $quiz->load('category');
         $question_categories = $quiz->questionCategories()->select("question_category_id")->pluck("question_category_id");
         $questionResource = $this->questionRepository->getQuizQuestions($question_categories);
