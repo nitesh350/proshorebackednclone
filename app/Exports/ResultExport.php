@@ -37,8 +37,8 @@ class ResultExport implements FromCollection,WithHeadings,WithMapping
             $row->user->name,
             $row->quiz->title,
             $row->passed ? "Pass" : "Fail",
-            $row->total_question,
-            $row->total_answered,
+            $row->total_question ?: "0",
+            $row->total_answered ?: "0",
             $row->total_right_answer ?: "0",
             $row->total_time
         ];
