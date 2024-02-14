@@ -18,7 +18,6 @@ use App\Http\Controllers\Api\Admin\QuestionCategoryController;
 use App\Http\Controllers\Api\Admin\GetQuestionCategoriesController;
 use App\Http\Controllers\Api\Admin\StudentController;
 use App\Http\Controllers\Api\Student\GenerateCVController;
-use App\Http\Controllers\Api\Student\GetNotPassedQuizzesController;
 
 /*
 |--------------------------------------------------------------------------
