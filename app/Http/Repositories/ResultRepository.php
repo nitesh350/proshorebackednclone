@@ -39,7 +39,7 @@ class ResultRepository
         if ($export){
             return $query->with('user')->get();
         }
-        return $query->paginate(5);
+        return $query->paginate(10);
     }
 
     /**
