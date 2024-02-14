@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\RegisteredStudentExport;
 
@@ -44,7 +45,7 @@ class StudentRepository
     public function exportStudents($students) : JsonResponse
     {
         $exportFilePath = 'exports/students.xlsx' ;
-
+        Storage::delete("app/exports/students.xlsx");
         $status = Excel::store(new RegisteredStudentExport($students), $exportFilePath);
         if($status){
             $storagePath = asset($exportFilePath);

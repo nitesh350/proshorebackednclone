@@ -9,6 +9,7 @@ use App\Models\Result;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ResultRepository
@@ -49,7 +50,7 @@ class ResultRepository
     public function exportResult($result): JsonResponse
     {
         $exportFilePath = 'exports/results.xlsx';
-
+        Storage::delete("app/exports/results.xlsx");
         $status = Excel::store(new ResultExport($result),$exportFilePath);
         if($status){
             $storagePath = asset($exportFilePath);

@@ -99,7 +99,7 @@ class QuizRepository
     public function update(Quiz $quiz, array $data): Quiz
     {
         if (isset($data['thumbnail'])) {
-            Storage::delete('public/images/quizzes/' . $quiz->thumbnail);
+            Storage::delete('app/images/quizzes/' . $quiz->thumbnail);
             $name = date('ymd') . time() . '.' . $data['thumbnail']->extension();
             $data['thumbnail'] = $data['thumbnail']->storeAs('images/quizzes', $name);
         }
@@ -132,7 +132,7 @@ class QuizRepository
     public function exportQuizzes($quizzes): JsonResponse
     {
         $exportFilePath = 'exports/quizzes.xlsx';
-
+        Storage::delete("app/exports/quizzes.xlsx");
         $status = Excel::store(new QuizzesExport($quizzes), $exportFilePath);
 
         if ($status) {

@@ -7,6 +7,7 @@ use App\Http\Resources\QuestionResource;
 use App\Models\Question;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -83,7 +84,7 @@ class QuestionRepository
     public function exportQuestions($questions): JsonResponse
     {
         $exportFilePath = 'exports/questions.xlsx';
-
+        Storage::delete("app/exports/questions.xlsx");
         $status =Excel::store(new QuestionsExport($questions), $exportFilePath);
         if ($status) {
             $storagePath = asset($exportFilePath);
