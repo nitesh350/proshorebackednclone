@@ -51,7 +51,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () 
     Route::apiResource('/statistics', StatisticsController::class)->only(['index']);
 });
 Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','verified']], function () {
-    Route::get('/quizzes/{quiz}/start', StartQuizController::class)->middleware('ability:can-attempt-quiz');
+    Route::get('/quizzes/{quiz}/start', StartQuizController::class)->middleware('ability:can-attempt-quiz')->name('start-quiz');
     Route::apiResource('/profile', ProfileController::class)->only(['store', 'update'])->middleware('ability:manage-profile');
     Route::post('/quizzes/{quiz}/submit', SubmitQuizController::class)->middleware('ability:can-attempt-quiz');
     Route::get('/quizzes/all', GetQuizzesController::class)->middleware('abilities:can-attempt-quiz');

@@ -19,6 +19,7 @@ class Result extends Model
         'total_right_answer',
         'total_time'
     ];
+
     /**
      *
      * @return BelongsTo
