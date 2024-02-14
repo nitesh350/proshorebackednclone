@@ -82,9 +82,9 @@ class ResultRepository
     /**
      * @param Quiz $quiz
      * @param array $data
-     * @return bool
+     * @return int
      */
-    public function calculateAndUpdateResult(Quiz $quiz, array $data): bool
+    public function calculateAndUpdateResult(Quiz $quiz, array $data): int
     {
         $total_answered = count($data['answers']);
         $total_right_answered = 0;
