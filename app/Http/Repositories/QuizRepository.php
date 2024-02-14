@@ -155,4 +155,22 @@ class QuizRepository
             ->with(['category:id,title', 'result'])
             ->get();
     }
+
+    /**
+     * @return Collection
+     */
+    public function getNotPassedQuizzes(): Collection
+    {
+        return Quiz::whereDoesntHave('result', function ($query) {
+                $query->where('user_id', auth()->id())
+                    ->where('passed', true);
+            })
+            ->orWhereHas('result', function ($query) {
+                $query->where('user_id', auth()->id())
+                    ->where('passed', false);
+            })
+            ->with(['category:id,title', 'result'])
+            ->get();
+    }
+
 }
