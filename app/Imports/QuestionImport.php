@@ -2,11 +2,9 @@
 
 namespace App\Imports;
 
-
 use App\Models\Question;
 use Illuminate\Support\Str;
 use App\Models\QuestionCategory;
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Validators\Failure;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -14,13 +12,18 @@ use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows
+class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows, SkipsOnFailure
 {
+    /**
+     * @var array
+     */
+    protected $failures = [];
+
     /**
      * @param  array  $row
      * @return Question|null
      */
-    public function model(array $row): ?Question
+     public function model(array $row): ?Question
     {
         $questionCategory = QuestionCategory::where('title', $row['category'])->first();
         if ($questionCategory) {
@@ -44,6 +47,9 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
         }
     }
 
+    /**
+     * @return array
+     */
     public function rules(): array
     {
         return [
@@ -59,11 +65,35 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
         ];
     }
 
+    /**
+     * @return array
+     */
     public function customValidationMessages(): array
     {
         return [
             'category_slug.exists' => 'The category slug does not exist in the question_categories table.',
         ];
     }
-     
+
+    /**
+     * @param Failure ...$failures
+     * @return void
+     */
+    public function onFailure(Failure ...$failures)
+    {
+        foreach ($failures as $failure) {
+            $this->failures[] = [
+                'row' => $failure->row(),
+                'errors' => $failure->errors(),
+            ];
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getFailures()
+    {
+        return $this->failures;
+    }
 }

@@ -3,18 +3,19 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Models\Question;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Helpers\ResponseHelper;
 use App\Imports\QuestionImport;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Resources\QuestionResource;
 use App\Http\Requests\QuestionStoreRequest;
 use App\Http\Requests\QuestionFilterRequest;
+use App\Http\Requests\QuestionImportRequest;
 use App\Http\Requests\QuestionUpdateRequest;
 use App\Http\Repositories\QuestionRepository;
-use App\Http\Requests\ExcelFileRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class QuestionController extends Controller
@@ -41,14 +42,32 @@ class QuestionController extends Controller
         return QuestionResource::collection($questions);
     }
 
-
-    public function importQuestion(ExcelFileRequest $request): void
+    /**
+     * @param QuestionImportRequest $request 
+     * @return JsonResponse 
+     */
+    public function importQuestion(QuestionImportRequest $request): JsonResponse
     {
-        $request->validated();
-        Excel::import(new QuestionImport, $request->file('file'));
+        try {
+            DB::beginTransaction();
+
+            $import = new QuestionImport();
+            Excel::import($import, $request->file('file'));
+
+            if (!empty($import->getFailures())) {
+                DB::rollBack();
+                return response()->json(['errors' => $import->getFailures()], 422);
+            }
+
+            DB::commit();
+            return response()->json(['message' => 'Questions imported successfully'], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
-
-
+    
     /**
      * @param QuestionStoreRequest $request
      * @return QuestionResource
