@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\QuizCategory;
@@ -27,7 +28,7 @@ class StartQuizControllerTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->get(route('start-quiz', $quiz));
-
+        Storage::delete($quiz->thumbnail);
         $response->assertStatus(200)
             ->assertJson(
                 fn (AssertableJson $json) => $json->has('data')
@@ -61,7 +62,7 @@ class StartQuizControllerTest extends TestCase
         $quiz = Quiz::factory()->create([
             'category_id' => $quizCategory
         ]);
-
+        Storage::delete($quiz->thumbnail);
         $response = $this->get(route('start-quiz', $quiz));
 
         $response->assertStatus(302);
@@ -75,7 +76,8 @@ class StartQuizControllerTest extends TestCase
             'category_id' => $quizCategory,
             'retry_after' => 2
         ]);
-        $result = Result::factory()->create([
+        Storage::delete($quiz->thumbnail);
+        Result::factory()->create([
             'user_id' => $user->id,
             'quiz_id' => $quiz->id,
             'passed' => true,
@@ -98,7 +100,8 @@ class StartQuizControllerTest extends TestCase
             'retry_after' => 5,
             'category_id' => $quizCategory
         ]);
-        $result = Result::factory()->create([
+        Storage::delete($quiz->thumbnail);
+        Result::factory()->create([
             'user_id' => $user->id,
             'quiz_id' => $quiz->id,
             'passed' => false,
@@ -140,7 +143,8 @@ class StartQuizControllerTest extends TestCase
             'retry_after' => 5,
             'category_id' => $quizCategory
         ]);
-
+        Storage::delete($quiz->thumbnail);
+        
         $result = Result::factory()->create([
             'user_id' => $user->id,
             'quiz_id' => $quiz->id,

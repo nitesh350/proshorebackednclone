@@ -6,6 +6,7 @@ use App\Models\Quiz;
 use App\Models\QuizCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
@@ -195,7 +196,8 @@ class QuizCategoryTest extends TestCase
 
         $quizCategory = QuizCategory::factory()->create();
 
-        Quiz::factory()->create();
+        $quiz = Quiz::factory()->create();
+        Storage::delete($quiz->thumbnail);
 
         $response = $this->actingAs($this->user)->deleteJson(route('quiz-categories.destroy', $quizCategory));
 
