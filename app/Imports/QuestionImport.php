@@ -68,11 +68,11 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
      */
     public function prepareForValidation($data, $index)
     {
-        $data['option1'] = (string) $data['option1'] ?? "";
-        $data['option2'] = (string) $data['option2'] ?? "";
-        $data['option3'] = (string) $data['option3'] ?? "";
-        $data['option4'] = (string) $data['option4'] ?? "";
-        $data['answer'] = (string) $data['answer'] ?? "";
+        $data['option1'] = (string) ($data['option1'] ?? "");
+        $data['option2'] = (string) ($data['option2'] ?? "");
+        $data['option3'] = (string) ($data['option3'] ?? "");
+        $data['option4'] = (string) ($data['option4'] ?? "");
+        $data['answer'] = (string) ($data['answer'] ?? "");
         return $data;
     }
 
