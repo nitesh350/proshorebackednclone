@@ -30,17 +30,20 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
             $slug = Str::slug($row['title']);
             $existingQuestion = Question::where("slug", $slug)->first();
             if ($existingQuestion) return  $existingQuestion;
+
+            $options = [];
+
+            for($i=1;$i<=4;$i++){
+                if(isset($row["option$i"]) && $row["option$i"] !== ""){
+                    $options[] = $row["option$i"];
+                }
+            }
             return new Question([
                 'category_id' => $questionCategory->id,
                 'title' => $row['title'],
                 'slug' => Str::slug($row['title']),
                 'description' => $row['description'],
-                'options' => [
-                    $row['option1'],
-                    $row['option2'],
-                    $row['option3'],
-                    $row['option4'],
-                ],
+                'options' => $options,
                 'answer' => $row['answer'],
                 'weightage' => (string) $row['weightage']
             ]);
@@ -59,8 +62,8 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
             'description' => "string|nullable|max:5000",
             'option1' => 'required|string',
             'option2' => 'required|string',
-            'option3' => 'required|string',
-            'option4' => 'required|string',
+            'option3' => 'string',
+            'option4' => 'string',
             'answer' => 'required|string',
             'weightage' => 'required|in:5,10,15',
         ];
