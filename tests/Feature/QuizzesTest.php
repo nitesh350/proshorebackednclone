@@ -14,6 +14,7 @@ use App\Http\Repositories\QuizRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Storage;
 
 class QuizzesTest extends TestCase
 {
@@ -33,6 +34,8 @@ class QuizzesTest extends TestCase
         $quiz1 = Quiz::factory()->create(['title' => 'Quiz 1', 'category_id' => $category->id]);
         $quiz2 = Quiz::factory()->create(['title' => 'Quiz 2', 'category_id' => $category->id]);
 
+        Storage::delete($quiz1->thumbnail);
+        Storage::delete($quiz2->thumbnail);
         Result::factory()->create([
             'quiz_id' => $quiz1->id,
             'user_id' => $student->id,
