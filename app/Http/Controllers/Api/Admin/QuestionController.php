@@ -61,13 +61,13 @@ class QuestionController extends Controller
 
             Excel::import($import, $request->file('file'));
 
-            if(!$import->getRowCount()){
-                return response()->json(['message' => "No records found in uploaded file"],404);
-            }
-
             if (!empty($import->getFailures())) {
                 DB::rollBack();
                 return response()->json(['errors' => $import->getFailures()], 422);
+            }
+
+            if(!$import->getRowCount()){
+                return response()->json(['message' => "No records found in uploaded file"],404);
             }
 
             DB::commit();

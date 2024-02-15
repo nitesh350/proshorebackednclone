@@ -66,7 +66,7 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
      * @param $index
      * @return mixed
      */
-    public function prepareForValidation($data, $index)
+    public function prepareForValidation($data, $index): mixed
     {
         $data['option1'] = (string) ($data['option1'] ?? "");
         $data['option2'] = (string) ($data['option2'] ?? "");
