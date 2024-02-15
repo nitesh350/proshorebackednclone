@@ -57,8 +57,13 @@ class QuestionController extends Controller
         try {
             DB::beginTransaction();
 
-            $import = new QuestionImport();
+            $import = new QuestionImport;
+
             Excel::import($import, $request->file('file'));
+
+            if(!$import->getRowCount()){
+                return response()->json(['message' => "No records found in uploaded file"],404);
+            }
 
             if (!empty($import->getFailures())) {
                 DB::rollBack();

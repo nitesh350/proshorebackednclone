@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\Question;
 use Illuminate\Support\Str;
 use App\Models\QuestionCategory;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Validators\Failure;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -14,6 +15,13 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 
 class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows, SkipsOnFailure
 {
+
+    use Importable;
+
+    /**
+     * @var int
+     */
+    private int $rows = 0;
     /**
      * @var array
      */
@@ -25,6 +33,8 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
      */
      public function model(array $row): ?Question
     {
+
+        ++$this->rows;
         $questionCategory = QuestionCategory::where('title', $row['category'])->first();
         if ($questionCategory) {
             $slug = Str::slug($row['title']);
@@ -49,6 +59,21 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
             ]);
         }
         return null;
+    }
+
+    /**
+     * @param $data
+     * @param $index
+     * @return mixed
+     */
+    public function prepareForValidation($data, $index)
+    {
+        $data['option1'] = (string) $data['option1'] ?? "";
+        $data['option2'] = (string) $data['option2'] ?? "";
+        $data['option3'] = (string) $data['option3'] ?? "";
+        $data['option4'] = (string) $data['option4'] ?? "";
+        $data['answer'] = (string) $data['answer'] ?? "";
+        return $data;
     }
 
     /**
@@ -99,5 +124,13 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
     public function getFailures(): array
     {
         return $this->failures;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRowCount(): int
+    {
+        return $this->rows;
     }
 }
