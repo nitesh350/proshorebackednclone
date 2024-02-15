@@ -50,7 +50,8 @@ class ResultRepository
     public function exportResult($result): JsonResponse
     {
         $exportFilePath = 'exports/results.xlsx';
-        Storage::delete("app/exports/results.xlsx");
+        Storage::delete($exportFilePath);
+
         $status = Excel::store(new ResultExport($result),$exportFilePath);
         if($status){
             $storagePath = asset($exportFilePath);

@@ -84,7 +84,7 @@ class QuestionRepository
     public function exportQuestions($questions): JsonResponse
     {
         $exportFilePath = 'exports/questions.xlsx';
-        Storage::delete("app/exports/questions.xlsx");
+        Storage::delete($exportFilePath);
         $status =Excel::store(new QuestionsExport($questions), $exportFilePath);
         if ($status) {
             $storagePath = asset($exportFilePath);

@@ -136,7 +136,7 @@ class QuizRepository
     public function exportQuizzes($quizzes): JsonResponse
     {
         $exportFilePath = 'exports/quizzes.xlsx';
-        Storage::delete("app/exports/quizzes.xlsx");
+        Storage::delete($exportFilePath);
         $status = Excel::store(new QuizzesExport($quizzes), $exportFilePath);
 
         if ($status) {
