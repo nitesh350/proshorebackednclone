@@ -24,10 +24,11 @@ class QuizRepository
     {
 
         $query = Quiz::with(['category:id,title', 'result'])
-        ->whereDoesntHave('result', function ($query) {
-            $query->where('user_id', auth()->id())
-                ->where('passed', true);
-        });
+            ->active()
+            ->whereDoesntHave('result', function ($query) {
+                $query->where('user_id', auth()->id())
+                    ->where('passed', true);
+            });
 
         if (!empty($data['title'])) {
             $query = $query->where('title', 'like', '%' . $data['title'] . '%');
@@ -66,7 +67,7 @@ class QuizRepository
             $query->whereIn('category_id', $categoryIds);
         }
 
-        if($export){
+        if ($export) {
             return $query->get();
         }
 
@@ -133,7 +134,7 @@ class QuizRepository
     /**
      * @param Collection $quizzes
      * @return JsonResponse
-    */
+     */
     public function exportQuizzes($quizzes): JsonResponse
     {
         $exportFilePath = 'exports/quizzes.xlsx';
@@ -153,10 +154,10 @@ class QuizRepository
      */
     public function getPassedQuizzes(): Collection
     {
-        return Quiz::whereHas('result', function ($query){
-                $query->where('passed', true)
-                    ->where("user_id", auth()->id());
-            })
+        return Quiz::whereHas('result', function ($query) {
+            $query->where('passed', true)
+                ->where("user_id", auth()->id());
+        })
             ->with(['category:id,title', 'result'])
             ->get();
     }

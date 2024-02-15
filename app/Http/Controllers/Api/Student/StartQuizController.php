@@ -37,6 +37,13 @@ class StartQuizController extends Controller
      */
     public function __invoke(Quiz $quiz): QuizResource | JsonResponse
     {
+        
+        if (!$quiz->status) {
+            return response()->json([
+                'message' => 'This quiz is currently not available for attempts.',
+            ], 403);
+        }
+
         $user = auth()->user();
 
         $result = $user->results()->where('quiz_id', $quiz->id)->first();
