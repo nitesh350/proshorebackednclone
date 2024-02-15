@@ -45,7 +45,8 @@ class StudentRepository
     public function exportStudents($students) : JsonResponse
     {
         $exportFilePath = 'exports/students.xlsx' ;
-        Storage::delete("app/exports/students.xlsx");
+        Storage::delete($exportFilePath);
+
         $status = Excel::store(new RegisteredStudentExport($students), $exportFilePath);
         if($status){
             $storagePath = asset($exportFilePath);
