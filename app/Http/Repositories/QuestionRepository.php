@@ -59,15 +59,15 @@ class QuestionRepository
         $query = Question::select(['id', 'title', 'slug', 'description', 'options', 'answer', 'weightage', 'category_id', 'status'])->with('category:id,title');
 
         if (isset($params['title'])) {
-            $query->where('title', 'like', '%' . $params['title'] . '%')->get();
+            $query->where('title', 'like', '%' . $params['title'] . '%');
         }
 
         if (isset($params['category_id'])) {
-            $query->where('category_id', $params['category_id'])->get();
+            $query->where('category_id', $params['category_id']);
         }
 
         if (isset($params['status'])) {
-            $query->where('status', $params['status'])->get();
+            $query->where('status', $params['status']);
         }
 
         if ($export) {
