@@ -43,14 +43,14 @@ class StartQuizController extends Controller
         if($result && $result->passed){
             return response()->json([
                 'message' => 'You\'ve already passed this quiz and cannot reattempt it.',
-            ]);
+            ],403);
         }
         if($result && !$result->passed){
             $retryDate = $result->created_at->addDays($quiz->retry_after);
             if(!now()->gte($retryDate)){
                 return response()->json([
                     'message' => "You can reattempt this quiz after " . $retryDate->diffForHumans(),
-                ]);
+                ],403);
             }
         }
 
