@@ -3,7 +3,6 @@
 namespace App\Imports;
 
 use App\Models\Question;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\QuestionCategory;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -18,6 +17,8 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
 {
 
     use Importable;
+
+    private  int $currentIndex = 0;
 
     /**
      * @var int
@@ -78,6 +79,7 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
      */
     public function prepareForValidation($data, $index): mixed
     {
+        $this->currentIndex = $index;
         $data['option1'] = (string) ($data['option1'] ?? "");
         $data['option2'] = (string) ($data['option2'] ?? "");
         $data['option3'] = (string) ($data['option3'] ?? "");
@@ -107,7 +109,7 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
             'option3' => 'string',
             'option4' => 'string',
             'options' => "required|array",
-            'answer' => 'required|string',
+            'answer' => 'required|string|in_array:' . $this->currentIndex . ".options.*",
             'weightage' => 'required|in:5,10,15',
         ];
     }
