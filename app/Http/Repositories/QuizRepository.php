@@ -157,14 +157,12 @@ class QuizRepository
     public function getPassedQuizzes(): Collection
     {
         return Quiz::select('quizzes.*')
-            ->leftJoin('results', 'quizzes.id', '=', 'results.quiz_id')
-            ->whereHas('result', function ($query) {
-            $query->where('passed', true)
-                ->where('user_id', auth()->id());
-        })
-            ->with(['category:id,title', 'result'])
-            ->orderByDesc('results.created_at')
-            ->get();
+        ->join('results', 'quizzes.id', '=', 'results.quiz_id')
+        ->where('results.user_id', auth()->id())
+        ->where('results.passed', true)
+        ->orderBy('results.created_at', 'desc')
+        ->with(['category:id,title', 'result'])
+        ->get();
     }
 
 }
