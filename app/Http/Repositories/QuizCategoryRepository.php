@@ -26,6 +26,21 @@ class QuizCategoryRepository
     }
 
     /**
+     * @param $data
+     * @return Collection
+     */
+    public function getStudentFilteredQuizCategories($data): Collection
+    {
+        $query =QuizCategory::select(['id', 'title']);
+
+        if (isset($data['title'])) {
+            $query->where('title', 'like', '%' . $data['title'] . '%');
+        }
+
+        return $query->get();
+    }
+
+    /**
      * @param $quizCategory
      * @return JsonResponse|Response
      */
