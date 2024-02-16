@@ -38,7 +38,7 @@ class QuizRepository
             $categoryIds = is_array($data['category_id']) ? $data['category_id'] : explode(',', $data['category_id']);
             $query->whereIn('category_id', $categoryIds);
         }
-        return $query->paginate(10);
+        return $query->paginate(12);
     }
 
     /**
