@@ -11,6 +11,8 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Exports\QuizzesExport;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -159,9 +161,8 @@ class QuizRepository
             ->join('results', 'quizzes.id', '=', 'results.quiz_id')
             ->where('results.user_id', auth()->id())
             ->where('results.passed', true)
-            ->orderBy('results.created_at', 'asc')
+            ->orderBy('results.created_at', 'desc')
             ->with(['category:id,title', 'result'])
             ->get();
     }
-
 }
