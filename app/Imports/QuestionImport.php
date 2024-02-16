@@ -67,16 +67,6 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
     }
 
     /**
-     * @return array
-     */
-    public function customValidationMessages(): array
-    {
-        return [
-            'category_slug.exists' => 'The category slug does not exist in the question_categories table.',
-        ];
-    }
-
-    /**
      * @param Failure ...$failures
      * @return void
      */
