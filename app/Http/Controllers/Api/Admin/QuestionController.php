@@ -66,12 +66,12 @@ class QuestionController extends Controller
                 return response()->json(['errors' => $import->getFailures()], 422);
             }
 
-            if(!$import->getRowCount()){
-                return response()->json(['message' => "No records found in uploaded file"],404);
-            }
 
             DB::commit();
-            return response()->json(['message' => 'Questions imported successfully'], 200);
+            return response()->json(['message' =>
+                $import->getRowCount() ." imported Successfully. " .
+                $import->getDuplicateCount() . " duplicate record found"
+            ], 200);
 
         } catch (\Exception $e) {
             DB::rollBack();

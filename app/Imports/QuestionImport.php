@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Question;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\QuestionCategory;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -22,6 +23,11 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
      * @var int
      */
     private int $rows = 0;
+
+    /**
+     * @var int
+     */
+    private int $duplicates = 0;
     /**
      * @var array
      */
@@ -33,14 +39,18 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
      */
      public function model(array $row): ?Question
     {
-
-        ++$this->rows;
-        $questionCategory = QuestionCategory::where('title', $row['category'])->first();
+        $questionCategory = QuestionCategory::firstOrCreate([
+            "title" => $row['category'],
+            "slug" => Str::slug($row['category'])
+        ]);
         if ($questionCategory) {
             $slug = Str::slug($row['title']);
             $existingQuestion = Question::where("slug", $slug)->first();
-            if ($existingQuestion) return  $existingQuestion;
-
+            if ($existingQuestion) {
+                ++$this->duplicates;
+                return  $existingQuestion;
+            }
+            ++$this->rows;
             $options = [];
 
             for($i=1;$i<=4;$i++){
@@ -72,6 +82,13 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
         $data['option2'] = (string) ($data['option2'] ?? "");
         $data['option3'] = (string) ($data['option3'] ?? "");
         $data['option4'] = (string) ($data['option4'] ?? "");
+        $options = [];
+        for($i=1;$i<=4;$i++){
+            if(isset($data["option$i"]) && $data["option$i"] !== ""){
+                $options[] = (string) $data["option$i"];
+            }
+        }
+        $data['options'] = $options;
         $data['answer'] = (string) ($data['answer'] ?? "");
         return $data;
     }
@@ -82,25 +99,16 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
     public function rules(): array
     {
         return [
-            'category' => 'required|exists:question_categories,title',
+            'category' => 'required|string|max:255',
             'title' => "string|required|max:255",
             'description' => "string|nullable|max:5000",
             'option1' => 'required|string',
             'option2' => 'required|string',
             'option3' => 'string',
             'option4' => 'string',
+            'options' => "required|array",
             'answer' => 'required|string',
             'weightage' => 'required|in:5,10,15',
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function customValidationMessages(): array
-    {
-        return [
-            'category_slug.exists' => 'The category slug does not exist in the question_categories table.',
         ];
     }
 
@@ -132,5 +140,13 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
     public function getRowCount(): int
     {
         return $this->rows;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDuplicateCount(): int
+    {
+        return $this->duplicates;
     }
 }

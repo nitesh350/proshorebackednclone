@@ -29,7 +29,8 @@ class QuestionRepository
             ->get();
         return [
             'data' => [
-                'questions' => QuestionResource::collection($questions)
+                'questions' => QuestionResource::collection($questions),
+                'count' => $questions->count()
             ]
         ];
     }
