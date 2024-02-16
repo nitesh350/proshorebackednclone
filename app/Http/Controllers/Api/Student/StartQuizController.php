@@ -37,7 +37,7 @@ class StartQuizController extends Controller
      */
     public function __invoke(Quiz $quiz): QuizResource | JsonResponse
     {
-        
+
         if (!$quiz->status) {
             return response()->json([
                 'message' => 'This quiz is currently not available for attempts.',
@@ -64,6 +64,11 @@ class StartQuizController extends Controller
         $quiz->load('category');
         $question_categories = $quiz->questionCategories()->select("question_category_id")->pluck("question_category_id");
         $questionResource = $this->questionRepository->getQuizQuestions($question_categories);
+        if(!$questionResource['data']['questions']->count){
+            return response()->json([
+                'message' => "Quiz is not available now. Please try again late.",
+            ],403);
+        }
         $this->resultRepository->store($quiz->id,$questionResource['data']['questions']?->count ?? 0);
         return (new QuizResource($quiz))->additional([
             'data' => [
