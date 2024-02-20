@@ -18,7 +18,7 @@ class QuestionFactory extends Factory
     {
         return [
             "category_id" => $this->faker->randomElement([1,2,3]),
-            "description" => $this->faker->sentences,
+            "description" => $this->faker->sentence(),
             "title" => $this->faker->sentence(),
             "slug" => $this->faker->slug,
             "options" => ["A","B","C","D"],
