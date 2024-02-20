@@ -77,7 +77,7 @@ class Quiz extends Model
      */
     public function result(): HasOne
     {
-        return $this->hasOne(Result::class, "quiz_id")->where("user_id", auth()->id());
+        return $this->hasOne(Result::class, "quiz_id")->where("user_id", auth()->id())->latest();
     }
 
     /**
