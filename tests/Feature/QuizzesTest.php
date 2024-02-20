@@ -63,5 +63,29 @@ class QuizzesTest extends TestCase
         $response->assertJsonFragment(['title' => 'Quiz 2']);
         $response->assertJsonMissing(['title' => 'Quiz 1']);
     }
+
+    /**
+     * when admin pass export params in get quizzes it exports excel file with data of quizess
+     *
+     */
+    public function test_quizzes_can_be_export_when_export_is_send_in_params()
+    {
+        $this->createAdminUser();
+
+        Storage::fake();
+
+        $response = $this->actingAs($this->user)
+            ->get('/api/admin/quizzes?export');
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'export_url'
+            ]);
+        $exportUrl = $response->json('export_url');
+
+        $this->assertNotEmpty($exportUrl);
+        $exportFilePath = 'exports/quizzes.xlsx';
+
+        Storage::assertExists($exportFilePath);
+    }
 }
 
