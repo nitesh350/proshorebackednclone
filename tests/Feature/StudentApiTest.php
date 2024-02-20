@@ -106,7 +106,7 @@ class StudentApiTest extends TestCase
                                                     ->where('title', $questionCategory->title)
                                                     ->where('slug', $questionCategory->slug)
                                             )
-                                    )
+                                    )->etc('next_retry')
                             )
                     )
             );

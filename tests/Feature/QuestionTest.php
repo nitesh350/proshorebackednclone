@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use App\Models\Question;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -153,5 +154,27 @@ class QuestionTest extends TestCase
         $this->assertEquals(Question::count(),0);
     }
 
+     /**
+     * @return void
+     */
+    public function test_questions_export(): void
+    {
+        $this->createAdminUser();
+        Storage::fake();
+
+        $response = $this->actingAs($this->user)
+            ->get('/api/admin/questions?export');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'export_url'
+            ]);
+
+        $exportUrl = $response->json('export_url');
+        $this->assertNotEmpty($exportUrl);
+
+        $exportFilePath = 'exports/questions.xlsx';
+        Storage::assertExists($exportFilePath);
+    }
 }
 
