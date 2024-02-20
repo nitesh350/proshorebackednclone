@@ -45,7 +45,7 @@ class StartQuizController extends Controller
 
         $user = auth()->user();
 
-        $result = $user->results()->where('quiz_id', $quiz->id)->first();
+        $result = $user->results()->where('quiz_id', $quiz->id)->latest()->first();
         if($result && $result->passed){
             return response()->json([
                 'message' => 'You\'ve already passed this quiz and cannot reattempt it.',
