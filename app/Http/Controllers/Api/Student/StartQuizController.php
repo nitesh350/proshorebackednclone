@@ -64,9 +64,9 @@ class StartQuizController extends Controller
         $question_categories = $quiz->questionCategories()->select("question_category_id")->pluck("question_category_id");
         $questionResource = $this->questionRepository->getQuizQuestions($question_categories);
         $total_questions = $questionResource['data']['count'];
-        if(!$total_questions){
+        if($total_questions != 14){
             return response()->json([
-                'message' => "Quiz is not available now. Please try again late.",
+                'message' => "Quiz is not available now. Please try again later.",
             ],403);
         }
         $this->resultRepository->store($quiz->id,$total_questions);
