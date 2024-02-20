@@ -45,14 +45,14 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
             "title" => $row['category'],
             "slug" => Str::slug($row['category'])
         ]);
-        $slug = isset($row['slug']) ? $row['slug'] : Str::slug($row['title']);
+        $slug = $row['slug'] ?? Str::slug($row['title']);
         $existingQuestion = Question::where("slug", $slug)->first();
         if ($existingQuestion) {
             ++$this->duplicates;
             return  $existingQuestion;
         }
         ++$this->rows;
-       
+
         return new Question([
             'category_id' => $questionCategory->id,
             'title' => $row['title'],
