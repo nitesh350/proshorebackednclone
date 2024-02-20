@@ -52,9 +52,8 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
             return  $existingQuestion;
         }
         ++$this->rows;
-        $options = [];
-
-        for ($i = 1; $i <= 4; $i++) {
+       
+        for ($i = 1; $i <= 6; $i++) {
             if (isset($row["option$i"]) && $row["option$i"] !== "") {
                 $options[] = $row["option$i"];
             }
@@ -64,7 +63,7 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
             'title' => $row['title'],
             'slug' => $slug,
             'description' => $row['description'],
-            'options' => $options,
+            'options' => $row['options'],
             'answer' => $row['answer'],
             'weightage' => (string) $row['weightage']
         ]);
@@ -82,8 +81,10 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
         $data['option2'] = (string) ($data['option2'] ?? "");
         $data['option3'] = (string) ($data['option3'] ?? "");
         $data['option4'] = (string) ($data['option4'] ?? "");
+        $data['option5'] = (string) ($data['option5'] ?? "");
+        $data['option6'] = (string) ($data['option6'] ?? "");
         $options = [];
-        for ($i = 1; $i <= 4; $i++) {
+        for ($i = 1; $i <= 6; $i++) {
             if (isset($data["option$i"]) && $data["option$i"] !== "") {
                 $options[] = (string) $data["option$i"];
             }
@@ -105,7 +106,6 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
                 'nullable',
                 'string',
                 'max:255',
-                "unique:questions,slug,NULL,id,deleted_at,NULL",
                 new ValidSlug,
             ],
             'description' => "string|nullable|max:5000",
@@ -113,6 +113,8 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
             'option2' => 'required|string',
             'option3' => 'string',
             'option4' => 'string',
+            'option5' => 'string',
+            'option6' => 'string',
             'options' => "required|array",
             'answer' => 'required|string|in_array:' . $this->currentIndex . ".options.*",
             'weightage' => 'required|in:5,10,15',
