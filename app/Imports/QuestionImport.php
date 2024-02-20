@@ -44,32 +44,29 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
             "title" => $row['category'],
             "slug" => Str::slug($row['category'])
         ]);
-        if ($questionCategory) {
-            $slug = Str::slug($row['title']);
-            $existingQuestion = Question::where("slug", $slug)->first();
-            if ($existingQuestion) {
-                ++$this->duplicates;
-                return  $existingQuestion;
-            }
-            ++$this->rows;
-            $options = [];
-
-            for($i=1;$i<=4;$i++){
-                if(isset($row["option$i"]) && $row["option$i"] !== ""){
-                    $options[] = $row["option$i"];
-                }
-            }
-            return new Question([
-                'category_id' => $questionCategory->id,
-                'title' => $row['title'],
-                'slug' => Str::slug($row['title']),
-                'description' => $row['description'],
-                'options' => $options,
-                'answer' => $row['answer'],
-                'weightage' => (string) $row['weightage']
-            ]);
+        $slug = Str::slug($row['title']);
+        $existingQuestion = Question::where("slug", $slug)->first();
+        if ($existingQuestion) {
+            ++$this->duplicates;
+            return  $existingQuestion;
         }
-        return null;
+        ++$this->rows;
+        $options = [];
+
+        for($i=1;$i<=4;$i++){
+            if(isset($row["option$i"]) && $row["option$i"] !== ""){
+                $options[] = $row["option$i"];
+            }
+        }
+        return new Question([
+            'category_id' => $questionCategory->id,
+            'title' => $row['title'],
+            'slug' => Str::slug($row['title']),
+            'description' => $row['description'],
+            'options' => $options,
+            'answer' => $row['answer'],
+            'weightage' => (string) $row['weightage']
+        ]);
     }
 
     /**
