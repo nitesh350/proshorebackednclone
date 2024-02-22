@@ -13,6 +13,7 @@ use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\Result;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Illuminate\Support\Carbon;
 
 class StartQuizControllerTest extends TestCase
 {
@@ -282,5 +283,51 @@ class StartQuizControllerTest extends TestCase
 
         $response->assertStatus(403)
             ->assertJson(['message' => 'Quiz is not available now. Please try again later.']);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_invalid_quiz_id_returns_not_found(): void
+    {
+        $invalidQuizId = 9999;
+        $response = $this->actingAs(User::factory()->create())
+                        ->getJson(route('start-quiz', $invalidQuizId));
+
+        $response->assertStatus(404);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_admin_cannot_start_quiz(): void
+    {
+        $this->createAdminUser();
+
+        $quizcategory = QuizCategory::factory()->create();
+
+        $quiz = Quiz::factory()->create(['category_id' => $quizcategory->id]);
+
+        $response = $this->actingAs($this->user)->getJson(route('start-quiz', $quiz));
+
+        $response->assertStatus(403)
+            ->assertJson([ 'message' => 'Quiz is not available now. Please try again later.']);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_quiz_cannot_be_started_before_scheduled_start_time(): void
+    {
+        $quizCategory = QuizCategory::factory()->create();
+        $scheduledStartTime = Carbon::now()->addHours(1);
+        $quiz = Quiz::factory()->create([
+            'category_id' => $quizCategory->id,
+            'time' => $scheduledStartTime,
+        ]);
+        $student = User::factory()->create();
+        $response = $this->actingAs($student)->getJson(route('start-quiz', $quiz));
+        $response->assertStatus(403)
+            ->assertJson([ 'message' => 'Quiz is not available now. Please try again later.']);
     }
 }

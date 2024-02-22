@@ -207,4 +207,72 @@ class QuizCategoryTest extends TestCase
         );
         $this->assertEquals(QuizCategory::count(), 1);
     }
+    /**
+     *
+     * @return void
+     */
+    public function test_unauthenticated_user_cannot_view_list_of_quiz_categories(): void
+    {
+        $response = $this->getJson(route('quiz-categories.index'));
+
+        $response->assertStatus(401);
+    }
+
+    /**
+     *
+     * @return void
+     */
+    public function test_unauthenticated_user_cannot_create_quiz_category(): void
+    {
+        $quizCategory = QuizCategory::factory()->make();
+
+        $response = $this->postJson(route('quiz-categories.store'), [
+            'title' => $quizCategory->title,
+            'slug' => $quizCategory->slug,
+        ]);
+
+        $response->assertStatus(401);
+    }
+
+    /**
+     *
+     * @return void
+     */
+    public function test_unauthenticated_user_cannot_update_quiz_category(): void
+    {
+        $quizCategory = QuizCategory::factory()->create();
+        $newQuizCategory = QuizCategory::factory()->make();
+
+        $response = $this->putJson(route('quiz-categories.update', $quizCategory), [
+            'title' => $newQuizCategory->title,
+            'slug' => $newQuizCategory->slug,
+        ]);
+
+        $response->assertStatus(401);
+    }
+    
+    /**
+     *
+     * @return void
+     */
+    public function test_quiz_category_cannot_be_deleted_if_associated_with_quiz(): void
+    {
+        $this->createAdminUser();
+
+        $quizCategory = QuizCategory::factory()->create();
+
+        $quiz = Quiz::factory()->create(['category_id' => $quizCategory->id]);
+        Storage::delete($quiz->thumbnail);
+
+        $response = $this->actingAs($this->user)->deleteJson(route('quiz-categories.destroy', $quizCategory));
+
+        $response->assertStatus(200)
+                 ->assertJson(
+                    fn (AssertableJson $json) => $json->has('error')
+                                                        ->where('error', 'Could not delete the category.')
+                 );
+
+        $this->assertDatabaseHas('quiz_categories', ['id' => $quizCategory->id]);
+    }
+
 }
