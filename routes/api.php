@@ -59,5 +59,5 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','verified']
     Route::get('/quizzes/all', GetQuizzesController::class)->middleware('abilities:can-attempt-quiz');
     Route::get('/quizzes/passed', GetPassedQuizzesController::class)->middleware('abilities:can-attempt-quiz');
     Route::get('/quiz-categories/all', GetQuizCategoriesController::class)->middleware('abilities:can-attempt-quiz');
-    Route::get('/cv', GenerateCVController::class)->middleware('abilities:generate-cv');
+    Route::get('/cv', GenerateCVController::class)->middleware('abilities:generate-cv')->name('generate-cv');
 });
