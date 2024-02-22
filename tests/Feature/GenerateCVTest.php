@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -33,9 +34,9 @@ class GenerateCVTest extends TestCase
 
         $response = $this->actingAs($user)->getJson(route('generate-cv'));
 
-        Storage::assertExists(Str::after($response['cv'], '/localhost'));
+        Storage::assertExists(strstr($response['cv'], '/cv'));
 
-        Storage::delete(Str::after($response['cv'], '/localhost'));
+        Storage::delete(strstr($response['cv'], '/cv'));
 
         $response->assertStatus(200)
             ->assertJson(
