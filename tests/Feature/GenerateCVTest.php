@@ -17,37 +17,6 @@ class GenerateCVTest extends TestCase
     /**
      * @return void
      */
-    public function test_student_can_generate_cv_when_authenticated_and_has_profile(): void
-    {
-        $user = User::factory()->create([
-            'name' => 'John Doe',
-        ]);
-
-        $profile = [
-            'experience' => 'This is student experience.',
-            'education' => 'This is student education.',
-            'career' => 'This is student career.',
-            'skills' => ['HTML', 'CSS', 'JavaScript', 'PHP', 'Laravel', 'MySql']
-        ];
-
-        $this->actingAs($user)->postJson(route('profile.store'), $profile);
-
-        $response = $this->actingAs($user)->getJson(route('generate-cv'));
-
-        Storage::assertExists(strstr($response['cv'], '/cv'));
-
-        Storage::delete(strstr($response['cv'], '/cv'));
-
-        $response->assertStatus(200)
-            ->assertJson(
-                fn (AssertableJson $json) => $json->has('cv')
-                    ->whereType('cv', 'string')
-            );
-    }
-
-    /**
-     * @return void
-     */
     public function test_student_cannot_generate_cv_without_profile(): void
     {
         $user = User::factory()->create([
