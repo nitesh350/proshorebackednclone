@@ -4,10 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Env;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class GenerateCVTest extends TestCase
