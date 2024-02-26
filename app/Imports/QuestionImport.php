@@ -52,7 +52,6 @@ class QuestionImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
             return  $existingQuestion;
         }
         ++$this->rows;
-
         return new Question([
             'category_id' => $questionCategory->id,
             'title' => $row['title'],

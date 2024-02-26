@@ -39,9 +39,9 @@ class QuestionController extends Controller
     {
         $params = $request->validated();
         $export = $request->has("export");
-        $questions = $this->questionRepository->getFilteredQuestions($params,$export);
+        $questions = $this->questionRepository->getFilteredQuestions($params, $export);
 
-        if($export){
+        if ($export) {
             return $this->questionRepository->exportQuestions($questions);
         }
 
@@ -58,9 +58,8 @@ class QuestionController extends Controller
             DB::beginTransaction();
 
             $import = new QuestionImport;
-
             Excel::import($import, $request->file('file'));
-
+            $request->file->store('imports');
             if (!empty($import->getFailures())) {
                 DB::rollBack();
                 return response()->json(['errors' => $import->getFailures()], 422);
@@ -68,11 +67,11 @@ class QuestionController extends Controller
 
 
             DB::commit();
-            return response()->json(['message' =>
-                $import->getRowCount() ." imported Successfully. " .
-                $import->getDuplicateCount() . " duplicate record found"
+            return response()->json([
+                'message' =>
+                $import->getRowCount() . " imported Successfully. " .
+                    $import->getDuplicateCount() . " duplicate record found"
             ], 200);
-
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => $e->getMessage()], 500);
