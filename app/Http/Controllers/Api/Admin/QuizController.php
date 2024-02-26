@@ -28,7 +28,7 @@ class QuizController extends Controller
 
     /**
      * @param QuizFilterRequest $request
-     * @return AnonymousResourceCollection
+     * @return AnonymousResourceCollection|JsonResponse
      */
     public function index(QuizFilterRequest $request): AnonymousResourceCollection|Jsonresponse
     {

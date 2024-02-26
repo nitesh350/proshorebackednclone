@@ -4,12 +4,15 @@ namespace App\Http\Repositories;
 
 use App\Models\Quiz;
 
+use App\Models\Result;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Exports\QuizzesExport;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -24,19 +27,21 @@ class QuizRepository
     {
 
         $query = Quiz::with(['category:id,title', 'result'])
-        ->whereDoesntHave('result', function ($query) {
-            $query->where('user_id', auth()->id())
-                ->where('passed', true);
-        });
+            ->active()
+            ->whereDoesntHave('result', function ($query) {
+                $query->where('user_id', auth()->id())
+                    ->where('passed', true);
+            });
 
         if (!empty($data['title'])) {
             $query = $query->where('title', 'like', '%' . $data['title'] . '%');
         }
 
         if (!empty($data['category_id'])) {
-            $query->where('category_id', $data['category_id']);
+            $categoryIds = is_array($data['category_id']) ? $data['category_id'] : explode(',', $data['category_id']);
+            $query->whereIn('category_id', $categoryIds);
         }
-        return $query->paginate(10);
+        return $query->paginate(12);
     }
 
     /**
@@ -65,7 +70,7 @@ class QuizRepository
             $query->whereIn('category_id', $categoryIds);
         }
 
-        if($export){
+        if ($export) {
             return $query->get();
         }
 
@@ -132,11 +137,11 @@ class QuizRepository
     /**
      * @param Collection $quizzes
      * @return JsonResponse
-    */
+     */
     public function exportQuizzes($quizzes): JsonResponse
     {
         $exportFilePath = 'exports/quizzes.xlsx';
-        Storage::delete("app/exports/quizzes.xlsx");
+        Storage::delete($exportFilePath);
         $status = Excel::store(new QuizzesExport($quizzes), $exportFilePath);
 
         if ($status) {
@@ -152,12 +157,12 @@ class QuizRepository
      */
     public function getPassedQuizzes(): Collection
     {
-        return Quiz::whereHas('result', function ($query){
-                $query->where('passed', true)
-                    ->where("user_id", auth()->id());
-            })
+        return Quiz::select('quizzes.*')
+            ->join('results', 'quizzes.id', '=', 'results.quiz_id')
+            ->where('results.user_id', auth()->id())
+            ->where('results.passed', true)
+            ->orderBy('results.created_at', 'desc')
             ->with(['category:id,title', 'result'])
             ->get();
     }
-
 }

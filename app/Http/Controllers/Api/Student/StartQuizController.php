@@ -37,27 +37,39 @@ class StartQuizController extends Controller
      */
     public function __invoke(Quiz $quiz): QuizResource | JsonResponse
     {
+        if (!$quiz->status) {
+            return response()->json([
+                'message' => 'This quiz is currently not available for attempts.',
+            ], 403);
+        }
+
         $user = auth()->user();
 
-        $result = $user->results()->where('quiz_id', $quiz->id)->first();
+        $result = $user->results()->where('quiz_id', $quiz->id)->latest()->first();
         if($result && $result->passed){
             return response()->json([
                 'message' => 'You\'ve already passed this quiz and cannot reattempt it.',
-            ]);
+            ],403);
         }
         if($result && !$result->passed){
             $retryDate = $result->created_at->addDays($quiz->retry_after);
             if(!now()->gte($retryDate)){
                 return response()->json([
                     'message' => "You can reattempt this quiz after " . $retryDate->diffForHumans(),
-                ]);
+                ],403);
             }
         }
 
         $quiz->load('category');
         $question_categories = $quiz->questionCategories()->select("question_category_id")->pluck("question_category_id");
         $questionResource = $this->questionRepository->getQuizQuestions($question_categories);
-        $this->resultRepository->store($quiz->id,$questionResource['data']['questions']?->count ?? 0);
+        $total_questions = $questionResource['data']['count'];
+        if($total_questions != 14){
+            return response()->json([
+                'message' => "Quiz is not available now. Please try again later.",
+            ],403);
+        }
+        $this->resultRepository->store($quiz->id,$total_questions);
         return (new QuizResource($quiz))->additional([
             'data' => [
                 "questions" => $questionResource,

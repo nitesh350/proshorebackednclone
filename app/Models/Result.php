@@ -10,6 +10,9 @@ class Result extends Model
 {
     use HasFactory;
 
+    /**
+     * @var array<int,string>
+     */
     protected $fillable = [
         'user_id',
         'quiz_id',
@@ -35,5 +38,17 @@ class Result extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getNextRetryAttribute(): string|null
+    {
+        if($this->passed) return null;
+        $quiz = $this->quiz()->select("id","retry_after")->first();
+        $retryDate = $this->created_at->addDays($quiz->retry_after);
+        if(now()->gte($retryDate)) return null;
+        return $retryDate->diffForHumans();
     }
 }

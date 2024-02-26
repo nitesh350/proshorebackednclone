@@ -18,6 +18,5 @@ class GetQuizCategories extends Controller
     {
         $quizCategories = QuizCategory::select(['id', 'title'])->get();
         return QuizCategoryResource::collection($quizCategories);
-
     }
 }

@@ -25,10 +25,9 @@ class GetPassedQuizzesController extends Controller
      * @param GetQuizzesFilterRequest $request
      * @return AnonymousResourceCollection
      */
-    public function __invoke(GetQuizzesFilterRequest $request): AnonymousResourceCollection
+    public function __invoke(GetQuizzesFilterRequest $request) : AnonymousResourceCollection
     {
         $passedQuizzes = $this->quizRepository->getPassedQuizzes();
-
         return QuizResource::collection($passedQuizzes);
     }
 }

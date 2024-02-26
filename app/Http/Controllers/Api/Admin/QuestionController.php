@@ -57,7 +57,8 @@ class QuestionController extends Controller
         try {
             DB::beginTransaction();
 
-            $import = new QuestionImport();
+            $import = new QuestionImport;
+
             Excel::import($import, $request->file('file'));
 
             if (!empty($import->getFailures())) {
@@ -65,8 +66,12 @@ class QuestionController extends Controller
                 return response()->json(['errors' => $import->getFailures()], 422);
             }
 
+
             DB::commit();
-            return response()->json(['message' => 'Questions imported successfully'], 200);
+            return response()->json(['message' =>
+                $import->getRowCount() ." imported Successfully. " .
+                $import->getDuplicateCount() . " duplicate record found"
+            ], 200);
 
         } catch (\Exception $e) {
             DB::rollBack();

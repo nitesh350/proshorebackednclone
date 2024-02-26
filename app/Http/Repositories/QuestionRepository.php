@@ -29,7 +29,8 @@ class QuestionRepository
             ->get();
         return [
             'data' => [
-                'questions' => QuestionResource::collection($questions)
+                'questions' => QuestionResource::collection($questions),
+                'count' => $questions->count()
             ]
         ];
     }
@@ -59,15 +60,15 @@ class QuestionRepository
         $query = Question::select(['id', 'title', 'slug', 'description', 'options', 'answer', 'weightage', 'category_id', 'status'])->with('category:id,title');
 
         if (isset($params['title'])) {
-            $query->where('title', 'like', '%' . $params['title'] . '%')->get();
+            $query->where('title', 'like', '%' . $params['title'] . '%');
         }
 
         if (isset($params['category_id'])) {
-            $query->where('category_id', $params['category_id'])->get();
+            $query->where('category_id', $params['category_id']);
         }
 
         if (isset($params['status'])) {
-            $query->where('status', $params['status'])->get();
+            $query->where('status', $params['status']);
         }
 
         if ($export) {
@@ -84,7 +85,7 @@ class QuestionRepository
     public function exportQuestions($questions): JsonResponse
     {
         $exportFilePath = 'exports/questions.xlsx';
-        Storage::delete("app/exports/questions.xlsx");
+        Storage::delete($exportFilePath);
         $status =Excel::store(new QuestionsExport($questions), $exportFilePath);
         if ($status) {
             $storagePath = asset($exportFilePath);

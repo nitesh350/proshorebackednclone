@@ -26,7 +26,7 @@ class GetQuizCategoriesController extends Controller
     {
         $data=$request->validated();
 
-        $quizCategories = $this->quizCategoryRepository->getFilteredQuizCategories($data);
+        $quizCategories = $this->quizCategoryRepository->getStudentFilteredQuizCategories($data);
 
         return QuizCategoryResource::collection($quizCategories);
     }

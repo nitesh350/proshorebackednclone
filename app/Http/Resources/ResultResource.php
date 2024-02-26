@@ -24,7 +24,8 @@ class ResultResource extends JsonResource
             'total_question' => $this->total_question,
             'total_answered' => $this->total_answered,
             'total_right_answer' => $this->total_right_answer,
-            'total_time' => $this->total_time
+            'total_time' => $this->total_time,
+            'next_retry' => $this->next_retry
         ];
     }
 }

@@ -28,7 +28,7 @@ class ProfileRepository
     public function update(Profile $profile,array $data): Profile
     {
         if (isset($data['avatar'])) {
-            Storage::delete('app/images/profiles/' . $profile->avatar);
+            Storage::delete($profile->avatar);
             $name = date('ymd') . time() . '.' . $data['avatar']->extension();
             $data['avatar'] = $data['avatar']->storeAs('images/profiles', $name);
         }

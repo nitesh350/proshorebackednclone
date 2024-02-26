@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Quiz;
 use App\Models\QuizCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Profile;
@@ -46,15 +47,20 @@ class StudentApiTest extends TestCase
             'user_id' => $user
         ]);
 
+        Storage::delete($profile->avatar);
+
         QuizCategory::factory()->create();
         $questionCategory = QuestionCategory::factory()->create();
 
         $quiz = Quiz::factory()->create();
+        Storage::delete($quiz->thumbnail);
         $quiz->questionCategories()->attach(QuestionCategory::first());
 
         $result = Result::factory()->create([
             'user_id' => $user, 'quiz_id' => $quiz
         ]);
+
+
 
         $response = $this->actingAs($this->user)->getJson(route('students.show', $user));
 
@@ -100,7 +106,7 @@ class StudentApiTest extends TestCase
                                                     ->where('title', $questionCategory->title)
                                                     ->where('slug', $questionCategory->slug)
                                             )
-                                    )
+                                    )->etc('next_retry')
                             )
                     )
             );

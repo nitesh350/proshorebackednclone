@@ -23,7 +23,7 @@ class GetQuizzesFilterRequest extends FormRequest
     {
         return [
             'title' => 'string|max:255',
-            'category_id' => 'integer|exists:quiz_categories,id',
+            'category_id' => 'exists:quiz_categories,id',
         ];
     }
 }

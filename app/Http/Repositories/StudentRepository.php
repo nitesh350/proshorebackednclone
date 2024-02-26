@@ -32,7 +32,7 @@ class StudentRepository
         $query = User::query()->select(['id', 'name', 'email','user_type'])->where('user_type','student');
 
         if (isset($params['name'])){
-            $query = $query->where('name', 'like', '%' . $params['name'] . '%')->get();
+            $query = $query->where('name', 'like', '%' . $params['name'] . '%');
         }
 
         if($export){
@@ -45,7 +45,8 @@ class StudentRepository
     public function exportStudents($students) : JsonResponse
     {
         $exportFilePath = 'exports/students.xlsx' ;
-        Storage::delete("app/exports/students.xlsx");
+        Storage::delete($exportFilePath);
+
         $status = Excel::store(new RegisteredStudentExport($students), $exportFilePath);
         if($status){
             $storagePath = asset($exportFilePath);
